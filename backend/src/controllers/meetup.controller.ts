@@ -16,18 +16,19 @@ export default class Meetup {
 
 	async createMeetup(req: Request, res: Response) {
 		try {
-			const { title, image, address, companyName, date, body, tags, author } =
+			const { address, companyName, date, image, title, tags, body, author } =
 				req.body;
 
 			const user = await this.userModel.findById(author);
-			if (!user) return res.status(404).json({ message: 'User not found' });
+			if (!user)
+				return res.status(404).json({ message: 'User not found', error: true });
 
 			const meetup = await this.meetupModel.create({
-				title,
-				image,
 				address,
 				companyName,
 				date,
+				image,
+				title,
 				body,
 				author,
 			});
@@ -48,7 +49,9 @@ export default class Meetup {
 
 	async getAllMeetups(res: Response) {
 		try {
-			const meetups = await this.meetupModel.find({}).populate('author');
+			const meetups = await this.meetupModel
+				.find({})
+				.populate('author', '_id username profileImage createdAt');
 			return res.status(200).json({ data: meetups });
 		} catch (error) {
 			if (error instanceof Error) {
@@ -62,12 +65,16 @@ export default class Meetup {
 			const meetup = await this.meetupModel
 				.findById(req.query.id)
 				.populate('author');
-			if (!meetup) return res.status(404).json({ message: 'Meetup not found' });
 
-			return res.status(200).json({ data: meetup });
+			if (!meetup)
+				return res
+					.status(404)
+					.json({ message: 'Meetup not found', error: true });
+
+			return res.status(200).json({ data: meetup, error: false });
 		} catch (error) {
 			if (error instanceof Error) {
-				res.status(500).json({ message: error.message }).end();
+				res.status(500).json({ message: error.message, error: true }).end();
 			}
 		}
 	}

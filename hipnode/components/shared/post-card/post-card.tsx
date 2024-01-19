@@ -6,28 +6,11 @@ import { cn, getCreatedDate } from '@/lib/utils';
 import LikeButton from './like-button';
 import PostTitle from './title';
 import Parser from '../parser';
-import { Post } from '@/types';
-
-type Meetups = {
-	User: {
-		image: string;
-		name: string | null;
-	} | null;
-} & {
-	id: string;
-	image: string;
-	title: string;
-	address: string;
-	companyName: string;
-	date: string;
-	body: string;
-	tags: string[];
-	authorEmail: string | null;
-};
+import { Meetup, Post } from '@/types';
 
 type PostCardTypes =
 	| { type: 'post'; post: Post }
-	| { type: 'meetup'; post: Meetups };
+	| { type: 'meetup'; post: Meetup };
 
 export default async function PostCard({ post, type }: PostCardTypes) {
 	const user = await currentUser();
@@ -65,9 +48,9 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 									path={
 										type === 'post'
 											? `/post/${post._id}`
-											: `/meetups/${post.id}`
+											: `/meetups/${post._id}`
 									}
-									id={type === 'post' ? post._id : post.id}
+									id={type === 'post' ? post._id : post._id}
 									title={post.title}
 								/>
 								{type === 'meetup' && (
@@ -96,11 +79,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 							<div className='flex items-center gap-2 md:gap-5'>
 								<Image
 									className='bg-white-700 dark:bg-secondary-dark size-10 rounded-full object-cover object-center p-2 md:size-14'
-									src={
-										type === 'post'
-											? post.author.profileImage ?? '/avatar.png'
-											: ''
-									}
+									src={post.author.profileImage ?? '/avatar.png'}
 									loading='lazy'
 									width={50}
 									height={50}

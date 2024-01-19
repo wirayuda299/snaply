@@ -70,11 +70,28 @@ export type Post = {
 	tags: Tag[];
 	share: number;
 	country: string;
-	likes: string[]; // Assuming likes are an array of user IDs
-	comments: Comment[]; // Replace with the actual structure of a Comment if available
+	likes: string[];
+	comments: Comment[];
 	author: User;
-	report: any[]; // Replace with the actual structure of a report if available
+	report: any[];
 	createdAt: Date;
 	updatedAt: Date;
 	__v: number;
 };
+
+export interface Meetup {
+	_id: string;
+	title: string;
+	image: string;
+	address: string;
+	companyName: string;
+	date: string;
+	body: string;
+	tags: Tag[];
+	author: {
+		_id: string;
+		username: string;
+		createdAt: Date;
+		profileImage?: string;
+	};
+}

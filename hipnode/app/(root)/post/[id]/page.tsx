@@ -29,6 +29,7 @@ export default async function PostDetail({ params }: Props) {
 		post.comments.length,
 		post.share
 	);
+	console.log(post);
 
 	async function handleComment(data: FormData) {
 		'use server';

@@ -110,9 +110,10 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							title,
 							tags,
 							body: post,
+						}).then(() => {
+							toast('Meetup event has been uploaded🎉');
+							router.push('/meetups');
 						});
-						toast('Meetup event has been uploaded🎉');
-						router.push('/meetups');
 					}
 					break;
 
@@ -286,7 +287,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							<FormControl>
 								<Editor
 									key={theme}
-									apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+									apiKey={process.env.EDITOR_API_KEY}
 									initialValue=''
 									onEditorChange={(content) => field.onChange(content)}
 									init={{

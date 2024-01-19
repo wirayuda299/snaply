@@ -1,7 +1,5 @@
 'use server';
 
-import prisma from '../prisma';
-
 export async function createUser(
 	email: string,
 	id: string,
@@ -11,7 +9,7 @@ export async function createUser(
 	password: string
 ) {
 	try {
-		const serverEndpoint = process.env.NEXT_PUBLIC_SERVER_URL;
+		const serverEndpoint = process.env.SERVER_URL;
 
 		await fetch(`${serverEndpoint}/user/create`, {
 			method: 'POST',
@@ -34,15 +32,7 @@ export async function createUser(
 
 export async function updateUser(email: string, name: string) {
 	try {
-		const updatedUser = await prisma.user.update({
-			where: {
-				email,
-			},
-			data: {
-				name,
-			},
-		});
-		return updatedUser;
+		console.log('update user');
 	} catch (error) {
 		console.log('Error with update user', error);
 	}
@@ -50,13 +40,7 @@ export async function updateUser(email: string, name: string) {
 
 export async function deleteUser(email: string) {
 	try {
-		const deletedUser = await prisma.user.delete({
-			where: {
-				email,
-			},
-		});
-
-		return deletedUser;
+		console.log(' delete user');
 	} catch (error) {
 		console.log('error with delete user', error);
 	}
