@@ -1,0 +1,177 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  title     String
+  body      String
+  role      String
+  createdAt DateTime  @default(now())
+  views     Int       @default(0)
+  likes     String[]  @default([])
+  postImage String
+  comments  Comment[]
+  tags      String[]  @default([])
+  group     Group?    @relation("PostGroup", fields: [groupId], references: [id])
+  groupId   String?   @db.ObjectId
+  share     Int       @default(0)
+  report    Report[]
+  country   String
+}
+
+// "onDelete: Cascade" in Comment model mean, when the post deleted, all related comments will be deleted as well same thing happen in Post model
+
+model User {
+  id            String         @map("_id")
+  email         String         @unique
+  name          String?
+  posts         Post[]
+  createdAt     DateTime       @default(now())
+  updateAt      DateTime       @default(now()) @updatedAt
+  notifications Notification[]
+  image         String
+  role          String
+  followers     String[]
+  followings    String[]
+  bio           String
+  website       String
+  socialMedia   SocialMedia[]
+  meetups       Meetup[]
+  podcasts      Podcast[]
+  interviews    Interview[]
+  groups        Group[]        @relation("Groups")
+  Group         Group[]        @relation("Members", fields: [memberIds], references: [id])
+  memberIds     String[]       @db.ObjectId
+  GroupAuthors  Group[]        @relation("Author")
+  GroupAdmin    Group[]        @relation("Admins", fields: [groupIds], references: [id])
+  groupIds      String[]       @db.ObjectId
+
+  @@id([id])
+}
+
+model Group {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  cover        String
+  profileImage String
+  description  String
+  members      User[]   @relation("Members", fields: [memberIds], references: [id])
+  memberIds    String[]
+  admins       User[]   @relation("Admins", fields: [adminIds], references: [id])
+  adminIds     String[]
+  tags         String[]
+  author       User?    @relation("Author", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     String
+  createdAt    DateTime @default(now())
+  updateAt     DateTime @updatedAt
+  Group        User?    @relation("Groups", fields: [groupIds], references: [id])
+  groupIds     String?
+  Post         Post[]   @relation("PostGroup")
+  postId       String[] @db.ObjectId
+}
+
+model Comment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  authorImage String
+  comment     String
+  likes       String[]
+  createdAt   DateTime @default(now())
+  updateAt    DateTime @default(now()) @updatedAt
+  Post        Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      String?  @db.ObjectId
+  parentId    String?  @db.ObjectId
+  type        String
+}
+
+model Interview {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  revenue     String
+  updateAt    DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+  website     String
+  image       String
+  tags        String[]
+  description String
+}
+
+model Podcast {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  image       String
+  title       String
+  audioUrl    String
+  episode     String
+  description String
+  User        User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+}
+
+model Meetup {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  image       String
+  title       String
+  address     String
+  companyName String
+  date        String
+  body        String
+  tags        String[]
+  User        User?    @relation(fields: [authorEmail], references: [email], onDelete: Cascade)
+  authorEmail String?
+}
+
+model SocialMedia {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  label  String
+  url    String
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+}
+
+model Report {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime @default(now())
+  postId     String?  @db.ObjectId
+  Post       Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reasons    String[]
+  reportedBy String
+}
+
+model Tag {
+  title   String   @map("_id")
+  postIds String[]
+
+  @@id([title])
+}
+
+model Notification {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  postTitle   String
+  authorName  String
+  authorImage String
+  message     String?
+  isRead      Boolean          @default(false)
+  typeText    String
+  postId      String
+  type        NotificationType
+  User        User?            @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+enum NotificationType {
+  reactions
+  comment
+  publish
+  mentions
+}
