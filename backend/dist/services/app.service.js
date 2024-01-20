@@ -20,7 +20,6 @@ class AppService {
     port;
     app;
     corsAllowUrl = process.env.CLIENT_URL;
-    // Set CORS headers
     setCorsHeaders = (req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', this.corsAllowUrl);
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE');
@@ -29,9 +28,9 @@ class AppService {
         next();
     };
     database = new db_controller_1.default(process.env.DATABASE_URL);
-    constructor(port = parseInt(process.env.PORT) || 3001) {
+    constructor(port = process.env.PORT || 3000) {
         this.port = port;
-        if (!this.port || isNaN(this.port)) {
+        if (!this.port) {
             throw new Error('Invalid port number');
         }
         this.app = (0, express_1.default)();
@@ -51,8 +50,9 @@ class AppService {
     listen() {
         this.app.listen(this.port, async () => {
             try {
-                await this.database.connectToDb();
-                console.log(`⚡️[server]: Server is running at https://localhost:${this.port}`);
+                await this.database.connectToDb().then(() => {
+                    console.log(`⚡️[server]: Server is running at https://localhost:${this.port}`);
+                });
             }
             catch (error) {
                 console.error(`Failed to start server: ${error}`);
