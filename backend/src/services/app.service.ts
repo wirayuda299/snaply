@@ -4,6 +4,7 @@ dotenv.config();
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 
 import Database from '../controllers/db.controller';
 import userRoutes from '../routes/user.route';
@@ -15,8 +16,7 @@ import Middleware from '../middleware/middleware';
 
 export default class AppService {
 	private app;
-	private corsAllowUrl =
-		process.env.NODE_ENV === 'dev' ? process.env.CLIENT_URL : '*';
+	private corsAllowUrl = process.env.CLIENT_URL;
 
 	// Set CORS headers
 	setCorsHeaders = (req: Request, res: Response, next: NextFunction) => {
@@ -42,7 +42,7 @@ export default class AppService {
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(this.setCorsHeaders);
-
+		this.app.use(compression());
 		this.app.disable('x-powered-by');
 		this.app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
