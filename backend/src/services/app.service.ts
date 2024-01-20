@@ -18,7 +18,6 @@ export default class AppService {
 	private app;
 	private corsAllowUrl = process.env.CLIENT_URL;
 
-	// Set CORS headers
 	setCorsHeaders = (req: Request, res: Response, next: NextFunction) => {
 		res.setHeader('Access-Control-Allow-Origin', this.corsAllowUrl!);
 		res.setHeader(
@@ -31,7 +30,7 @@ export default class AppService {
 	};
 	database = new Database(process.env.DATABASE_URL!);
 	constructor(private readonly port = process.env.PORT! || 3000) {
-		if (!this.port || !this.port) {
+		if (!this.port) {
 			throw new Error('Invalid port number');
 		}
 
@@ -54,10 +53,11 @@ export default class AppService {
 	listen() {
 		this.app.listen(this.port, async () => {
 			try {
-				await this.database.connectToDb();
-				console.log(
-					`⚡️[server]: Server is running at https://localhost:${this.port}`
-				);
+				await this.database.connectToDb().then(() => {
+					console.log(
+						`⚡️[server]: Server is running at https://localhost:${this.port}`
+					);
+				});
 			} catch (error) {
 				console.error(`Failed to start server: ${error}`);
 			}
