@@ -30,10 +30,8 @@ export default class AppService {
 		next();
 	};
 	database = new Database(process.env.DATABASE_URL!);
-	constructor(
-		private readonly port: number = parseInt(process.env.PORT!) || 3001
-	) {
-		if (!this.port || isNaN(this.port)) {
+	constructor(private readonly port = process.env.PORT! || 3000) {
+		if (!this.port || !this.port) {
 			throw new Error('Invalid port number');
 		}
 
