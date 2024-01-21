@@ -12,33 +12,29 @@ type Props = {
 	parentId: string | null;
 };
 
-const serverEndpoint = process.env.NEXT_PUBLIC_SERVER_URL;
+const serverEndpoint = process.env.SERVER_URL;
 
 export async function uploadComment(data: Props) {
 	const { author, comment, parentId, postId } = data;
 	try {
 		const { getToken } = auth();
 		const token = await getToken();
-		const res = await fetch(
-			`${serverEndpoint}/comment/create`,
-
-			{
-				next: {
-					tags: ['comment'],
-				},
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-				body: JSON.stringify({
-					author,
-					comment,
-					parentId,
-					postId,
-				}),
-			}
-		);
+		const res = await fetch(`${serverEndpoint}/comment/create`, {
+			next: {
+				tags: ['comment'],
+			},
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				author,
+				comment,
+				parentId,
+				postId,
+			}),
+		});
 		const commentRes = await res.json();
 
 		if (commentRes.error) {

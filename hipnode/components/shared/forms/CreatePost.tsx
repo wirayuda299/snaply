@@ -33,24 +33,9 @@ import { createPost } from '@/lib/actions/post.action';
 import { uploadImageToS3 } from '@/lib/aws/upload';
 import { createPostData } from '@/constants/create-post';
 import useUploadFile from '@/hooks/useUploadFile';
-import useHandleEnter from '@/hooks/useHandleEnter';
 import { createMeetup } from '@/lib/actions/meetup.action';
-
-type Group = {
-	id: string;
-	name: string;
-	cover: string;
-	profileImage: string;
-	description: string;
-	memberIds: string[];
-	adminIds: string[];
-	tags: string[];
-	authorId: string;
-	createdAt: Date;
-	updateAt: Date;
-	groupIds: string | null;
-	postId: string[];
-};
+import TagInput from './TagInput';
+import { Group } from '@/types';
 
 const CreatePost = ({ groups }: { groups: Group[] }) => {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +46,6 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 			title: params.get('title') ?? '',
 			tags: [],
 			createType: 'post',
-			group: null,
 			post: '',
 			postImage: '',
 			country: '',
@@ -135,14 +119,6 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 		}
 	};
 
-	const { handleEnter } = useHandleEnter(form);
-
-	const handleTagRemove = (tag: string, field: any) => {
-		const newTags = field.value.filter((t: string) => t !== tag);
-
-		form.setValue('tags', newTags);
-	};
-
 	const type = form.watch('createType');
 	const group = form.watch('group');
 
@@ -178,7 +154,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 								<FormLabel
 									aria-disabled={isChecking.postImage}
 									htmlFor='cover-input'
-									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 gap-2.5 rounded px-2.5 py-3 max-sm:w-full ${
+									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 gap-2.5 rounded p-2.5 max-sm:w-full${
 										isChecking.postImage ? 'animate-pulse' : ''
 									}`}
 								>
@@ -215,10 +191,10 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							name='group'
 							render={() => (
 								<FormItem>
-									<Select value={group?.name ?? ''}>
+									<Select value={group?.name ?? 'Select Group'}>
 										<FormControl>
 											<SelectTrigger className='bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex items-center gap-2 rounded border-none'>
-												{group?.name ?? ''}
+												{group?.name ?? 'Select group'}
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent className='dark:bg-secondary-dark-2 max-h-[500px] overflow-y-auto bg-white'>
@@ -331,41 +307,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 					)}
 				/>
 
-				<FormField
-					control={form.control}
-					name='tags'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel className='md:body-semibold bodyMd-semibold text-darkSecondary-900 dark:text-white-800'>
-								Add or change tags (up to 5) so readers know what your story is
-								about
-							</FormLabel>
-							<FormControl>
-								<>
-									<Input
-										placeholder='Add a tag...'
-										className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
-										onKeyDown={(e) => handleEnter(e, 'tags', 'tags')}
-									/>
-									{field.value.length > 0 && (
-										<div className='flex-start flex gap-2.5'>
-											{field?.value.map((tag: any) => (
-												<div
-													key={tag}
-													className='bg-white-700 text-secondary-light dark:bg-secondary-dark-2 mt-2.5 cursor-pointer rounded-[4px] px-[10px] py-[6px]'
-													onClick={() => handleTagRemove(tag, field)}
-												>
-													{tag}
-												</div>
-											))}
-										</div>
-									)}
-								</>
-							</FormControl>
-							<FormMessage className='text-xs text-red-600' />
-						</FormItem>
-					)}
-				/>
+				<TagInput form={form} />
 				{type === 'meetup' && (
 					<>
 						<FormField

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+
 import { likePost } from '@/lib/actions/post.action';
 import { Post } from '@/types';
 

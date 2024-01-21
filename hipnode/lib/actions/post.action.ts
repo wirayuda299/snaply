@@ -28,6 +28,7 @@ export async function createPost(props: createPostType) {
 				Authorization: `Bearer ${token}`,
 				'Content-Type': 'application/json',
 			},
+			credentials: 'include',
 			method: 'POST',
 			body: JSON.stringify({
 				title,

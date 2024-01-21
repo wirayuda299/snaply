@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { GroupWithAuthor } from "@/types";
+import { Group } from '@/types';
 
-export default function useSelectedGroup(group: GroupWithAuthor | null) {
-  const [selectedGroup, setSelectedGroup] = useState<GroupWithAuthor | null>(
-    group
-  );
+export default function useSelectedGroup(group: Group | null) {
+	const [selectedGroup, setSelectedGroup] = useState<Group | null>(group);
 
-  const handleSelectedGroup = () =>
-    selectedGroup ? setSelectedGroup(null) : undefined;
-  return { handleSelectedGroup, selectedGroup, setSelectedGroup };
+	const handleSelectedGroup = () =>
+		selectedGroup ? setSelectedGroup(null) : undefined;
+	return { handleSelectedGroup, selectedGroup, setSelectedGroup };
 }

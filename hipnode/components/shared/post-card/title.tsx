@@ -1,7 +1,8 @@
 'use client';
 
-import { updateView } from '@/lib/actions/post.action';
 import Link from 'next/link';
+
+import { updateView } from '@/lib/actions/post.action';
 
 export default function PostTitle({
 	id,
@@ -18,7 +19,7 @@ export default function PostTitle({
 		<Link
 			onClick={() => (type === 'post' ? updateView(id) : undefined)}
 			href={path}
-			className='dark:text-white-700 line-clamp-2 text-balance text-base font-semibold md:text-base'
+			className='dark:text-white-700 line-clamp-2 block text-balance text-base font-semibold first-letter:uppercase md:text-base'
 		>
 			{title}
 		</Link>

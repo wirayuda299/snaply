@@ -16,88 +16,93 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 	const user = await currentUser();
 	if (!user) return null;
 
-	const isLikedByCurrentUser = type === 'post' && post.likes.includes(user.id);
-	const date =
-		type === 'meetup' ? new Date(post.date) : new Date(post.createdAt);
+	const isLikedByCurrentUser =
+		type === 'post' && post?.likes?.includes(user.id);
+	const date = new Date(post.createdAt);
 
 	return (
-		<article className='dark:border-primary-dark dark:bg-secondary-dark-2 min-h-[100px] w-full rounded-lg border bg-white p-3 md:p-5'>
-			<div className='flex size-full items-start gap-3'>
-				<div
+		<div className='dark:border-primary-dark dark:bg-secondary-dark-2 max-sm:max-h-auto size-full max-h-[240px] rounded-lg border bg-white p-3 md:p-5'>
+			<div className='flex flex-col gap-5 sm:flex-row sm:gap-3'>
+				{/* main image */}
+				<picture
 					className={cn(
-						'relative aspect-square min-h-[120px] w-24 h-24 sm:h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48',
-						type === 'meetup' ? 'hidden md:block  ' : ''
+						'relative aspect-square min-h-[120px] w-full h-24 sm:h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48',
+						type === 'meetup' && 'hidden md:block'
 					)}
 				>
 					<Image
-						className={`aspect-square h-full min-h-full rounded-md  object-cover object-center md:aspect-auto `}
-						src={type === 'post' ? post.image : post.image}
+						className='aspect-square h-full min-h-full rounded-md object-cover object-center md:aspect-auto'
+						src={post.image}
 						fill
 						sizes='100%'
 						alt={post.title}
 						priority
 						fetchPriority='high'
 					/>
-				</div>
-				<div className='flex size-full grow items-start justify-between gap-3'>
-					<div className='flex size-full flex-col items-baseline justify-between gap-8'>
-						<div className='flex w-full justify-between'>
-							<div>
-								<PostTitle
-									type={type}
-									path={
-										type === 'post'
-											? `/post/${post._id}`
-											: `/meetups/${post._id}`
-									}
-									id={type === 'post' ? post._id : post._id}
-									title={post.title}
-								/>
-								{type === 'meetup' && (
-									<p className='text-secondary dark:text-secondary-light truncate text-xs'>
-										{post.companyName} - {post.address}
-									</p>
-								)}
-								{type === 'post' && <Tag tags={post.tags} />}
-								{type === 'meetup' && <Parser content={post.body} />}
-							</div>
+				</picture>
+
+				<div className='flex shrink grow flex-col justify-between gap-5'>
+					<div className='flex w-full justify-between'>
+						<header>
+							<PostTitle
+								type={type}
+								path={
+									type === 'post' ? `/post/${post._id}` : `/meetups/${post._id}`
+								}
+								id={post._id}
+								title={post.title}
+							/>
+							{type === 'meetup' && (
+								<p className='text-secondary dark:text-secondary-light truncate text-xs'>
+									{post.companyName} - {post.address}
+								</p>
+							)}
+							{type === 'post' && <Tag tags={post.tags} />}
+							{type === 'meetup' && <Parser content={post.body} />}
+						</header>
+
+						<div>
 							{type === 'post' ? (
 								<LikeButton
 									post={post}
 									isLikedByCurrentUser={isLikedByCurrentUser}
 								/>
 							) : (
-								<p className=' text-secondary dark:bg-secondary-dark dark:text-secondary-light hidden h-20 w-14 flex-col items-center gap-1 rounded-md bg-white p-1 text-lg font-semibold md:flex'>
+								<p className='text-secondary dark:bg-secondary-dark dark:text-secondary-light hidden h-20 w-14 flex-col items-center gap-1 rounded-md bg-white p-1 text-lg font-semibold md:flex'>
 									<span className='uppercase'>
 										{date.toLocaleString('en-US', { month: 'short' })}
 									</span>
-									<span className='text-blue-600'> {date.getDate()}</span>
+									<span className='text-blue-600'>{date.getDate()}</span>
 								</p>
 							)}
 						</div>
-						<div className=' flex w-full max-w-full flex-wrap items-center justify-between gap-5'>
-							<div className='flex items-center gap-2 md:gap-5'>
-								<Image
-									className='bg-white-700 dark:bg-secondary-dark size-10 rounded-full object-cover object-center p-2 md:size-14'
-									src={post.author.profileImage ?? '/avatar.png'}
-									loading='lazy'
-									width={50}
-									height={50}
-									alt='user'
-								/>
-								<div>
-									<h4 className='text-secondary dark:text-white-700 text-sm font-semibold'>
-										{type === 'post' ? post.author.username : post.companyName}
-									</h4>
-									{type === 'post' && (
-										<p className='text-secondary dark:text-white-700 truncate text-xs'>
-											{getCreatedDate(post.createdAt)}
-										</p>
-									)}
-								</div>
+					</div>
+
+					{/* author */}
+					<footer className='flex flex-wrap items-center justify-between'>
+						<div className='flex items-center gap-3'>
+							<Image
+								className='dark:bg-secondary-dark rounded-full object-cover object-center p-2'
+								src={post?.author?.profileImage ?? '/avatar.png'}
+								loading='lazy'
+								width={50}
+								height={50}
+								alt='user'
+							/>
+							<div>
+								<h4 className='text-secondary dark:text-white-700 text-xs font-semibold sm:text-sm'>
+									{type === 'post' ? post.author.username : post.companyName}
+								</h4>
+								{type === 'post' && (
+									<p className='text-secondary dark:text-white-700 truncate text-[10px] sm:text-xs'>
+										{getCreatedDate(post.createdAt)}
+									</p>
+								)}
 							</div>
+						</div>
+						<div className='hidden sm:block'>
 							{type === 'post' && (
-								<div className=' hidden flex-wrap gap-5 xl:flex'>
+								<div className=' mt-auto flex flex-wrap gap-5'>
 									<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
 										{post.views} views
 									</p>
@@ -105,14 +110,14 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 										{post.likes.length} Likes
 									</p>
 									<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
-										0 comments
+										{post.comments.length} comments
 									</p>
 								</div>
 							)}
 						</div>
-					</div>
+					</footer>
 				</div>
 			</div>
-		</article>
+		</div>
 	);
 }

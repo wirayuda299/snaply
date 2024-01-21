@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 
 import {
 	Form,
@@ -15,30 +16,26 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 
+import { Input } from '@/components/ui/input';
 import useUploadFile from '@/hooks/useUploadFile';
 import { cn } from '@/lib/utils';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
-import useUsers from '@/hooks/useUsers';
 import { createGroupSchema, createGroupSchemaTypes } from '@/lib/validations';
 import { createGroup } from '@/lib/actions/group.action';
 import { uploadImageToS3 } from '@/lib/aws/upload';
+import TagInput from '../shared/forms/TagInput';
 
 export default function CreateGroupForm() {
 	const [loading, setLoading] = useState<boolean>(false);
+	const { isLoaded, isSignedIn, user } = useUser();
+
 	const form = useForm<createGroupSchemaTypes>({
 		resolver: zodResolver(createGroupSchema),
 		defaultValues: {
 			admins: [],
+			tags: [],
 			cover: '',
 			description: '',
 			members: [],
@@ -48,31 +45,34 @@ export default function CreateGroupForm() {
 	});
 	const router = useRouter();
 	const { isChecking, handleChange, preview, files } = useUploadFile(form);
-	const { users } = useUsers();
+
+	if (!isLoaded || !isSignedIn) return null;
 
 	async function onSubmit(data: createGroupSchemaTypes) {
 		try {
-			console.log(data);
-
 			setLoading(true);
+			if (!user) throw new Error('Please sign in to perform this action');
+
 			if (files && files.cover && files.profileImage) {
 				const [cover, profileImage] = await Promise.all([
 					uploadImageToS3(files.cover),
 					uploadImageToS3(files.profileImage),
 				]);
-				// await createGroup({
-				//   admins: data.admins,
-				//   cover: cover?.Location!,
-				//   description: data.description,
-				//   members: data.members,
-				//   name: data.name,
-				//   profileImage: profileImage?.Location!,
-				// });
+				await createGroup({
+					admins: [user?.id!],
+					banner: cover?.Location!,
+					description: data.description,
+					members: data.members,
+					name: data.name,
+					logo: profileImage?.Location!,
+					tags: data.tags,
+				}).then(() => {
+					toast.success('Group has been created 🎉');
+					router.push('/groups');
+				});
 			}
-			toast('Group has been created 🎉');
-			router.push('/groups');
 		} catch (error) {
-			toast('Something went wrong while create a group 😢');
+			toast.error('Something went wrong while create a group 😢');
 		} finally {
 			setLoading(false);
 		}
@@ -156,7 +156,7 @@ export default function CreateGroupForm() {
 							}
 							alt='profile image'
 							className={cn(
-								'aspect-auto object-cover object-center ',
+								'aspect-auto min-w-10 min-h-10 object-cover object-center ',
 								preview &&
 									preview.profileImage &&
 									'h-full w-full rounded-full aspect-auto'
@@ -172,7 +172,7 @@ export default function CreateGroupForm() {
 								<FormLabel
 									aria-disabled={isChecking.profileImage}
 									htmlFor='profile'
-									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 cursor-pointer gap-2.5 rounded px-2.5  py-1 max-sm:w-full ${
+									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 cursor-pointer gap-2.5 rounded px-2.5 py-1 max-sm:w-full ${
 										isChecking.profileImage
 											? 'animate-pulse cursor-not-allowed'
 											: ''
@@ -245,77 +245,7 @@ export default function CreateGroupForm() {
 					)}
 				/>
 
-				{users?.length >= 1 && (
-					<FormField
-						control={form.control}
-						name='admins'
-						render={() => (
-							<FormItem>
-								<FormLabel className='dark:text-white-800 text-lg font-semibold'>
-									Add Admin
-								</FormLabel>
-								<FormControl>
-									<Select
-										onValueChange={(e) => {
-											form.setValue('admins', [e]);
-										}}
-									>
-										<SelectTrigger className='w-full'>
-											<SelectValue
-												placeholder='Add other admin'
-												className='placeholder:text-xs '
-											/>
-										</SelectTrigger>
-										<SelectContent className='dark:bg-secondary-dark-2 bg-white'>
-											{users.map((user) => (
-												<SelectItem value={user.email} key={user.name}>
-													{user.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</FormControl>
-								<FormMessage className='text-xs text-red-600' />
-							</FormItem>
-						)}
-					/>
-				)}
-				{users?.length >= 1 &&
-					users.filter(
-						(user) => !form.getValues('admins').includes(user.email)
-					) && (
-						<FormField
-							control={form.control}
-							name='members'
-							render={() => (
-								<FormItem>
-									<FormLabel className='dark:text-white-800 text-lg font-semibold'>
-										Add Member
-									</FormLabel>
-									<FormControl>
-										<Select
-											onValueChange={(e) => form.setValue('members', [e])}
-										>
-											<SelectTrigger className='w-full'>
-												<SelectValue
-													placeholder='Add member...'
-													className='placeholder:text-xs '
-												/>
-											</SelectTrigger>
-											<SelectContent className='dark:bg-secondary-dark-2 bg-white'>
-												{users.map((user) => (
-													<SelectItem value={user.email} key={user.name}>
-														{user.name}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</FormControl>
-									<FormMessage className='text-xs text-red-600' />
-								</FormItem>
-							)}
-						/>
-					)}
+				<TagInput form={form} />
 				<Button disabled={loading}>{loading ? 'Creating...' : 'Create'}</Button>
 			</form>
 		</Form>

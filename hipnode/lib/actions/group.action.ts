@@ -1,18 +1,97 @@
 'use server';
 
+import { Group } from '@/types';
+import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 
-export async function createGroup() {
-	console.log('create group');
+export type CreateGroupType = {
+	admins: string[];
+	tags: string[];
+	members: string[];
+	banner: string;
+	description: string;
+	logo: string;
+	name: string;
+};
+
+const serverEndpoint = process.env.SERVER_URL;
+
+export async function createGroup(props: CreateGroupType) {
+	try {
+		const { admins, tags, members, banner, description, logo, name } = props;
+
+		const { getToken } = auth();
+
+		const token = await getToken();
+		if (!token) throw new Error('token is required');
+
+		const res = await fetch(`${serverEndpoint}/group/create`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				admins,
+				tags,
+				members,
+				banner,
+				description,
+				logo,
+				name,
+			}),
+		});
+
+		const group = await res.json();
+		if (group.error) throw new Error(group.message);
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function getAllGroups() {
-	console.log('get all group');
+	try {
+		const { getToken } = auth();
+
+		const token = await getToken();
+		if (!token) throw new Error('token is required');
+
+		const res = await fetch(`${serverEndpoint}/group/all`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
+
+		const groups = await res.json();
+		if (groups.error) {
+			throw new Error(groups.message);
+		}
+		return groups.data as Group[];
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function getGroupById(id: string) {
 	try {
-		console.log('get group');
+		const { getToken } = auth();
+
+		const token = await getToken();
+		if (!token) throw new Error('token is required');
+
+		const res = await fetch(`${serverEndpoint}/group?id=${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
+
+		const group = await res.json();
+		if (group.error) {
+			throw new Error(group.message);
+		}
+		return group.data as Group;
 	} catch (error) {
 		throw error;
 	}
@@ -31,6 +110,28 @@ export async function leaveGroup(groupId: string, userId: string) {
 	console.log('leave group');
 }
 
-export async function getAllGroupsWhereUserJoin() {
-	console.log('get group where user join');
+export async function getAllGroupsWhereUserJoin(admins: string[]) {
+	try {
+		const { getToken, userId } = auth();
+
+		const token = await getToken();
+		if (!token) throw new Error('token is required');
+
+		const res = await fetch(
+			`${serverEndpoint}/group/group-member?admins=${admins}&members=${userId}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		const groups = await res.json();
+		if (groups.error) {
+			throw new Error(groups.message);
+		}
+		return groups.data as Group[];
+	} catch (error) {
+		throw error;
+	}
 }

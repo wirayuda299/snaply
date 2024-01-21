@@ -35,6 +35,7 @@ export const createGroupSchema = z.object({
 	description: z.string(),
 	admins: z.array(z.string()),
 	members: z.array(z.string()),
+	tags: z.array(z.string()),
 });
 
 export const authSchema = z.object({
