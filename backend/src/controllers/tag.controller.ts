@@ -15,11 +15,13 @@ export default class Tag<T extends Model<any>> {
 			const tags = [];
 			// create if doesnt exists
 			for (const tag of tagsDocs) {
-				const [existingTags] = await Promise.all([this.tagModel.findOneAndUpdate(
-					{name: tag},
-					{$setOnInsert: {name: tag}, $push: {postIds: postId}},
-					{upsert: true, new: true}
-				)]);
+				const [existingTags] = await Promise.all([
+					this.tagModel.findOneAndUpdate(
+						{ name: tag },
+						{ $setOnInsert: { name: tag }, $push: { postIds: postId } },
+						{ upsert: true, new: true }
+					),
+				]);
 				tags.push(existingTags.id);
 			}
 			// update post
@@ -28,8 +30,6 @@ export default class Tag<T extends Model<any>> {
 			});
 			return tags;
 		} catch (error) {
-			console.log(error);
-
 			throw error;
 		}
 	}

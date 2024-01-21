@@ -24,7 +24,10 @@ export default class Comment {
 			const post = await this.postModel.findById(postId);
 
 			if (!post) {
-				return res.status(404).json({ message: 'Post not found' }).end();
+				return res
+					.status(404)
+					.json({ message: 'Post not found', error: true })
+					.end();
 			}
 
 			const c = await this.commentModel.create({
@@ -37,8 +40,6 @@ export default class Comment {
 			await post.save();
 			res.status(200).json({ message: 'Comment uploaded', error: false }).end();
 		} catch (error) {
-			console.log(error);
-
 			res
 				.status(500)
 				.json({ message: 'Internal server error', error: true })
@@ -49,9 +50,7 @@ export default class Comment {
 	async getCommentReplies(req: Request, res: Response) {
 		try {
 			const comments = await this.commentModel
-				.find({
-					parentId: req.params.id,
-				})
+				.find({ parentId: req.params.id })
 				.populate('author', 'username profileImage createdAt updateAt');
 
 			if (comments.length < 1)

@@ -20,17 +20,23 @@ const groupSchema = new Schema(
 		},
 		members: [
 			{
-				type: Schema.Types.ObjectId,
+				type: String,
 				ref: 'User',
 			},
 		],
 		admins: [
 			{
-				type: Schema.Types.ObjectId,
+				type: String,
 				ref: 'User',
 			},
 		],
 		tags: [String],
+		posts: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Post',
+			},
+		],
 	},
 	{
 		timestamps: true,

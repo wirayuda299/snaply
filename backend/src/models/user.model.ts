@@ -79,7 +79,7 @@ const userSchema = new Schema(
 	}
 );
 const userModel = model('User', userSchema);
-
+export type userSchemaType = typeof userSchema;
 export type userModelType = typeof userModel;
 
 export default userModel;

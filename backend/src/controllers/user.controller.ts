@@ -30,11 +30,15 @@ export default class User {
 					password: hash,
 					username,
 				});
-				return res.status(201).json({ message: 'User created' }).end();
+				return res
+					.status(201)
+					.json({ message: 'User created', error: false })
+					.end();
 			});
 		} catch (error) {
-			console.error('Error creating user:', error);
-			return res.status(500).send('Internal Server Error').end();
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
 		}
 	}
 
@@ -47,7 +51,9 @@ export default class User {
 
 			res.json({ data: user }).end();
 		} catch (error) {
-			res.json(error).end();
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
 		}
 	}
 
@@ -60,6 +66,9 @@ export default class User {
 			await foundUser.save();
 		} catch (error) {
 			throw error;
+			// if (error instanceof Error) {
+			// 	res.status(500).json({ message: error.message, error: true }).end();
+			// }
 		}
 	}
 }

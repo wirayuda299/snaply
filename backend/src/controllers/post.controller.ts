@@ -5,6 +5,7 @@ import TagController from './tag.controller';
 import { userModelType } from '../models/user.model';
 import { postModelType } from '../models/post.model';
 import { TagModel } from '../models/tag.model';
+import { groupModelType } from './../models/group.model';
 import UserCountry from '../utils/userCountry';
 
 @Service()
@@ -12,7 +13,8 @@ export default class PostController {
 	constructor(
 		@Inject('PostModel') private PostModel: postModelType,
 		@Inject('TagModel') private tagModel: TagModel,
-		@Inject('UserModel') private userModel: userModelType
+		@Inject('UserModel') private userModel: userModelType,
+		@Inject('GroupModel') private groupModel: groupModelType
 	) {}
 
 	async createPost(req: Request, res: Response) {
@@ -34,7 +36,7 @@ export default class PostController {
 				author: user,
 				// @ts-ignore
 				country: country.country_name,
-				...(group && { groupId: group }),
+				...(group ? { group: group } : { group: null }),
 			});
 			user?.posts.push(post.id);
 			await user?.save();
@@ -46,10 +48,24 @@ export default class PostController {
 				).createTagIfExists(tags, post.id);
 			}
 
-			res.status(201).json({ message: 'Post has been created' }).end();
+			if (group) {
+				const foundGroup = await this.groupModel.findById(group);
+				if (!foundGroup)
+					return res
+						.status(404)
+						.json({ message: 'Group not found', error: true });
+
+				foundGroup.posts.push(post.id);
+				await foundGroup.save();
+			}
+
+			res
+				.status(201)
+				.json({ message: 'Post has been created', error: false })
+				.end();
 		} catch (error) {
 			if (error instanceof Error) {
-				res.status(500).json({ message: error.message }).end();
+				res.status(500).json({ message: error.message, error: true }).end();
 			}
 		}
 	}
@@ -77,7 +93,8 @@ export default class PostController {
 					},
 				});
 
-			if (!post) return res.status(404).json({ message: 'Post not found' });
+			if (!post)
+				return res.status(404).json({ message: 'Post not found', error: true });
 
 			res.json({ data: post, error: false }).end();
 		} catch (error) {
@@ -87,31 +104,29 @@ export default class PostController {
 		}
 	}
 
-	async getAllPosts(
-		sort: string,
-		page: number = 1,
-		pageSize: number = 10,
-		res: Response
-	) {
+	async getAllPosts(req: Request, res: Response) {
 		try {
+			const { sort = 'popular', page = 1, limit = 10 } = req.query;
+
 			let sortOptions = {};
 
 			if (sort === 'newest') {
 				sortOptions = { createdAt: -1 };
-			} else if (sort === 'popular') {
+			} else {
 				sortOptions = { createdAt: 1 };
 			}
 
 			const [totalPosts, allPosts] = await Promise.all([
 				this.PostModel.countDocuments(),
-				this.PostModel.find()
+				this.PostModel.find({
+					group: null,
+				})
 					.populate('author', 'username profileImage createdAt')
 					.populate('tags')
-					.skip((page - 1) * pageSize)
-					.limit(pageSize)
+					.skip(((page ? +page : 1) - 1) * +limit)
+					.limit(+limit)
 					.sort(sortOptions),
 			]);
-
 			res.status(200).json({ error: false, data: allPosts, totalPosts }).end();
 		} catch (e) {
 			if (e instanceof Error) {
@@ -139,7 +154,7 @@ export default class PostController {
 			res.status(200).end();
 		} catch (error) {
 			if (error instanceof Error) {
-				res.status(500).json({ message: error.message }).end();
+				res.status(500).json({ message: error.message, error: true }).end();
 			}
 		}
 	}
@@ -153,7 +168,9 @@ export default class PostController {
 			]);
 
 			if (!user || !post) {
-				return res.status(404).json({ message: 'User or Post not found' });
+				return res
+					.status(404)
+					.json({ message: 'User or Post not found', error: true });
 			}
 
 			const index = post.likes.indexOf(user.id);
@@ -167,8 +184,9 @@ export default class PostController {
 			await post.save();
 			res.status(200).end();
 		} catch (error) {
-			console.error(error);
-			res.status(500).json({ message: 'Internal server error' }).end();
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
 		}
 	}
 
@@ -179,7 +197,7 @@ export default class PostController {
 			if (!id || !authorId) {
 				return res
 					.status(400)
-					.json({ message: 'id and author id are required' });
+					.json({ message: 'id and author id are required', error: true });
 			}
 
 			const posts = await this.PostModel.find({
@@ -191,7 +209,9 @@ export default class PostController {
 				.json(posts.filter((post) => post._id.toString() !== id))
 				.end();
 		} catch (error) {
-			res.status(500).json(error).end();
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
 		}
 	}
 	// TODO: fix share field not increment by 1
@@ -213,8 +233,9 @@ export default class PostController {
 			});
 			res.status(200).end();
 		} catch (error) {
-			console.error(error);
-			res.status(500).json({ message: 'Internal server error' }).end();
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
 		}
 	}
 }

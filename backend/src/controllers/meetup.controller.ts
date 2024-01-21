@@ -39,7 +39,7 @@ export default class Meetup {
 			);
 			user.meetups.push(meetup.id);
 			await user.save();
-			res.status(201).json({ data: meetup }).end();
+			res.status(201).json({ data: meetup, error: false }).end();
 		} catch (error) {
 			if (error instanceof Error) {
 				res.status(500).json({ message: error.message }).end();
@@ -52,10 +52,10 @@ export default class Meetup {
 			const meetups = await this.meetupModel
 				.find({})
 				.populate('author', '_id username profileImage createdAt');
-			return res.status(200).json({ data: meetups });
+			return res.status(200).json({ data: meetups, error: false });
 		} catch (error) {
 			if (error instanceof Error) {
-				res.status(500).json({ message: error.message }).end();
+				res.status(500).json({ message: error.message, error: true }).end();
 			}
 		}
 	}

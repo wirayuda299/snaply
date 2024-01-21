@@ -1,5 +1,3 @@
-import { Clerk } from '@clerk/clerk-sdk-node';
-import Cookies from 'cookies';
 import { NextFunction, Request, Response } from 'express';
 
 export default class Middleware {
@@ -9,9 +7,12 @@ export default class Middleware {
 		next: NextFunction
 	) {
 		try {
-			const header = req.headers.authorization?.split(" ")[1]
-			if(!header){
-				return res.status(403).json({message:'UnAuthorized'}).end()
+			const header = req.headers.authorization?.split(' ')[1];
+			if (!header) {
+				return res
+					.status(403)
+					.json({ message: 'Unauthorized', error: true })
+					.end();
 			}
 			return next();
 		} catch (error) {

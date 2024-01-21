@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"sourceMap": true,
+		"sourceMap": false,
 		"outDir": "dist",
 		"strict": true,
 		"target": "ESNext",
@@ -10,7 +10,8 @@
 		"moduleResolution": "NodeNext",
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"strictPropertyInitialization": false
+		"strictPropertyInitialization": false,
+		"allowSyntheticDefaultImports": true
 	},
 	"exclude": ["node_modules"]
 }

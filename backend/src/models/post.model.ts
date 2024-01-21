@@ -23,7 +23,7 @@ const postSchema = new Schema(
 			type: String,
 			required: false,
 		},
-		groupId: {
+		group: {
 			type: Schema.Types.ObjectId,
 			ref: 'Group',
 			required: false,

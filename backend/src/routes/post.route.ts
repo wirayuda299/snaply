@@ -5,11 +5,13 @@ import PostService from '../services/post.service';
 import postModel from '../models/post.model';
 import tagModel from '../models/tag.model';
 import userModel from '../models/user.model';
+import groupModel from '../models/group.model';
 
 const router = Router();
 Container.set('PostModel', postModel);
 Container.set('TagModel', tagModel);
 Container.set('UserModel', userModel);
+Container.set('GroupModel', groupModel);
 
 const posts = Container.get(PostService);
 

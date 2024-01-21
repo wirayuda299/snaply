@@ -28,7 +28,9 @@ export default class AppService {
 		res.setHeader('Access-Control-Allow-Credentials', 'true');
 		next();
 	};
+
 	database = new Database(process.env.DATABASE_URL!);
+
 	constructor(private readonly port = process.env.PORT! || 3000) {
 		if (!this.port) {
 			throw new Error('Invalid port number');
@@ -37,11 +39,11 @@ export default class AppService {
 		this.app = express();
 		this.app.use(helmet());
 		this.app.use(express.json());
+		this.app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(this.setCorsHeaders);
 		this.app.use(compression());
 		this.app.disable('x-powered-by');
-		this.app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 		this.app.use('/api/user', userRoutes);
 		this.app.use('/api/post', Middleware.validate, postRoutes);
@@ -54,9 +56,7 @@ export default class AppService {
 		this.app.listen(this.port, async () => {
 			try {
 				await this.database.connectToDb().then(() => {
-					console.log(
-						`⚡️[server]: Server is running at https://localhost:${this.port}`
-					);
+					console.log(`⚡️[server]: Server is running `);
 				});
 			} catch (error) {
 				console.error(`Failed to start server: ${error}`);

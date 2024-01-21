@@ -10,17 +10,13 @@ export default class PostService {
 	create(req: Request, res: Response) {
 		return this.postController.createPost(req, res);
 	}
+
 	getPostById(req: Request, res: Response) {
 		return this.postController.getPost(req, res);
 	}
+
 	allPosts(req: Request, res: Response) {
-		const { sort, page, limit } = req.query;
-		return this.postController.getAllPosts(
-			sort?.toString() ?? 'popular',
-			page ? +page : 1,
-			limit ? +limit : 10,
-			res
-		);
+		return this.postController.getAllPosts(req, res);
 	}
 
 	updateView(req: Request, res: Response) {
@@ -34,6 +30,7 @@ export default class PostService {
 	relatedPosts(req: Request, res: Response) {
 		return this.postController.getRelatedPosts(req, res);
 	}
+
 	share(req: Request, res: Response) {
 		return this.postController.sharePost(req, res);
 	}

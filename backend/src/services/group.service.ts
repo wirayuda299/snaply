@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { Service } from 'typedi';
 import Group from '../controllers/group.controller';
-import { RequestWithQuery } from '../types/group';
+import { RequestBody, RequestWithQuery } from '../types/group';
 
 @Service()
 export default class GroupService {
@@ -25,5 +25,8 @@ export default class GroupService {
 		res: Response
 	) {
 		return this.groupModel.joinOrLeaveGroup(req, res);
+	}
+	getAllGroupsWhereUserIn(req: Request, res: Response) {
+		return this.groupModel.getGroupsWhereUserIsAdminOrMember(req, res);
 	}
 }
