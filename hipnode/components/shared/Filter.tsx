@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 type ItemProps = {
 	label: string;
@@ -34,8 +35,9 @@ export default function Filter({
 					innerStyles
 				)}
 			>
-				{items.map((item) => (
-					<li
+				{items.map((item, i) => (
+					<Link
+						href={`${i === 0 ? '?sort=newest' : '?sort=popular'}`}
 						className='flex items-center justify-start gap-2'
 						key={item.label}
 					>
@@ -61,7 +63,7 @@ export default function Filter({
 								</p>
 							)}
 						</div>
-					</li>
+					</Link>
 				))}
 			</ul>
 		</aside>

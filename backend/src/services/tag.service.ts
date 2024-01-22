@@ -13,7 +13,7 @@ export default class Tag<T extends Model<any>> {
 	async createTagIfExists(tagsDocs: string[], postId: string) {
 		try {
 			const tags = [];
-			// create if doesnt exists
+			// create if doesn't exists
 			for (const tag of tagsDocs) {
 				const [existingTags] = await Promise.all([
 					this.tagModel.findOneAndUpdate(
@@ -25,9 +25,7 @@ export default class Tag<T extends Model<any>> {
 				tags.push(existingTags.id);
 			}
 			// update post
-			await this.model.findByIdAndUpdate(postId, {
-				tags,
-			});
+			await this.model.findByIdAndUpdate(postId, { tags });
 			return tags;
 		} catch (error) {
 			throw error;

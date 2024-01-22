@@ -45,7 +45,7 @@ export default async function Navbar() {
 					autoComplete='off'
 					type='search'
 					placeholder='Search....'
-					className='focus-visible:bg-white-700 hidden bg-transparent pl-2 focus-visible:absolute focus-visible:left-0 focus-visible:block focus-visible:outline-none max-md:focus-visible:w-full md:block md:w-full focus-visible:md:static '
+					className='focus-visible:bg-white-700 hidden bg-transparent pl-2 focus-visible:absolute focus-visible:left-0 focus-visible:block focus-visible:outline-none max-md:focus-visible:w-full md:block md:w-full focus-visible:md:static md:focus-visible:bg-transparent '
 					id='search'
 				/>
 			</form>

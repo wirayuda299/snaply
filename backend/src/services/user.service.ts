@@ -1,18 +1,68 @@
-import { Service } from 'typedi';
+import { Inject, Service } from 'typedi';
 import { Request, Response } from 'express';
 
-import User from '../controllers/user.controller';
+import type { Types } from 'mongoose';
+import bcrypt from 'bcrypt';
 
+import { userModelType } from '../models/user.model';
 @Service()
 export default class UserService {
+	constructor(@Inject('UserModel') private userModel: userModelType) {}
 
-	constructor(private _userController: User) {}
+	async createUser(req: Request, res: Response) {
+		try {
+			const { email, id, image, password, username } = req.body;
 
-	createUser(req: Request, res: Response) {
-		return this._userController.createUser(req, res);
+			bcrypt.hash(password, 10, async (err, hash) => {
+				if (err) {
+					return res
+						.status(400)
+						.json({ message: 'Failed to hash password', error: true });
+				}
+				await this.userModel.create({
+					email,
+					...(image && { profileImage: image }),
+					_id: id,
+					password: hash,
+					username,
+				});
+
+				return res
+					.status(201)
+					.json({ message: 'User created', error: false })
+					.end();
+			});
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
+		}
 	}
 
-	getUserById(req: Request, res: Response) {
-		return this._userController.getUser(req, res);
+	async getUser(req: Request, res: Response) {
+		try {
+			const user = await this.userModel
+				.findById(req.query.id)
+				.populate('posts')
+				.populate('groups');
+
+			res.json({ data: user }).end();
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
+		}
+	}
+
+	async updateGroupFields(id: string, field: string, groupId: Types.ObjectId) {
+		try {
+			const foundUser = await this.userModel.findById(id);
+			if (!foundUser) throw new Error('User not found');
+
+			foundUser[field as keyof typeof foundUser].push(groupId);
+			await foundUser.save();
+		} catch (error) {
+			throw error;
+		}
 	}
 }

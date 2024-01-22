@@ -1,8 +1,6 @@
-import { User } from './user.type';
-
 export type Comment = {
 	_id: string;
-	author: User;
+	author: { _id: string; username: string; profileImage?: string };
 	comment: string;
 	likes: string[];
 	postId: string;

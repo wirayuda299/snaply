@@ -29,7 +29,6 @@ export default async function PostDetail({ params }: Props) {
 		post.comments.length,
 		post.share
 	);
-	console.log(post);
 
 	async function handleComment(data: FormData) {
 		'use server';
@@ -43,13 +42,14 @@ export default async function PostDetail({ params }: Props) {
 			author: user?.id!,
 		});
 	}
+
 	return (
 		<div className='flex flex-col gap-5 py-5 lg:flex-row'>
 			<section className='top-0 min-w-[200px] lg:sticky lg:h-screen'>
 				<PostStats
 					stats={postStats}
 					postAuthorName={post?.author?.username}
-					postId={post?._id}
+					postId={post._id}
 				/>
 			</section>
 			<section className='w-full'>

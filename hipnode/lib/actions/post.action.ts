@@ -198,6 +198,7 @@ export async function reportPost(id: string, reasons: string[]) {}
 export async function sharePost(id: string, path: string) {
 	try {
 		const { getToken } = auth();
+
 		const token = await getToken();
 		if (!token) {
 			throw new Error('You are not allowed to do this request');

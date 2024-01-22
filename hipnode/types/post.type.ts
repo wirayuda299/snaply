@@ -1,6 +1,7 @@
 import { Group } from './group.type';
 import { Tag } from './tag.type';
 import { User } from './user.type';
+import { Comment } from './comment.type';
 
 export interface Post {
 	_id: string;

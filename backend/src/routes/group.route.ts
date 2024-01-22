@@ -6,7 +6,7 @@ import tagModel from '../models/tag.model';
 import groupModel from '../models/group.model';
 import User from '../controllers/user.controller';
 import { RequestWithQuery } from '../types/group';
-import GroupService from '../services/group.service';
+import GroupController from '../controllers/group.controller';
 
 const router = Router();
 Container.set('PostModel', postModel);
@@ -14,7 +14,7 @@ Container.set('Model', tagModel);
 Container.set('GroupModel', groupModel);
 Container.set('UserController', User);
 
-const group = Container.get(GroupService);
+const group = Container.get(GroupController);
 
 router.post(
 	'/join',

@@ -6,12 +6,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 
-import Database from '../controllers/db.controller';
+import Database from '../services/db.service';
 import userRoutes from '../routes/user.route';
 import postRoutes from '../routes/post.route';
 import commentRoutes from '../routes/comment.route';
 import groupRoutes from '../routes/group.route';
 import meetupRoutes from '../routes/meetup.route';
+
 import Middleware from '../middleware/middleware';
 
 export default class AppService {

@@ -1,97 +1,38 @@
 import { Request, Response } from 'express';
-import { Service, Inject } from 'typedi';
+import { Service } from 'typedi';
 
-import { commentModelType } from '../models/comment.model';
-import { postModelType } from '../models/post.model';
+import CommentService from '../services/comment.service';
 
 @Service()
 export default class Comment {
-	constructor(
-		@Inject('CommentModel') private commentModel: commentModelType,
-		@Inject('PostModel') private postModel: postModelType
-	) {}
+	constructor(private commentService: CommentService) {}
 
-	async uploadComment(req: Request, res: Response) {
-		try {
-			const { author, comment, postId, parentId } = req.body;
-
-			if (!author || !postId || !comment) {
-				return res
-					.status(400)
-					.json({ message: 'Author, Post ID and comment are required' });
-			}
-
-			const post = await this.postModel.findById(postId);
-
-			if (!post) {
-				return res
-					.status(404)
-					.json({ message: 'Post not found', error: true })
-					.end();
-			}
-
-			const c = await this.commentModel.create({
-				author,
-				comment,
-				postId: post.id,
-				...(parentId && { parentId }),
-			});
-			post.comments.push(c.id);
-			await post.save();
-			res.status(200).json({ message: 'Comment uploaded', error: false }).end();
-		} catch (error) {
-			res
-				.status(500)
-				.json({ message: 'Internal server error', error: true })
-				.end();
+	createComment(req: Request, res: Response) {
+		const { author, comment, postId } = req.body;
+		if (!author || !postId || !comment) {
+			return res
+				.status(400)
+				.json({ message: 'Author, Post ID and comment are required' });
 		}
+		return this.commentService.uploadComment(req, res);
 	}
 
-	async getCommentReplies(req: Request, res: Response) {
-		try {
-			const comments = await this.commentModel
-				.find({ parentId: req.params.id })
-				.populate('author', 'username profileImage createdAt updateAt');
-
-			if (comments.length < 1)
-				return res
-					.status(404)
-					.json({ message: 'Comment not found', error: true });
-
-			return res.status(200).json({ data: comments, error: false }).end();
-		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+	getReplies(req: Request, res: Response) {
+		if (!req.params.id) {
+			return res.status(400).json({ message: 'Id is required', error: true });
 		}
+
+		return this.commentService.getCommentReplies(req, res);
 	}
 
-	async likeComment(req: Request, res: Response) {
+	like(req: Request, res: Response) {
 		const { userId, commentId } = req.body;
-
-		try {
-			const comment = await this.commentModel.findById(commentId);
-
-			if (!comment) {
-				return res
-					.status(404)
-					.json({ message: 'Comment not found', error: true });
-			}
-			const hasLikedIndex = comment.likes.indexOf(userId);
-
-			if (hasLikedIndex !== -1) {
-				comment.likes.splice(hasLikedIndex, 1);
-			} else {
-				comment.likes.push(userId);
-			}
-			await comment.save();
-
-			return res.status(200).end();
-		} catch (error) {
-			res
-				.status(500)
-				.json({ message: 'Internal server error', error: true })
-				.end();
+		if (!userId || !commentId) {
+			return res
+				.status(400)
+				.json({ message: 'user id and comment id are required', error: true });
 		}
+
+		return this.commentService.likeComment(req, res);
 	}
 }
