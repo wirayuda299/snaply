@@ -20,6 +20,7 @@ type ReturnTypes = {
 	country: string;
 	address: string;
 	companyName: string;
+	audio: string;
 };
 
 export default function GroupSelectContent({

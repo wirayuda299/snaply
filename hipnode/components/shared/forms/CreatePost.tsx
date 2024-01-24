@@ -3,12 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { useTheme } from 'next-themes';
 import { useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { FileAudio2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -30,12 +29,13 @@ import {
 import { CreatePostFormType, createPostSchema } from '@/lib/validations';
 import GroupSelectContent from './GroupSelectContent';
 import { createPost } from '@/lib/actions/post.action';
-import { uploadImageToS3 } from '@/lib/aws/upload';
 import { createPostData } from '@/constants/create-post';
 import useUploadFile from '@/hooks/useUploadFile';
 import { createMeetup } from '@/lib/actions/meetup.action';
 import TagInput from './TagInput';
 import { Group } from '@/types';
+import TextEditor from './TextEditor';
+import { uploadFile } from '@/lib/actions/fileUpload.action';
 
 const CreatePost = ({ groups }: { groups: Group[] }) => {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -45,16 +45,16 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 		defaultValues: {
 			title: params.get('title') ?? '',
 			tags: [],
-			createType: 'post',
+			createType: params.get('type')?.toLowerCase() ?? 'post',
 			post: '',
 			postImage: '',
 			country: '',
 			address: '',
 			companyName: '',
 			date: '',
+			audio: '',
 		},
 	});
-	const { theme } = useTheme();
 	const router = useRouter();
 
 	const { handleChange, isChecking, preview, files } = useUploadFile(form);
@@ -69,35 +69,36 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 			switch (createType) {
 				case 'post':
 					if (files && files.postImage) {
-						const postImage = await uploadImageToS3(files.postImage);
-
+						const image = await uploadFile(files.postImage);
 						await createPost({
 							group: group?.id,
-							image: postImage?.Location!,
+							assetId: image.public_id,
+							image: image?.secure_url,
 							tags,
 							title,
 							body: post,
 						});
-						toast('Your Post has been uploaded🎉');
+						toast('Your post has been published');
 						router.push('/');
 					}
 					break;
 
 				case 'meetup':
 					if (files && files.postImage) {
-						const image = await uploadImageToS3(files.postImage);
+						const image = await uploadFile(files.postImage);
+
 						await createMeetup({
 							address,
-							image: image?.Location!,
+							assetId: image.public_id,
+							image: image.secure_url,
 							companyName,
 							date,
 							title,
 							tags,
 							body: post,
-						}).then(() => {
-							toast('Meetup event has been uploaded🎉');
-							router.push('/meetups');
 						});
+						toast('Meetup event has been published');
+						router.push('/meetups');
 					}
 					break;
 
@@ -105,6 +106,8 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 					// implement your create meetup here
 					break;
 				case 'podcasts':
+					console.log(files, values);
+
 					// implement your create podcasts here
 					break;
 				default:
@@ -112,7 +115,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 			}
 		} catch (error) {
 			if (error instanceof Error) {
-				toast(error.message);
+				toast.error(error.message);
 			}
 		} finally {
 			setLoading(false);
@@ -133,7 +136,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 					name='title'
 					render={({ field }) => (
 						<FormItem>
-							<FormControl className=''>
+							<FormControl>
 								<Input
 									placeholder='Title...'
 									{...field}
@@ -177,6 +180,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 										id='cover-input'
 										accept='image/png, image/jpeg'
 										className='hidden'
+										name='file'
 										placeholder='set cover'
 										onChange={(e) => handleChange(e, 'postImage')}
 									/>
@@ -185,13 +189,16 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							</FormItem>
 						)}
 					/>
-					{groups.length >= 1 && (
+					{type !== 'podcasts' && groups.length >= 1 && (
 						<FormField
 							control={form.control}
 							name='group'
 							render={() => (
 								<FormItem>
-									<Select value={group?.name ?? 'Select Group'}>
+									<Select
+										onValueChange={(e) => {}}
+										value={group?.name ?? 'Select Group'}
+									>
 										<FormControl>
 											<SelectTrigger className='bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex items-center gap-2 rounded border-none'>
 												{group?.name ?? 'Select group'}
@@ -206,14 +213,54 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							)}
 						/>
 					)}
-
+					{type === 'podcasts' && (
+						<FormField
+							name='audio'
+							control={form.control}
+							render={() => (
+								<FormItem>
+									<FormLabel
+										htmlFor='audio'
+										className='md:body-semibold bodyMd-semibold text-darkSecondary-900 dark:text-white-800'
+									>
+										<div className='bg-white-700 dark:bg-secondary-dark-2 flex w-36 items-center gap-3 rounded-lg px-3 py-2'>
+											<FileAudio2 size={20} />
+											<p>Add audio</p>
+										</div>
+									</FormLabel>
+									<FormControl>
+										<Input
+											onChange={(e) => {
+												if (!e.target.files) return;
+												form.setValue(
+													'audio',
+													URL.createObjectURL(e.target.files[0])
+												);
+												console.log(URL.createObjectURL(e.target.files[0]));
+											}}
+											id='audio'
+											accept='.mp3'
+											className='hidden'
+											placeholder='Add audio'
+											type='file'
+										/>
+									</FormControl>
+								</FormItem>
+							)}
+						/>
+					)}
 					<FormField
 						control={form.control}
 						name='createType'
 						render={({ field }) => (
 							<FormItem>
 								<Select
-									onValueChange={field.onChange}
+									onValueChange={(val) => {
+										form.setValue('createType', val.toLowerCase());
+										const param = new URLSearchParams(params.toString());
+										param.set('type', val.toString());
+										router.push(`/create?${param.toString()}`);
+									}}
 									defaultValue={field.value}
 								>
 									<FormControl>
@@ -261,46 +308,8 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormControl>
-								<Editor
-									key={theme}
-									apiKey={process.env.EDITOR_API_KEY}
-									initialValue=''
-									onEditorChange={(content) => field.onChange(content)}
-									init={{
-										skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
-										content_css: theme === 'dark' ? 'dark' : 'light',
-										setup: function (editor) {
-											editor.ui.registry.addButton('Write', {
-												icon: 'edit-block',
-												text: 'Write',
-												onAction: function () {
-													return editor.focus();
-												},
-											});
-										},
-										height: 500,
-										menubar: false,
-										plugins: [
-											'advlist',
-											'autolink',
-											'lists',
-											'link',
-											'image',
-											'anchor',
-											'searchreplace',
-											'code',
-											'insertdatetime',
-											'media',
-											'table',
-											'code',
-										],
-										toolbar:
-											'Write preview |' +
-											'bold italic underline  forecolor codesample link image alignleft aligncenter alignright alignjustify bullist numlist |',
-										content_style:
-											'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
-									}}
-								/>
+								{/* @ts-ignore */}
+								<TextEditor field={field} />
 							</FormControl>
 							<FormMessage className='text-xs text-red-600' />
 						</FormItem>

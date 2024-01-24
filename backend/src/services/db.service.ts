@@ -1,5 +1,5 @@
 export default class Database {
-	constructor(private databaseUrl: Readonly<string>) {}
+	constructor(private databaseUrl?: Readonly<string>) {}
 
 	async connectToDb() {
 		try {

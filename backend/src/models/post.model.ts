@@ -8,7 +8,14 @@ const postSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
-		image: String,
+		assetId: {
+			type: String,
+			required: true,
+		},
+		image: {
+			type: String,
+			required: true,
+		},
 		tags: [
 			{
 				type: Schema.Types.ObjectId,

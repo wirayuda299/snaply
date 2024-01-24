@@ -11,6 +11,7 @@ const schema = z.object({
 	companyName: z.string(),
 	date: z.string(),
 	image: z.string(),
+	assetId: z.string(),
 	title: z.string(),
 	body: z.string(),
 	tags: z.array(z.string()),
@@ -46,7 +47,8 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 		const parsed = schema.safeParse(props);
 		if (!parsed.success) throw new Error('Data is not valid');
 
-		const { address, companyName, date, image, title, tags, body } = props;
+		const { address, companyName, date, image, title, tags, body, assetId } =
+			props;
 
 		const token = await getToken();
 		if (!token) {
@@ -68,12 +70,14 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 				tags,
 				body,
 				author: userId,
+				assetId,
 			}),
 		});
 		const meetup = await res.json();
 		if (meetup.error) throw new Error(meetup.message);
 
 		revalidatePath('/meetups');
+		return meetup;
 	} catch (error) {
 		throw error;
 	}

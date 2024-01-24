@@ -1,9 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+import { cn, formUrlQuery } from '@/lib/utils';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type ItemProps = {
+	title: string;
 	label: string;
 	icon: string;
 	subText: string;
@@ -22,6 +25,12 @@ export default function Filter({
 	innerStyles,
 	titleStyles,
 }: Props) {
+	const params = useSearchParams();
+	const router = useRouter();
+
+	const handleClick = (label: string) => {
+		router.push(formUrlQuery(params.toString(), 'sort', label)!);
+	};
 	return (
 		<aside
 			className={cn(
@@ -36,9 +45,9 @@ export default function Filter({
 				)}
 			>
 				{items.map((item, i) => (
-					<Link
-						href={`${i === 0 ? '?sort=newest' : '?sort=popular'}`}
-						className='flex items-center justify-start gap-2'
+					<li
+						onClick={() => (item.label ? handleClick(item.label) : undefined)}
+						className='flex items-center justify-start gap-2 cursor-pointer'
 						key={item.label}
 					>
 						<Image
@@ -55,7 +64,7 @@ export default function Filter({
 									titleStyles
 								)}
 							>
-								{item.label}
+								{item.title}
 							</h3>
 							{item.subText && (
 								<p className='text-secondary-light hidden text-[10px] md:block'>
@@ -63,7 +72,7 @@ export default function Filter({
 								</p>
 							)}
 						</div>
-					</Link>
+					</li>
 				))}
 			</ul>
 		</aside>

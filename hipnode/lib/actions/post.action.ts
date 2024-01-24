@@ -9,6 +9,7 @@ type createPostType = {
 	title: string;
 	body: string;
 	image: string;
+	assetId: string;
 	group: string | undefined;
 	tags: string[];
 };
@@ -20,7 +21,7 @@ export async function createPost(props: createPostType) {
 		const { userId, getToken } = auth();
 		if (!userId) return new Error('You must sign in to perform this action');
 
-		const { title, body, tags, group, image } = props;
+		const { title, body, tags, group, image, assetId } = props;
 
 		const token = await getToken();
 		const res = await fetch(`${serverEndpoint}/post/create`, {
@@ -37,6 +38,7 @@ export async function createPost(props: createPostType) {
 				group,
 				image,
 				author: userId,
+				assetId,
 			}),
 		});
 
@@ -50,7 +52,7 @@ export async function createPost(props: createPostType) {
 }
 
 export async function getAllPosts(
-	sort: 'popular' | 'newest' = 'popular',
+	sort: string = 'popular',
 	page: number = 1,
 	pageSize: number = 10
 ) {

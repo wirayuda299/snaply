@@ -1,6 +1,7 @@
+import { currentUser } from '@clerk/nextjs/server';
+
 import { CreateForm } from '@/components/index';
 import { getAllGroupsWhereUserJoin } from '@/lib/actions/group.action';
-import { currentUser } from '@clerk/nextjs/server';
 
 export default async function Create() {
 	const user = await currentUser();

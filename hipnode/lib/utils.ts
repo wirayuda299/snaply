@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import queryString from 'query-string';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -152,4 +153,20 @@ export const shareOptionData = (email: string, postUrl: string) => {
 			path: `mailto:${email}?body=Checkout%20this%20amazing%20post:${postUrl}`,
 		},
 	];
+};
+
+export const formUrlQuery = (params: string, key: string, value: string) => {
+	if (typeof window !== 'undefined') {
+		const currentUrl = queryString.parse(params as string);
+
+		currentUrl[key] = value;
+
+		return queryString.stringifyUrl(
+			{
+				url: window.location.pathname,
+				query: currentUrl,
+			},
+			{ skipNull: true }
+		);
+	}
 };

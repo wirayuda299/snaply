@@ -13,8 +13,13 @@ import { getAllPosts } from '@/lib/actions/post.action';
 const PopularTags = dynamic(() => import('@/components/shared/popular-tags'));
 const Loader = dynamic(() => import('@/components/shared/Loader'));
 
-export default async function Home() {
-	const { posts } = await getAllPosts('popular', 1, 10);
+export default async function Home({
+	searchParams,
+}: {
+	params: { slug: string };
+	searchParams: { [key: string]: string | string[] | undefined };
+}) {
+	const { posts } = await getAllPosts(searchParams.sort as string, 1, 10);
 	const tags = posts.map((post) => post.tags).flat(2);
 
 	return (

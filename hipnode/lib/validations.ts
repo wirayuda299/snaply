@@ -18,6 +18,7 @@ export const PostSchema = z.object({
 	address: z.string(),
 	date: z.string(),
 	companyName: z.string(),
+	audio: z.string()
 });
 
 export const createCommentSchema = z.object({

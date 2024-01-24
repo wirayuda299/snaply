@@ -4,11 +4,12 @@ import { Service } from 'typedi';
 import CommentService from '../services/comment.service';
 
 @Service()
-export default class Comment {
+export default class CommentController {
 	constructor(private commentService: CommentService) {}
 
 	createComment(req: Request, res: Response) {
 		const { author, comment, postId } = req.body;
+
 		if (!author || !postId || !comment) {
 			return res
 				.status(400)

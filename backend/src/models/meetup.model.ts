@@ -10,6 +10,10 @@ const meetupSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		assetId: {
+			type: String,
+			required: true,
+		},
 		address: {
 			type: String,
 			required: true,

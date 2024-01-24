@@ -1,6 +1,6 @@
 import {
 	ActiveMember,
-	HostMeetupCard,
+	Card,
 	GroupBanner,
 	GroupAdmin,
 	RecentMedia,
@@ -49,7 +49,8 @@ export default async function GroupDetail({ params }: Props) {
 					</div>
 				</section>
 				<aside className='flex size-full max-w-[325px] flex-col gap-5 overflow-y-auto overflow-x-hidden max-lg:max-w-full lg:sticky lg:top-0'>
-					<HostMeetupCard
+					<Card
+						path='/groups/create'
 						title='Create Group'
 						text='Create a community and unite with like-minded individuals. Embark on exciting journeys together.'
 						btnLeftText='Code of Conduct'

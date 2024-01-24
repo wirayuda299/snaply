@@ -3,8 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: 'hipnode-bucket.s3.amazonaws.com',
-        pathname: '/*',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**/*',
         protocol: 'https',
         port: ''
       },
@@ -21,7 +21,8 @@ const nextConfig = {
     AWS_ACCESS_ID: process.env.AWS_ACCESS_ID,
     AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
-    EDITOR_API_KEY: process.env.EDITOR_API_KEY
+    EDITOR_API_KEY: process.env.EDITOR_API_KEY,
+    SERVER_URL: process.env.SERVER_URL,
   },
   logging: {
     fetches: {

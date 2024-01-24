@@ -99,10 +99,7 @@ export default function SharePost({
 					{shareOptions.map((option) =>
 						option.path ? (
 							<a
-								onClick={(e) => {
-									e.stopPropagation();
-									handleShare();
-								}}
+								onClick={handleShare}
 								rel='canonical'
 								target='_blank'
 								href={option.path}
@@ -123,13 +120,7 @@ export default function SharePost({
 								</p>
 							</a>
 						) : (
-							<button
-								onClick={(e) => {
-									e.stopPropagation();
-									handleShare();
-								}}
-								key={option.label}
-							>
+							<button onClick={handleShare} key={option.label}>
 								<div className='ease bg-secondary-red-10 dark:bg-darkPrimary-4 dark:group-hover:bg-secondary-red-10 flex size-12 items-center justify-center rounded-full grayscale transition-all duration-300 group-hover:grayscale-0 md:size-[68px] dark:grayscale-0'>
 									<Image
 										className='dark:grayscale dark:group-hover:grayscale-0'

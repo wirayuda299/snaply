@@ -15,8 +15,17 @@ export default class MeetupService {
 
 	async createMeetup(req: Request, res: Response) {
 		try {
-			const { address, companyName, date, image, title, tags, body, author } =
-				req.body;
+			const {
+				address,
+				companyName,
+				date,
+				image,
+				title,
+				tags,
+				body,
+				author,
+				assetId,
+			} = req.body;
 
 			const user = await this.userModel.findById(author);
 			if (!user) {
@@ -31,6 +40,7 @@ export default class MeetupService {
 				title,
 				body,
 				author,
+				assetId,
 			});
 
 			await new Tag(this.meetupModel, this.tagModel).createTagIfExists(

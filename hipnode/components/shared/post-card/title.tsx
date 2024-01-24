@@ -3,6 +3,7 @@
 import Link from 'next/link';
 
 import { updateView } from '@/lib/actions/post.action';
+import { toast } from 'sonner';
 
 export default function PostTitle({
 	id,
@@ -15,9 +16,19 @@ export default function PostTitle({
 	type: 'post' | 'meetup';
 	id: string;
 }) {
+	const incremenetView = async () => {
+		try {
+			await updateView(id);
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message);
+			}
+		}
+	};
+
 	return (
 		<Link
-			onClick={() => (type === 'post' ? updateView(id) : undefined)}
+			onClick={() => (type === 'post' ? incremenetView() : undefined)}
 			href={path}
 			className='dark:text-white-700 line-clamp-2 block text-balance text-base font-semibold first-letter:uppercase md:text-base'
 		>

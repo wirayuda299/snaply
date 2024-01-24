@@ -18,7 +18,7 @@ export default class PostService {
 
 	async createPost(req: Request, res: Response) {
 		try {
-			const { title, body, image, author, tags, group } = req.body;
+			const { title, body, image, author, tags, group, assetId } = req.body;
 
 			const user = await this.userModel.findById(author);
 			if (!user)
@@ -34,6 +34,7 @@ export default class PostService {
 				body,
 				image,
 				author: user,
+				assetId,
 				// @ts-ignore
 				country: country.country_name,
 				...(group ? { group: group } : { group: null }),
@@ -192,6 +193,7 @@ export default class PostService {
 		try {
 			const posts = await this.PostModel.find({
 				author: authorId,
+				group: null,
 			}).populate('tags');
 
 			res
