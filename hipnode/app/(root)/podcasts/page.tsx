@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
-import { Category, Card, MeetupCard } from '@/components/index';
+import { Category, Card, MeetupCard, Parser } from '@/components/index';
+import { getAllPodcasts } from '@/lib/actions/podcast.action';
 
 const categories = [
 	'indie bites',
@@ -9,41 +10,30 @@ const categories = [
 	'free',
 ] as const;
 
-export default function Podcasts() {
+export default async function Podcasts() {
+	const { podcasts } = await getAllPodcasts();
+	console.log(podcasts);
+
 	return (
 		<div className='flex flex-col gap-5 py-5 lg:flex-row'>
 			<section className='top-0 w-80 max-md:w-full lg:sticky lg:h-screen'>
 				<Category categories={categories} title='Filter by Show' />
 			</section>
 			<section className='flex w-full grow flex-wrap gap-5'>
-				{[1, 2, 3, 4, 5].map((c) => (
+				{podcasts?.map((podcast) => (
 					<article
-						className='dark:bg-secondary-dark-2 max-w-xs rounded-xl bg-white p-5 max-lg:max-w-full'
-						key={c}
+						className='dark:bg-secondary-dark-2 max-w-xs h-min rounded-xl bg-white p-5 max-lg:max-w-full'
+						key={podcast._id}
 					>
 						<h2 className='text-secondary dark:text-white-700 text-xl font-semibold'>
-							Workshopping Pay-As-You-Go Failed Payments
+							{podcast.title}
 						</h2>
-						<p className='text-secondary dark:text-secondary-light line-clamp-6 pt-2 text-sm'>
-							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel,
-							laboriosam, nemo provident deleniti voluptatum, ea hic ipsam
-							aspernatur voluptas obcaecati dolorem quasi mollitia possimus!
-							Maiores aliquam harum cumque, hic vitae deserunt vero distinctio
-							accusantium ut facere consequatur velit doloribus ducimus pariatur
-							neque quidem! Neque sed ipsa error facilis sit inventore.
-							Obcaecati alias, a eos dolorem consectetur distinctio deleniti
-							odio temporibus sapiente provident dicta eum ad quae inventore
-							omnis non eligendi? Totam distinctio repellat, porro ratione aut
-							magnam ducimus corporis nesciunt qui hic quia provident tempora
-							eveniet, eaque culpa. Nostrum iure nesciunt exercitationem
-							excepturi recusandae perspiciatis molestias minima doloremque quos
-							tenetur?
-						</p>
+						<Parser content={podcast.body} />
 
 						<div className='mt-5 flex items-center gap-3'>
 							<Image
 								className='bg-white-800 dark:bg-secondary-dark-2 size-14 rounded-full p-2'
-								src='/avatar.png'
+								src={podcast.author.profileImage ?? '/avatar.png'}
 								width={50}
 								height={50}
 								alt='user'
@@ -51,7 +41,7 @@ export default function Podcasts() {
 							/>
 							<div>
 								<h3 className='text-secondary dark:text-white-700 text-base font-semibold'>
-									Moshkur Alom
+									{podcast.author.username}
 								</h3>
 								<p className='text-secondary dark:text-secondary-light text-xs'>
 									Sylhet, Bangladesh
@@ -63,7 +53,7 @@ export default function Podcasts() {
 			</section>
 			<section className='space-y-5'>
 				<Card
-					path='/post/create'
+					path='/create?type=podcasts'
 					text="Working on your own internet business? We'd love to interview you!"
 					title='Start Your Podcasts'
 					btnLeftText='Code of Conduct'

@@ -53,8 +53,17 @@ export default class GroupService {
 
 	async createGroup(req: RequestBody<RequestBodyTypes>, res: Response) {
 		try {
-			const { admins, tags, members, banner, description, logo, name } =
-				req.body;
+			const {
+				admins,
+				tags,
+				members,
+				banner,
+				description,
+				logo,
+				name,
+				bannerAssetId,
+				logoAssetId,
+			} = req.body;
 
 			if (this.isAdmin(admins, members) !== -1) {
 				return res.status(400).json({
@@ -69,6 +78,8 @@ export default class GroupService {
 				description,
 				logo,
 				name,
+				bannerAssetId,
+				logoAssetId,
 			});
 
 			if (tags && tags.length >= 1) {
@@ -93,6 +104,8 @@ export default class GroupService {
 				.end();
 		} catch (error) {
 			if (error instanceof Error) {
+				console.log(error);
+
 				res.status(500).json({ message: error.message, error: true }).end();
 			}
 		}
@@ -147,7 +160,6 @@ export default class GroupService {
 						{ path: 'group', model: 'Group' },
 					],
 				});
-			console.log(foundGroup);
 
 			return res.status(200).json({ data: foundGroup, error: false });
 		} catch (error) {

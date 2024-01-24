@@ -29,6 +29,7 @@ export default async function GroupDetail({ params }: Props) {
 				<section className=' w-full grow space-y-5'>
 					<GroupBanner
 						id={params.id}
+						adminId={group.admins[0]._id}
 						members={group?.members}
 						logo={group?.logo ?? ''}
 						author={group?.admins[0].username ?? ''}

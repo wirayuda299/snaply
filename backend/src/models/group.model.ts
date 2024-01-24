@@ -10,11 +10,15 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		assetId: {
+		bannerAssetId: {
 			type: String,
 			required: true,
 		},
 		logo: {
+			type: String,
+			required: true,
+		},
+		logoAssetId: {
 			type: String,
 			required: true,
 		},

@@ -16,6 +16,7 @@ type GroupBannerProps = {
 	logo: string;
 	members: Member[] | undefined;
 	id: string;
+	adminId: string;
 };
 
 export default async function GroupsBanner({
@@ -25,9 +26,11 @@ export default async function GroupsBanner({
 	logo,
 	id,
 	members,
+	adminId,
 }: GroupBannerProps) {
 	const user = await currentUser();
 	const isMember = members?.map((member) => member._id).includes(user?.id!);
+	const isAdmin = user?.id === adminId;
 
 	return (
 		<section className=' dark:bg-secondary-dark-2 w-full flex-1 rounded-2xl bg-white p-3 md:p-5'>
@@ -52,7 +55,7 @@ export default async function GroupsBanner({
 					/>
 
 					<div className='text-secondary dark:text-white-800'>
-						<h2 className='text-base font-semibold lg:text-3xl '>{title}</h2>
+						<h2 className='text-base font-semibold lg:text-3xl'>{title}</h2>
 						<p className='text-10 dark:text-darkSecondary-800 font-normal md:text-sm'>
 							Created by{' '}
 							<span className='dark:text-white-800 font-semibold'>
@@ -62,7 +65,12 @@ export default async function GroupsBanner({
 						</p>
 					</div>
 				</div>
-				<ActionButton groupId={id} isMember={!!isMember} userId={user?.id!} />
+				<ActionButton
+					isAdmin={isAdmin}
+					groupId={id}
+					isMember={!!isMember}
+					userId={user?.id!}
+				/>
 			</div>
 		</section>
 	);

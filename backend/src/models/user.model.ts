@@ -73,6 +73,12 @@ const userSchema = new Schema(
 				ref: 'Meetup',
 			},
 		],
+		podcasts: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Podcasts',
+			},
+		],
 	},
 	{
 		timestamps: true,

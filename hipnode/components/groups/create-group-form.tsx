@@ -24,8 +24,8 @@ import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
 import { createGroupSchema, createGroupSchemaTypes } from '@/lib/validations';
 import { createGroup } from '@/lib/actions/group.action';
-import { uploadImageToS3 } from '@/lib/aws/upload';
 import TagInput from '../shared/forms/TagInput';
+import { uploadFile } from '@/lib/actions/fileUpload.action';
 
 export default function CreateGroupForm() {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -55,16 +55,18 @@ export default function CreateGroupForm() {
 
 			if (files && files.cover && files.profileImage) {
 				const [cover, profileImage] = await Promise.all([
-					uploadImageToS3(files.cover),
-					uploadImageToS3(files.profileImage),
+					uploadFile(files.cover),
+					uploadFile(files.profileImage),
 				]);
 				await createGroup({
 					admins: [user?.id!],
-					banner: cover?.Location!,
+					banner: cover?.secure_url,
+					bannerAssetId: cover.public_id,
 					description: data.description,
 					members: data.members,
 					name: data.name,
-					logo: profileImage?.Location!,
+					logo: profileImage?.secure_url,
+					logoAssetId: profileImage.public_id,
 					tags: data.tags,
 				}).then(() => {
 					toast.success('Group has been created 🎉');
@@ -142,7 +144,7 @@ export default function CreateGroupForm() {
 				<div className='flex items-center gap-3'>
 					<div
 						className={cn(
-							'flex w-min sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2',
+							'flex w-min sm:h-14 sm:w-14 object-contain items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2',
 							isChecking.profileImage && 'animate-pulse cursor-not-allowed'
 						)}
 					>
@@ -156,10 +158,10 @@ export default function CreateGroupForm() {
 							}
 							alt='profile image'
 							className={cn(
-								'aspect-auto min-w-10 min-h-10 object-cover object-center ',
+								'aspect-auto size-9 object-contain object-center ',
 								preview &&
 									preview.profileImage &&
-									'h-full w-full rounded-full aspect-auto'
+									'h-full w-full rounded-full aspect-auto object-cover'
 							)}
 							loading='lazy'
 						/>
@@ -172,7 +174,7 @@ export default function CreateGroupForm() {
 								<FormLabel
 									aria-disabled={isChecking.profileImage}
 									htmlFor='profile'
-									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 cursor-pointer gap-2.5 rounded px-2.5 py-1 max-sm:w-full ${
+									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 cursor-pointer gap-2.5 rounded px-2.5 py-2 max-sm:w-full ${
 										isChecking.profileImage
 											? 'animate-pulse cursor-not-allowed'
 											: ''
@@ -183,7 +185,7 @@ export default function CreateGroupForm() {
 										height={20}
 										src={'/assets/create-post/image.svg'}
 										alt='Cover Image'
-										className='aspect-square w-5 dark:invert'
+										className='aspect-square size-5 object-contain dark:invert'
 										loading='lazy'
 									/>
 									<span className='text-secondary dark:text-white-800 my-auto cursor-pointer text-xs font-semibold leading-[160%]'>

@@ -28,7 +28,7 @@ export default function Card({
 				</Button>
 				<Link
 					href={path}
-					className='flex w-28 items-center justify-center rounded-lg bg-blue-500 text-center text-sm '
+					className='flex w-32 items-center justify-center truncate rounded-lg bg-blue-500 text-center text-sm'
 				>
 					{btnRightText}
 				</Link>

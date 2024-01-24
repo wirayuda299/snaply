@@ -27,19 +27,21 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { CreatePostFormType, createPostSchema } from '@/lib/validations';
-import GroupSelectContent from './GroupSelectContent';
 import { createPost } from '@/lib/actions/post.action';
 import { createPostData } from '@/constants/create-post';
-import useUploadFile from '@/hooks/useUploadFile';
 import { createMeetup } from '@/lib/actions/meetup.action';
-import TagInput from './TagInput';
 import { Group } from '@/types';
-import TextEditor from './TextEditor';
 import { uploadFile } from '@/lib/actions/fileUpload.action';
+import useUploadFile from '@/hooks/useUploadFile';
+import TagInput from './TagInput';
+import TextEditor from './TextEditor';
+import GroupSelectContent from './GroupSelectContent';
+import { createPodcast } from '@/lib/actions/podcast.action';
 
 const CreatePost = ({ groups }: { groups: Group[] }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const params = useSearchParams();
+
 	const form = useForm<CreatePostFormType>({
 		resolver: zodResolver(createPostSchema),
 		defaultValues: {
@@ -52,7 +54,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 			address: '',
 			companyName: '',
 			date: '',
-			audio: '',
+			audio: null,
 		},
 	});
 	const router = useRouter();
@@ -78,7 +80,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							title,
 							body: post,
 						});
-						toast('Your post has been published');
+						toast.success('Your post has been published');
 						router.push('/');
 					}
 					break;
@@ -97,7 +99,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							tags,
 							body: post,
 						});
-						toast('Meetup event has been published');
+						toast.success('Meetup event has been published');
 						router.push('/meetups');
 					}
 					break;
@@ -106,7 +108,20 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 					// implement your create meetup here
 					break;
 				case 'podcasts':
-					console.log(files, values);
+					if (files && files.audio) {
+						const audio = await uploadFile(files.audio);
+						const image = await uploadFile(files.postImage);
+						await createPodcast(
+							audio.secure_url,
+							audio.public_id,
+							post,
+							tags,
+							image.secure_url,
+							title,
+							image.public_id
+						);
+						toast.success('Podcast has been published');
+					}
 
 					// implement your create podcasts here
 					break;
@@ -205,6 +220,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent className='dark:bg-secondary-dark-2 max-h-[500px] overflow-y-auto bg-white'>
+											{/* @ts-ignore */}
 											<GroupSelectContent groups={groups} form={form} />
 										</SelectContent>
 									</Select>
@@ -223,21 +239,14 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 										htmlFor='audio'
 										className='md:body-semibold bodyMd-semibold text-darkSecondary-900 dark:text-white-800'
 									>
-										<div className='bg-white-700 dark:bg-secondary-dark-2 flex w-36 items-center gap-3 rounded-lg px-3 py-2'>
+										<div className='bg-white-700 dark:bg-secondary-dark-2 flex w-36 items-center gap-3 rounded px-3 py-2.5'>
 											<FileAudio2 size={20} />
 											<p>Add audio</p>
 										</div>
 									</FormLabel>
 									<FormControl>
 										<Input
-											onChange={(e) => {
-												if (!e.target.files) return;
-												form.setValue(
-													'audio',
-													URL.createObjectURL(e.target.files[0])
-												);
-												console.log(URL.createObjectURL(e.target.files[0]));
-											}}
+											onChange={(e) => handleChange(e, 'audio')}
 											id='audio'
 											accept='.mp3'
 											className='hidden'
@@ -245,6 +254,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 											type='file'
 										/>
 									</FormControl>
+									<FormMessage className='text-xs text-red-600' />
 								</FormItem>
 							)}
 						/>

@@ -23,9 +23,7 @@ export default function useUploadFile<T extends FieldValues>(
 				...prev!,
 				[field]: file,
 			}));
-			if (field !== 'postImage') {
-				form.setValue(field, file as PathValue<T, Path<T>>);
-			}
+			form.setValue(field, file as PathValue<T, Path<T>>);
 		},
 		[form]
 	);
@@ -49,26 +47,31 @@ export default function useUploadFile<T extends FieldValues>(
 			setIsChecking((prev) => ({ ...prev, [field]: true }));
 
 			try {
-				const { objects, unsafe } = await filterImage(file);
+				if (field !== 'audio') {
+					const { objects, unsafe } = await filterImage(file);
 
-				if (objects.length >= 1 || unsafe) {
-					toast('This image is not allowed');
-					return;
-				}
-
-				handleFileChange(field, file);
-
-				const reader = new FileReader();
-				reader.onload = (event) => {
-					if (event.target?.result) {
-						handlePreviewChange(field, event.target?.result);
+					if (objects.length >= 1 || unsafe) {
+						toast('This image is not allowed');
+						return;
 					}
-				};
-				reader.readAsDataURL(file);
-			} catch (error) {
-				console.log(error);
 
-				toast('Something went wrong while uploading image');
+					handleFileChange(field, file);
+
+					const reader = new FileReader();
+					reader.onload = (event) => {
+						if (event.target?.result) {
+							handlePreviewChange(field, event.target?.result);
+						}
+					};
+					reader.readAsDataURL(file);
+				} else {
+					handleFileChange(field, file);
+				}
+			} catch (error) {
+				if (error instanceof Error) {
+					toast.error(error.message);
+				}
+				toast.error('Something went wrong while uploading image');
 			} finally {
 				setIsChecking((prev) => ({ ...prev, [field]: false }));
 			}
@@ -76,5 +79,13 @@ export default function useUploadFile<T extends FieldValues>(
 		[handleFileChange, handlePreviewChange]
 	);
 
-	return { files, setFiles, preview, setPreview, handleChange, isChecking };
+	return {
+		files,
+		setFiles,
+		preview,
+		setPreview,
+		handleChange,
+		isChecking,
+		handleFileChange,
+	};
 }

@@ -17,7 +17,7 @@ export default async function Meetups() {
 			</section>
 			<section className='top-0 w-[300px] space-y-5 max-lg:w-full lg:sticky  lg:h-screen'>
 				<Card
-					path='/post/create'
+					path='/create?type=meetup'
 					btnLeftText='Code of Conduct'
 					btnRightText='Host a Meetup'
 					title='Host a meetup'

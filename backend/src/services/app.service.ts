@@ -13,6 +13,7 @@ import commentRoutes from '../routes/comment.route';
 import groupRoutes from '../routes/group.route';
 import meetupRoutes from '../routes/meetup.route';
 import fileUploadRoutes from '../routes/fileupload.route';
+import podcastRoutes from '../routes/podcast.route';
 import Middleware from '../middleware/middleware';
 
 export default class AppService {
@@ -44,6 +45,7 @@ export default class AppService {
 		this.app.get('/', (req, res) => {
 			res.json({ message: 'Hello from server' });
 		});
+		this.app.use('/api/podcasts', podcastRoutes);
 		this.app.use('/api/upload', fileUploadRoutes);
 		this.app.use('/api/user', userRoutes);
 		this.app.use('/api/post', Middleware.validate, postRoutes);
