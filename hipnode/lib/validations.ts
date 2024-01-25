@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const PostSchema = z.object({
-  title: z.string().min(4).max(130),
+  title: z.string(),
   post: z.string(),
   postImage: z.string(),
   group: z
@@ -10,16 +10,16 @@ export const PostSchema = z.object({
       name: z.string(),
       profileImage: z.string(),
     })
-    .nullable()
+    .nullish()
     .optional(),
   createType: z.string(),
   tags: z.array(z.string().min(1).max(15)).min(1).max(5),
   country: z.string(),
   address: z.string(),
   date: z.string(),
-  companyName: z.string().min(4).max(100),
-  audio: z.any().nullable(),
-  category: z.string().min(3).max(100),
+  companyName: z.string(),
+  audio: z.any().optional(),
+  category: z.string(),
 });
 
 export const createCommentSchema = z.object({
@@ -48,10 +48,7 @@ export const authSchema = z.object({
 });
 export type authSchemaType = z.infer<typeof authSchema>;
 
-export const createPostSchema = PostSchema;
-export const createPostSchemaForm = PostSchema.required();
-export type CreatePostFormType = z.infer<typeof createPostSchemaForm>;
-export type CreatePostType = z.infer<typeof createPostSchema>;
+export type CreatePostFormType = z.infer<typeof PostSchema>;
 export type CreateCommentTye = z.infer<typeof createCommentSchema>;
 export type UpdatePostSchemaType = z.infer<typeof PostSchema>;
 export type createGroupSchemaTypes = z.infer<typeof createGroupSchema>;

@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreatePostFormType, createPostSchema } from "@/lib/validations";
+import { CreatePostFormType, PostSchema } from "@/lib/validations";
 import { createPost } from "@/lib/actions/post.action";
 import { createPostData } from "@/constants/create-post";
 import { createMeetup } from "@/lib/actions/meetup.action";
@@ -43,7 +43,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
   const params = useSearchParams();
 
   const form = useForm<CreatePostFormType>({
-    resolver: zodResolver(createPostSchema),
+    resolver: zodResolver(PostSchema),
     defaultValues: {
       title: params.get("title") ?? "",
       tags: [],
@@ -56,12 +56,22 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
       date: "",
       audio: null,
       category: "",
+      group: null,
     },
   });
   const router = useRouter();
 
   const { handleChange, isChecking, preview, files } = useUploadFile(form);
-
+  // console.log("Address", form.getFieldState("address"));
+  // console.log("Title", form.getFieldState("title"));
+  // console.log("tags", form.getFieldState("tags"));
+  // console.log("category", form.getFieldState("category"));
+  // console.log("company", form.getFieldState("companyName"));
+  // console.log("date", form.getFieldState("date"));
+  // console.log("group", form.getFieldState("group"));
+  // console.log("post", form.getFieldState("post"));
+  // console.log("image", form.getFieldState("postImage"));
+  // console.log("Audio", form.getFieldState("audio"));
   const onSubmit = async (values: CreatePostFormType) => {
     const {
       createType,
@@ -131,7 +141,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
               image.secure_url,
               title,
               image.public_id,
-              category,
+              category
             );
             toast.success("Podcast has been published");
             router.push("/podcasts");
@@ -260,6 +270,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
                   </FormLabel>
                   <FormControl>
                     <Input
+                      required={false}
                       onChange={(e) => handleChange(e, "audio")}
                       id="audio"
                       accept=".mp3"
