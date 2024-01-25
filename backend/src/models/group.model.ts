@@ -14,6 +14,10 @@ const groupSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		category: {
+			type: String,
+			required: true,
+		},
 		logo: {
 			type: String,
 			required: true,

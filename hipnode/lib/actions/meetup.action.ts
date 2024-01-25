@@ -9,6 +9,7 @@ import { Meetup } from '@/types';
 const schema = z.object({
 	address: z.string(),
 	companyName: z.string(),
+	category: z.string(),
 	date: z.string(),
 	image: z.string(),
 	assetId: z.string(),
@@ -47,8 +48,17 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 		const parsed = schema.safeParse(props);
 		if (!parsed.success) throw new Error('Data is not valid');
 
-		const { address, companyName, date, image, title, tags, body, assetId } =
-			props;
+		const {
+			address,
+			companyName,
+			date,
+			image,
+			title,
+			tags,
+			body,
+			assetId,
+			category,
+		} = props;
 
 		const token = await getToken();
 		if (!token) {
@@ -71,6 +81,7 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 				body,
 				author: userId,
 				assetId,
+				category,
 			}),
 		});
 		const meetup = await res.json();

@@ -8,10 +8,9 @@ export default class PostController {
 	constructor(private postController: Post) {}
 
 	create(req: Request, res: Response) {
-		const { title, body, image, assetId } = req.body;
-		console.log({ title, body, image, assetId });
+		const { title, body, image, assetId, category } = req.body;
 
-		if (!title || !body || !image || !assetId) {
+		if (!title || !body || !image || !assetId || !category) {
 			return res
 				.status(400)
 				.json({ message: 'Please fill all required fields', error: true });

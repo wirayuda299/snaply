@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const PostSchema = z.object({
-	title: z.string().max(130),
+	title: z.string().min(4).max(130),
 	post: z.string(),
 	postImage: z.string(),
 	group: z
@@ -17,8 +17,9 @@ export const PostSchema = z.object({
 	country: z.string(),
 	address: z.string(),
 	date: z.string(),
-	companyName: z.string(),
+	companyName: z.string().min(4).max(100),
 	audio: z.any().nullable(),
+	category: z.string().min(3).max(100),
 });
 
 export const createCommentSchema = z.object({
@@ -32,8 +33,9 @@ export const createCommentSchema = z.object({
 export const createGroupSchema = z.object({
 	cover: z.string(),
 	profileImage: z.string(),
-	name: z.string(),
-	description: z.string(),
+	name: z.string().min(3).max(100),
+	category: z.string().min(3).max(100),
+	description: z.string().min(100).max(400),
 	admins: z.array(z.string()),
 	members: z.array(z.string()),
 	tags: z.array(z.string()),
@@ -41,8 +43,8 @@ export const createGroupSchema = z.object({
 
 export const authSchema = z.object({
 	emailAddress: z.string(),
-	password: z.string(),
-	username: z.string(),
+	password: z.string().min(6).max(20),
+	username: z.string().min(4).max(50),
 });
 export type authSchemaType = z.infer<typeof authSchema>;
 

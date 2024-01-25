@@ -8,6 +8,8 @@ export type Podcast = {
 		_id: string;
 		username: string;
 		profileImage?: string;
+		region: string;
+		country?: string;
 	};
 	title: string;
 	body: string;

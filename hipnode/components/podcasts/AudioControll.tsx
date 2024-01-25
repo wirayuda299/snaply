@@ -7,9 +7,11 @@ import { Pause, Play } from 'lucide-react';
 export default function AudioControll({
 	isPlaying,
 	setIsPlaying,
+	audioUrl,
 }: {
 	isPlaying: boolean;
 	setIsPlaying: Dispatch<SetStateAction<boolean>>;
+	audioUrl: string;
 }) {
 	const ref = useRef<HTMLAudioElement>(null);
 	const [currentTime, setCurrentTime] = useState<number>(
@@ -63,9 +65,10 @@ export default function AudioControll({
 					</button>
 				</div>
 				<audio
+					onEnded={() => setIsPlaying(false)}
 					onLoadedMetadata={(e) => setCurrentTime(e.currentTarget.currentTime)}
 					onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-					src='/1.mp3'
+					src={audioUrl}
 					preload='metadata'
 					ref={ref}
 				></audio>

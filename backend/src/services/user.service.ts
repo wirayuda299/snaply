@@ -5,6 +5,8 @@ import type { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 import { userModelType } from '../models/user.model';
+import UserCountry from '../utils/userCountry';
+
 @Service()
 export default class UserService {
 	constructor(@Inject('UserModel') private userModel: userModelType) {}
@@ -12,6 +14,8 @@ export default class UserService {
 	async createUser(req: Request, res: Response) {
 		try {
 			const { email, id, image, password, username } = req.body;
+
+			const country = await UserCountry.getUserCountry();
 
 			bcrypt.hash(password, 10, async (err, hash) => {
 				if (err) {
@@ -25,6 +29,10 @@ export default class UserService {
 					_id: id,
 					password: hash,
 					username,
+					// @ts-ignore
+					country: country.country_name,
+					// @ts-ignore
+					region: country.region,
 				});
 
 				return res

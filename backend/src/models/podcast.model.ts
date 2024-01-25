@@ -16,6 +16,10 @@ const interviewSchema = new Schema(
 			required: true,
 			ref: 'User',
 		},
+		category: {
+			type: String,
+			required: true,
+		},
 		title: {
 			type: String,
 			required: true,

@@ -14,6 +14,7 @@ export type RequestBodyTypes = {
 	name: string;
 	bannerAssetId: string;
 	logoAssetId: string;
+	category: string;
 };
 
 export interface RequestWithQuery<T extends Query>

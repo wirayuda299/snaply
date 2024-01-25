@@ -14,6 +14,7 @@ export type CreateGroupType = {
 	logo: string;
 	logoAssetId: string;
 	name: string;
+	category: string;
 };
 
 const serverEndpoint = process.env.SERVER_URL;
@@ -30,6 +31,7 @@ export async function createGroup(props: CreateGroupType) {
 			name,
 			bannerAssetId,
 			logoAssetId,
+			category,
 		} = props;
 
 		const { getToken } = auth();
@@ -53,6 +55,7 @@ export async function createGroup(props: CreateGroupType) {
 				name,
 				bannerAssetId,
 				logoAssetId,
+				category,
 			}),
 		});
 

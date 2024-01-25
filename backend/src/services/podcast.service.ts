@@ -2,7 +2,6 @@ import { Inject, Service } from 'typedi';
 import { Request, Response } from 'express';
 
 import { podcastModelType } from '../models/podcast.model';
-import { postModelType } from '../models/post.model';
 import Tag from './tag.service';
 import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
@@ -26,6 +25,7 @@ export default class PodcastServices {
 				title,
 				author,
 				postImageAssetId,
+				category,
 			} = req.body;
 
 			const user = await this.userModel.findById(author);
@@ -41,6 +41,7 @@ export default class PodcastServices {
 				title,
 				author,
 				postImageAssetId,
+				category,
 			});
 
 			if (tags && tags.length >= 1) {
@@ -78,7 +79,7 @@ export default class PodcastServices {
 				this.podcastModel.countDocuments(),
 				this.podcastModel
 					.find()
-					.populate('author', '_id username profileImage')
+					.populate('author', '_id username profileImage region country')
 					.populate('tags')
 					.skip(((page ? +page : 1) - 1) * +limit)
 					.limit(+limit)
@@ -94,6 +95,29 @@ export default class PodcastServices {
 					},
 				})
 				.end();
+		} catch (error) {
+			if (error instanceof Error) {
+				res.json({ message: error.message, error: true }).end();
+			}
+			res
+				.status(500)
+				.json({ message: 'Internal server error', error: true })
+				.end();
+		}
+	}
+
+	async getPodcastById(req: Request, res: Response) {
+		try {
+			const podcast = await this.podcastModel
+				.findById(req.query.id)
+				.populate('author');
+
+			if (!podcast)
+				return res
+					.status(404)
+					.json({ message: 'Podcast not found', error: true });
+
+			return res.status(200).json({ data: podcast, error: false });
 		} catch (error) {
 			if (error instanceof Error) {
 				res.json({ message: error.message, error: true }).end();

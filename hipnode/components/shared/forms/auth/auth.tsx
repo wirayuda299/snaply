@@ -134,7 +134,7 @@ export default function AuthForm({ type }: { type: 'signin' | 'signup' }) {
 				console.log(err);
 			}
 		} finally {
-			setLoading(true);
+			setLoading(false);
 		}
 	};
 

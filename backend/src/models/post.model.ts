@@ -4,6 +4,10 @@ const postSchema = new Schema(
 	{
 		title: String,
 		body: String,
+		category: {
+			type: String,
+			required: true,
+		},
 		views: {
 			type: Number,
 			default: 0,

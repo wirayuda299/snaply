@@ -63,6 +63,7 @@ export default class GroupService {
 				name,
 				bannerAssetId,
 				logoAssetId,
+				category,
 			} = req.body;
 
 			if (this.isAdmin(admins, members) !== -1) {
@@ -80,6 +81,7 @@ export default class GroupService {
 				name,
 				bannerAssetId,
 				logoAssetId,
+				category,
 			});
 
 			if (tags && tags.length >= 1) {

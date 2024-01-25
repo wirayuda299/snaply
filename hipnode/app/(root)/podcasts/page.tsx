@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { Category, Card, MeetupCard, Parser } from '@/components/index';
 import { getAllPodcasts } from '@/lib/actions/podcast.action';
+import Link from 'next/link';
 
 const categories = [
 	'indie bites',
@@ -22,12 +23,15 @@ export default async function Podcasts() {
 			<section className='flex w-full grow flex-wrap gap-5'>
 				{podcasts?.map((podcast) => (
 					<article
-						className='dark:bg-secondary-dark-2 max-w-xs h-min rounded-xl bg-white p-5 max-lg:max-w-full'
+						className='dark:bg-secondary-dark-2 h-min max-w-xs rounded-xl bg-white p-5 max-lg:max-w-full'
 						key={podcast._id}
 					>
-						<h2 className='text-secondary dark:text-white-700 text-xl font-semibold'>
+						<Link
+							href={`/podcasts/${podcast._id}`}
+							className='text-secondary  dark:text-white-700 block text-xl font-semibold first-letter:uppercase'
+						>
 							{podcast.title}
-						</h2>
+						</Link>
 						<Parser content={podcast.body} />
 
 						<div className='mt-5 flex items-center gap-3'>
@@ -44,7 +48,7 @@ export default async function Podcasts() {
 									{podcast.author.username}
 								</h3>
 								<p className='text-secondary dark:text-secondary-light text-xs'>
-									Sylhet, Bangladesh
+									{podcast.author.region}, {podcast.author.country}
 								</p>
 							</div>
 						</div>

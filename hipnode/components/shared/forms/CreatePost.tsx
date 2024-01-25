@@ -55,6 +55,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 			companyName: '',
 			date: '',
 			audio: null,
+			category: '',
 		},
 	});
 	const router = useRouter();
@@ -62,8 +63,17 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 	const { handleChange, isChecking, preview, files } = useUploadFile(form);
 
 	const onSubmit = async (values: CreatePostFormType) => {
-		const { createType, group, post, tags, title, address, companyName, date } =
-			values;
+		const {
+			createType,
+			group,
+			post,
+			tags,
+			title,
+			address,
+			companyName,
+			date,
+			category,
+		} = values;
 
 		setLoading(true);
 
@@ -79,6 +89,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							tags,
 							title,
 							body: post,
+							category,
 						});
 						toast.success('Your post has been published');
 						router.push('/');
@@ -98,6 +109,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							title,
 							tags,
 							body: post,
+							category,
 						});
 						toast.success('Meetup event has been published');
 						router.push('/meetups');
@@ -118,9 +130,11 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							tags,
 							image.secure_url,
 							title,
-							image.public_id
+							image.public_id,
+							category
 						);
 						toast.success('Podcast has been published');
+						router.push('/podcasts');
 					}
 
 					// implement your create podcasts here
@@ -155,7 +169,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 								<Input
 									placeholder='Title...'
 									{...field}
-									className='text-secondary dark:bg-secondary-dark-2 min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base md:min-h-[60px]'
+									className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
 								/>
 							</FormControl>
 							<FormMessage className='text-xs text-red-600' />
@@ -395,6 +409,25 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 						/>
 					</>
 				)}
+				<FormField
+					control={form.control}
+					name='category'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='md:body-semibold bodyMd-semibold text-darkSecondary-900 dark:text-white-800'>
+								Category
+							</FormLabel>
+							<FormControl>
+								<Input
+									{...field}
+									placeholder='category...'
+									className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
+								/>
+							</FormControl>
+							<FormMessage className='text-xs text-red-600' />
+						</FormItem>
+					)}
+				/>
 
 				<div className='flex items-center gap-4'>
 					<Button disabled={loading} type='submit' variant={'default'}>

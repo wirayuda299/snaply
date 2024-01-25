@@ -25,6 +25,7 @@ export default class MeetupService {
 				body,
 				author,
 				assetId,
+				category,
 			} = req.body;
 
 			const user = await this.userModel.findById(author);
@@ -41,6 +42,7 @@ export default class MeetupService {
 				body,
 				author,
 				assetId,
+				category,
 			});
 
 			await new Tag(this.meetupModel, this.tagModel).createTagIfExists(

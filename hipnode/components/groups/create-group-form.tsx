@@ -41,6 +41,7 @@ export default function CreateGroupForm() {
 			members: [],
 			name: '',
 			profileImage: '',
+			category: '',
 		},
 	});
 	const router = useRouter();
@@ -68,6 +69,7 @@ export default function CreateGroupForm() {
 					logo: profileImage?.secure_url,
 					logoAssetId: profileImage.public_id,
 					tags: data.tags,
+					category: data.category,
 				}).then(() => {
 					toast.success('Group has been created 🎉');
 					router.push('/groups');
@@ -248,6 +250,28 @@ export default function CreateGroupForm() {
 				/>
 
 				<TagInput form={form} />
+
+				<FormField
+					control={form.control}
+					name='category'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='md:body-semibold bodyMd-semibold text-darkSecondary-900 dark:text-white-800'>
+								Category
+							</FormLabel>
+							<FormControl>
+								<>
+									<Input
+										{...field}
+										placeholder='category...'
+										className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
+									/>
+								</>
+							</FormControl>
+							<FormMessage className='text-xs text-red-600' />
+						</FormItem>
+					)}
+				/>
 				<Button disabled={loading}>{loading ? 'Creating...' : 'Create'}</Button>
 			</form>
 		</Form>

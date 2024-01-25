@@ -6,30 +6,48 @@ import { useState } from 'react';
 import AudioControll from './AudioControll';
 import { cn } from '@/lib/utils';
 
-export default function AudioMetadata() {
+type Props = {
+	audioUrl: string;
+	thumbnail: string;
+	title: string;
+	author: string;
+};
+
+export default function AudioMetadata({
+	audioUrl,
+	thumbnail,
+	author,
+	title,
+}: Props) {
 	const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
 	return (
 		<header className='flex w-full items-start justify-between gap-5'>
-			<div className='flex w-full gap-5'>
-				<div className='flex items-center'>
+			<div
+				className={cn(
+					'flex w-full gap-16 transition-all ease-in-out duration-500',
+					isPlaying && 'gap-5'
+				)}
+			>
+				<div className='relative flex items-center'>
 					<Image
-						src='/audio.png'
+						src={thumbnail}
 						width={100}
 						height={100}
 						alt=''
 						fetchPriority='high'
 						priority
-						className='z-10 aspect-square size-40 border rounded-lg'
+						className='z-10 aspect-square size-40 min-w-40 rounded-lg border object-cover'
 					/>
 					{/* bg-[#3F4354] */}
 					<div
 						className={cn(
-							'-ml-12 size-36 rounded-full relative flex justify-center items-center bg-[url("/audio.png")] bg-cover bg-no-repeat border-2',
-							isPlaying && 'animate-spin rounded-full'
+							`-ml-44 opacity-0 size-36 rounded-full relative flex transition-all ease duration-500 justify-center items-center  bg-cover bg-no-repeatW`,
+							isPlaying && 'animate-spin rounded-full -ml-12 opacity-100'
 						)}
 						style={{
 							animationDuration: '10000ms',
+							...(isPlaying && { backgroundImage: `url('${thumbnail}')` }),
 						}}
 					>
 						<div className='absolute flex size-12 items-center justify-center rounded-full border'>
@@ -63,27 +81,20 @@ export default function AudioMetadata() {
 							</svg>
 						</div>
 					</div>
-					{/* <Image
-						className={cn(
-							'-ml-12 size-36',
-							isPlaying &&
-								'animate-spin duration-1000 border-t border-t-primary  rounded-full'
-						)}
-						src='/assets/podcasts/icons/disk.svg'
-						width={100}
-						height={100}
-						alt=''
-					/> */}
 				</div>
 				<div className='flex grow justify-between'>
 					<div className='w-full'>
 						<p className='text-secondary dark:text-white-700 text-xs font-medium'>
-							Hipnod • Episode 243
+							{title}
 						</p>
 						<h2 className='text-secondary dark:text-white-700 text-xl font-semibold'>
-							by Courtland Allen
+							by {author}
 						</h2>
-						<AudioControll isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
+						<AudioControll
+							isPlaying={isPlaying}
+							setIsPlaying={setIsPlaying}
+							audioUrl={audioUrl}
+						/>
 					</div>
 				</div>
 			</div>

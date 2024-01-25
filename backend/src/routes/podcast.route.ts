@@ -17,4 +17,5 @@ const podcast = Container.get(PodcastController);
 
 router.get('/all', (req, res) => podcast.getAll(req, res));
 router.post('/create', (req, res) => podcast.createPodcast(req, res));
+router.get('/', (req, res) => podcast.getPodcast(req, res));
 export default router;

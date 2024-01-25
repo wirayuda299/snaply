@@ -18,6 +18,14 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		region: {
+			type: String,
+			required: true,
+		},
+		country: {
+			type: String,
+			required: true,
+		},
 		profileImage: {
 			type: String,
 			required: false,

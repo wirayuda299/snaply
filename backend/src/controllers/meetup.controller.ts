@@ -8,8 +8,17 @@ export default class Meetup {
 	constructor(private meetup: MeetupService) {}
 
 	create(req: Request, res: Response) {
-		const { address, companyName, date, image, title, body, author, assetId } =
-			req.body;
+		const {
+			address,
+			companyName,
+			date,
+			image,
+			title,
+			body,
+			author,
+			assetId,
+			category,
+		} = req.body;
 		if (
 			!address ||
 			!companyName ||
@@ -18,7 +27,8 @@ export default class Meetup {
 			!body ||
 			!author ||
 			!image ||
-			!assetId
+			!assetId ||
+			!category
 		) {
 			return res.status(400).json({
 				message: 'Please provide values for all required fields.',
