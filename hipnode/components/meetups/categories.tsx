@@ -6,8 +6,8 @@ export default function Categories({
 	categories: Readonly<string[]>;
 }) {
 	return (
-		<div className='dark:bg-secondary-dark-2 h-min w-full rounded-lg bg-white p-3'>
-			<h2 className='dark:text-white-700 text-lg font-semibold'>{title}</h2>
+		<div className='h-min w-full rounded-lg bg-white p-3 dark:bg-secondary-dark-2'>
+			<h2 className='text-lg font-semibold dark:text-white-700'>{title}</h2>
 			<ul className='mt-4 flex w-full flex-col gap-3'>
 				{categories.map((category) => (
 					<li

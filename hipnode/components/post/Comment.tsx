@@ -90,17 +90,17 @@ const Comment = ({
 				</Avatar>
 
 				<div className='flex flex-1 flex-col gap-3.5'>
-					<div className='dark:border-secondary-dark-2 flex-wrap break-words rounded-3xl border border-slate-300 p-3.5'>
+					<div className='flex-wrap break-words rounded-3xl border border-slate-300 p-3.5 dark:border-secondary-dark-2'>
 						<div className='flex flex-col items-start'>
 							<div className='flex flex-wrap items-center gap-1'>
-								<p className='text-secondary dark:text-secondary-light text-base font-semibold'>
+								<p className='text-base font-semibold text-secondary dark:text-secondary-light'>
 									{author?.username} •
 								</p>
-								<p className='text-secondary-light dark:text-secondary-light text-xs'>
+								<p className='text-xs text-secondary-light dark:text-secondary-light'>
 									{getCreatedDate(createdAt)}
 								</p>
 							</div>
-							<p className='text-secondary dark:text-secondary-light w-full break-words pt-3 text-sm'>
+							<p className='w-full break-words pt-3 text-sm text-secondary dark:text-secondary-light'>
 								{comment}
 							</p>
 						</div>
@@ -131,7 +131,7 @@ const Comment = ({
 						</div>
 						<button
 							onClick={showAllReplies}
-							className='text-secondary dark:text-secondary-light pl-4 pt-2 text-left text-sm'
+							className='pl-4 pt-2 text-left text-sm text-secondary dark:text-secondary-light'
 						>
 							{replies && replies.length >= 1
 								? 'Hide all replies'

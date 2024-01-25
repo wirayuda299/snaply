@@ -30,7 +30,7 @@ export default function PostTitle({
 		<Link
 			onClick={() => (type === 'post' ? incremenetView() : undefined)}
 			href={path}
-			className='dark:text-white-700 line-clamp-2 block text-balance text-base font-semibold first-letter:uppercase md:text-base'
+			className='line-clamp-2 block text-balance text-base font-semibold first-letter:uppercase dark:text-white-700 md:text-base'
 		>
 			{title}
 		</Link>

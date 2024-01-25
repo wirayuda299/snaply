@@ -3,7 +3,7 @@ import { programmingLevels } from "@/constants/questionaire";
 
 export default function ProgrammingLevel() {
   return (
-    <section className=" h-full w-full">
+    <section className=" size-full">
       <Contents
         path="/interest"
         position="right"

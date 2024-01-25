@@ -14,8 +14,8 @@ export default async function GroupsAdmin({
 }) {
 	const user = await currentUser();
 	return (
-		<section className='text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex w-[210px] flex-col gap-5 rounded-2xl bg-white p-5 max-lg:w-full'>
-			<h3 className='text-secondary dark:text-white-800 text-base font-semibold'>
+		<section className='flex w-[210px] flex-col gap-5 rounded-2xl bg-white p-5 text-secondary dark:bg-secondary-dark-2 dark:text-white-800 max-lg:w-full'>
+			<h3 className='text-base font-semibold text-secondary dark:text-white-800'>
 				Admins
 			</h3>
 			{admins?.map((admin) => (
@@ -35,7 +35,7 @@ export default async function GroupsAdmin({
 						<h3>{admin.username}</h3>
 					</div>
 					{admin._id !== user?.id && (
-						<button className='bg-secondary-blue flex size-8 items-center justify-center rounded-full'>
+						<button className='flex size-8 items-center justify-center rounded-full bg-secondary-blue'>
 							<Image
 								src={'/assets/groups/icons/follow.svg'}
 								width={20}

@@ -13,7 +13,7 @@ export default async function PodcastDetail({ params }: Props) {
 
 	return (
 		<div className='flex w-full justify-center py-5'>
-			<div className='dark:bg-secondary-dark-2 w-full max-w-[850px] bg-white p-5'>
+			<div className='w-full max-w-[850px] bg-white p-5 dark:bg-secondary-dark-2'>
 				<AudioMetadata
 					audioUrl={podcast.audio}
 					author={podcast.author.username}
@@ -21,7 +21,7 @@ export default async function PodcastDetail({ params }: Props) {
 					title={podcast.title}
 				/>
 				<div className='pt-5'>
-					<h3 className='text-secondary dark:text-white-700 text-2xl font-semibold first-letter:capitalize'>
+					<h3 className='text-2xl font-semibold text-secondary first-letter:capitalize dark:text-white-700'>
 						{podcast.title}
 					</h3>
 					<Parser content={podcast.body} />

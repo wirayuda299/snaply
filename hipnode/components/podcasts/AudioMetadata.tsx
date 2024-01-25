@@ -84,10 +84,10 @@ export default function AudioMetadata({
 				</div>
 				<div className='flex grow justify-between'>
 					<div className='w-full'>
-						<p className='text-secondary dark:text-white-700 text-xs font-medium'>
+						<p className='text-xs font-medium text-secondary dark:text-white-700'>
 							{title}
 						</p>
-						<h2 className='text-secondary dark:text-white-700 text-xl font-semibold'>
+						<h2 className='text-xl font-semibold text-secondary dark:text-white-700'>
 							by {author}
 						</h2>
 						<AudioControll

@@ -10,7 +10,7 @@ type Props = {
 export default function CommentInput({ image, handleReply }: Props) {
 	return (
 		<form className='flex items-center gap-3' action={handleReply}>
-			<div className='bg-white-700 dark:bg-secondary-dark-2 flex size-14 items-center justify-center rounded-full p-1'>
+			<div className='flex size-14 items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2'>
 				<Image
 					className='rounded-full'
 					src={image}

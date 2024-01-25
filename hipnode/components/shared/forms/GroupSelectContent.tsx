@@ -31,7 +31,7 @@ export default function GroupSelectContent({
 	form: UseFormReturn<ReturnTypes>;
 }) {
 	return (
-		<div className='dark:bg-secondary-dark-2 flex w-full flex-col gap-3 p-3 md:flex-row'>
+		<div className='flex w-full flex-col gap-3 p-3 dark:bg-secondary-dark-2 md:flex-row'>
 			{groups.map((group) => (
 				<div
 					onClick={() =>
@@ -53,7 +53,7 @@ export default function GroupSelectContent({
 								width={20}
 								height={20}
 							/>
-							<h2 className='text-secondary dark:text-secondary-light line-clamp-1 text-left text-lg font-semibold'>
+							<h2 className='line-clamp-1 text-left text-lg font-semibold text-secondary dark:text-secondary-light'>
 								{group.name}
 								<p className='text-xs'>
 									Created by{' '}

@@ -21,7 +21,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 	const date = new Date(post.createdAt);
 
 	return (
-		<div className='dark:border-primary-dark dark:bg-secondary-dark-2 max-sm:max-h-auto size-full max-h-[240px] rounded-lg border bg-white p-3 md:p-5'>
+		<div className='max-sm:max-h-auto size-full max-h-[240px] rounded-lg border bg-white p-3 dark:border-primary-dark dark:bg-secondary-dark-2 md:p-5'>
 			<div className='flex flex-col gap-5 sm:flex-row sm:gap-3'>
 				{/* main image */}
 				<picture
@@ -53,7 +53,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 								title={post.title}
 							/>
 							{type === 'meetup' && (
-								<p className='text-secondary dark:text-secondary-light truncate text-xs'>
+								<p className='truncate text-xs text-secondary dark:text-secondary-light'>
 									{post.companyName} - {post.address}
 								</p>
 							)}
@@ -68,7 +68,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 									isLikedByCurrentUser={isLikedByCurrentUser}
 								/>
 							) : (
-								<p className='text-secondary dark:bg-secondary-dark dark:text-secondary-light hidden h-20 w-14 flex-col items-center gap-1 rounded-md bg-white p-1 text-lg font-semibold md:flex'>
+								<p className='hidden h-20 w-14 flex-col items-center gap-1 rounded-md bg-white p-1 text-lg font-semibold text-secondary dark:bg-secondary-dark dark:text-secondary-light md:flex'>
 									<span className='uppercase'>
 										{date.toLocaleString('en-US', { month: 'short' })}
 									</span>
@@ -82,7 +82,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 					<footer className='flex flex-wrap items-center justify-between'>
 						<div className='flex items-center gap-3'>
 							<Image
-								className='dark:bg-secondary-dark rounded-full object-cover object-center p-2'
+								className='rounded-full object-cover object-center p-2 dark:bg-secondary-dark'
 								src={post?.author?.profileImage ?? '/avatar.png'}
 								loading='lazy'
 								width={50}
@@ -90,11 +90,11 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 								alt='user'
 							/>
 							<div>
-								<h4 className='text-secondary dark:text-white-700 text-xs font-semibold sm:text-sm'>
+								<h4 className='text-xs font-semibold text-secondary dark:text-white-700 sm:text-sm'>
 									{type === 'post' ? post.author.username : post.companyName}
 								</h4>
 								{type === 'post' && (
-									<p className='text-secondary dark:text-white-700 truncate text-[10px] sm:text-xs'>
+									<p className='truncate text-[10px] text-secondary dark:text-white-700 sm:text-xs'>
 										{getCreatedDate(post.createdAt)}
 									</p>
 								)}
@@ -103,13 +103,13 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 						<div className='hidden sm:block'>
 							{type === 'post' && (
 								<div className=' mt-auto flex flex-wrap gap-5'>
-									<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
+									<p className='text-xs font-semibold text-secondary dark:text-white-700'>
 										{post.views} views
 									</p>
-									<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
+									<p className='text-xs font-semibold text-secondary dark:text-white-700'>
 										{post.likes.length} Likes
 									</p>
-									<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
+									<p className='text-xs font-semibold text-secondary dark:text-white-700'>
 										{post.comments.length} comments
 									</p>
 								</div>

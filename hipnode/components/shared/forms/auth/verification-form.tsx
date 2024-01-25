@@ -22,7 +22,7 @@ export default function VerificationForm({
 				onChange={(e) => setCode(e.target.value)}
 				placeholder='Code...'
 				autoFocus
-				className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light mt-3 min-h-[48px] w-full rounded-lg border-none bg-white px-5 py-3 text-base ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 md:min-h-[60px]'
+				className='mt-3 min-h-[48px] w-full rounded-lg border-none bg-white px-5 py-3 text-base text-secondary ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 			/>
 			<Button type='submit' disabled={loading}>
 				{loading ? 'Verifying...' : 'Verify Email'}

@@ -18,7 +18,7 @@ export default function LikeButton({
 			onClick={() => likePost(post._id, '/')}
 		>
 			<Image
-				className={` bg-white-700 dark:bg-secondary-dark size-9 rounded-lg object-contain p-2 `}
+				className={` size-9 rounded-lg bg-white-700 object-contain p-2 dark:bg-secondary-dark `}
 				src={'/assets/general/icons/filled-heart.svg'}
 				width={40}
 				height={40}

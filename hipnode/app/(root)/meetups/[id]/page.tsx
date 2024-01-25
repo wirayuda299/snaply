@@ -1,4 +1,4 @@
-import { getMeetupById } from '@/lib/actions/meetup.action';
+// import { getMeetupById } from '@/lib/actions/meetup.action';
 
 type Props = {
 	params: {
@@ -8,7 +8,7 @@ type Props = {
 export const dynamic = 'force-dynamic';
 
 export default async function MeetupDetail(props: Props) {
-	const meetup = await getMeetupById(props.params.id);
+	// const meetup = await getMeetupById(props.params.id);
 
 	return <div>{JSON.stringify(props)}</div>;
 }

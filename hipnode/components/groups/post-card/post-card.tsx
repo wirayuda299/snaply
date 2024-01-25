@@ -11,7 +11,7 @@ export default async function PostCard({ post }: { post: Post }) {
 
 	const isLikedByCurrentUser = post.likes.includes(user.id);
 	return (
-		<article className='card dark:bg-secondary-dark-2 flex size-min max-w-[250px] grow flex-col items-stretch rounded-2xl bg-white p-2.5 max-md:max-w-full max-sm:max-w-full'>
+		<article className='card flex size-min max-w-[250px] grow flex-col items-stretch rounded-2xl bg-white p-2.5 dark:bg-secondary-dark-2 max-md:max-w-full max-sm:max-w-full'>
 			<header className='card-header flex items-stretch justify-between gap-2.5'>
 				<Image
 					width={34}
@@ -25,10 +25,10 @@ export default async function PostCard({ post }: { post: Post }) {
 					href={`/post/${post._id}`}
 					className='card-info flex grow basis-[0%] flex-col items-stretch'
 				>
-					<h2 className='card-title text-secondary text-xs font-semibold leading-5 dark:text-white'>
+					<h2 className='card-title text-xs font-semibold leading-5 text-secondary dark:text-white'>
 						{post?.group?.name}
 					</h2>
-					<p className='card-author text-secondary text-xs leading-4 dark:text-white'>
+					<p className='card-author text-xs leading-4 text-secondary dark:text-white'>
 						{post?.group?.admins[0].username}
 					</p>
 				</Link>
@@ -72,7 +72,7 @@ export default async function PostCard({ post }: { post: Post }) {
 					/>
 				</button>
 			</form>
-			<h3 className='text-secondary pt-2 text-sm font-semibold leading-6 dark:text-white'>
+			<h3 className='pt-2 text-sm font-semibold leading-6 text-secondary dark:text-white'>
 				{post.title}
 			</h3>
 			<time className=' mt-2.5 text-xs leading-5 text-neutral-400'>

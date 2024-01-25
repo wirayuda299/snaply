@@ -169,7 +169,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 								<Input
 									placeholder='Title...'
 									{...field}
-									className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
+									className='min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base text-secondary focus-visible:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 								/>
 							</FormControl>
 							<FormMessage className='text-xs text-red-600' />
@@ -186,7 +186,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 								<FormLabel
 									aria-disabled={isChecking.postImage}
 									htmlFor='cover-input'
-									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 gap-2.5 rounded p-2.5 max-sm:w-full${
+									className={`flex w-28 gap-2.5 rounded bg-white-800 p-2.5 dark:bg-secondary-dark-2 max-sm:w-full${
 										isChecking.postImage ? 'animate-pulse' : ''
 									}`}
 								>
@@ -198,7 +198,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 										className='aspect-square w-5 dark:invert'
 										loading='lazy'
 									/>
-									<span className='text-secondary dark:text-white-800 my-auto cursor-pointer text-xs font-semibold leading-[160%]'>
+									<span className='my-auto cursor-pointer text-xs font-semibold leading-[160%] text-secondary dark:text-white-800'>
 										{isChecking.postImage ? 'Checking...' : 'Set Cover'}
 									</span>
 								</FormLabel>
@@ -229,11 +229,11 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 										value={group?.name ?? 'Select Group'}
 									>
 										<FormControl>
-											<SelectTrigger className='bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex items-center gap-2 rounded border-none'>
+											<SelectTrigger className='flex items-center gap-2 rounded border-none bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-white-800'>
 												{group?.name ?? 'Select group'}
 											</SelectTrigger>
 										</FormControl>
-										<SelectContent className='dark:bg-secondary-dark-2 max-h-[500px] overflow-y-auto bg-white'>
+										<SelectContent className='max-h-[500px] overflow-y-auto bg-white dark:bg-secondary-dark-2'>
 											{/* @ts-ignore */}
 											<GroupSelectContent groups={groups} form={form} />
 										</SelectContent>
@@ -253,7 +253,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 										htmlFor='audio'
 										className='md:body-semibold bodyMd-semibold text-darkSecondary-900 dark:text-white-800'
 									>
-										<div className='bg-white-700 dark:bg-secondary-dark-2 flex w-36 items-center gap-3 rounded px-3 py-2.5'>
+										<div className='flex w-36 items-center gap-3 rounded bg-white-700 px-3 py-2.5 dark:bg-secondary-dark-2'>
 											<FileAudio2 size={20} />
 											<p>Add audio</p>
 										</div>
@@ -288,11 +288,11 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 									defaultValue={field.value}
 								>
 									<FormControl>
-										<SelectTrigger className='bg-white-800 text-secondary-dark-2 dark:bg-secondary-dark-2 dark:text-white-800 flex items-center gap-2 rounded border-none text-base'>
+										<SelectTrigger className='flex items-center gap-2 rounded border-none bg-white-800 text-base text-secondary-dark-2 dark:bg-secondary-dark-2 dark:text-white-800'>
 											<SelectValue placeholder='Create - Post' />
 										</SelectTrigger>
 									</FormControl>
-									<SelectContent className='dark:bg-secondary-dark-2 bg-white '>
+									<SelectContent className='bg-white dark:bg-secondary-dark-2 '>
 										{createPostData.map((data) => (
 											<SelectItem value={data.value} key={data.title}>
 												<div className='flex flex-row items-center justify-between gap-1 p-1 md:gap-2.5'>
@@ -356,7 +356,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 											<Input
 												{...field}
 												placeholder='Your address'
-												className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+												className='min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-secondary-dark-2'
 											/>
 										</>
 									</FormControl>
@@ -377,7 +377,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 											<Input
 												{...field}
 												placeholder='Company name'
-												className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+												className='min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-secondary-dark-2'
 											/>
 										</>
 									</FormControl>
@@ -399,7 +399,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 												{...field}
 												type='date'
 												placeholder='Date'
-												className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+												className='min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-secondary-dark-2'
 											/>
 										</>
 									</FormControl>
@@ -421,7 +421,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 								<Input
 									{...field}
 									placeholder='category...'
-									className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
+									className='min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base text-secondary focus-visible:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 								/>
 							</FormControl>
 							<FormMessage className='text-xs text-red-600' />

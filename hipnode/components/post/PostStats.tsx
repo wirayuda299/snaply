@@ -23,7 +23,7 @@ const PostStats = ({ stats, postAuthorName, postId }: PostStatsProps) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	return (
-		<aside className='dark:bg-secondary-dark-2 w-full rounded-xl bg-white p-5'>
+		<aside className='w-full rounded-xl bg-white p-5 dark:bg-secondary-dark-2'>
 			<ul className='space-y-5'>
 				{stats.map((stat) => (
 					<li className='flex items-center gap-5' key={stat.label}>

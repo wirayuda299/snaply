@@ -19,7 +19,7 @@ export default function InterviewsPostCard({
 	name,
 }: InterviewPostCardProps) {
 	return (
-		<div className='dark:bg-secondary-dark-2 flex w-full flex-col gap-2.5 rounded-2xl bg-white p-5 '>
+		<div className='flex w-full flex-col gap-2.5 rounded-2xl bg-white p-5 dark:bg-secondary-dark-2 '>
 			<div className='flex w-full items-start justify-between gap-[30px]'>
 				<div className='flex w-full flex-col gap-5'>
 					<header className='flex items-center gap-4'>
@@ -31,7 +31,7 @@ export default function InterviewsPostCard({
 							height={44}
 						/>
 						<div className='flex flex-col'>
-							<h3 className='text-darkSecondary-900 dark:text-white-800 text-sm font-semibold leading-normal md:text-base'>
+							<h3 className='text-darkSecondary-900 text-sm font-semibold leading-normal dark:text-white-800 md:text-base'>
 								{name}
 							</h3>
 							<p className='text-xs font-normal leading-snug text-neutral-400 md:text-sm'>
@@ -46,7 +46,7 @@ export default function InterviewsPostCard({
 						className='block w-full rounded-lg object-contain lg:hidden'
 						src={'/assets/images/illustration.png'}
 					/>
-					<p className='text-darkSecondary-900 dark:text-white-800 text-base font-semibold leading-relaxed md:text-lg'>
+					<p className='text-darkSecondary-900 text-base font-semibold leading-relaxed dark:text-white-800 md:text-lg'>
 						{captions}
 					</p>
 					<div className='flex w-full flex-wrap items-center justify-between gap-5'>

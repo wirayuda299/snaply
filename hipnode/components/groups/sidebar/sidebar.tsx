@@ -10,11 +10,11 @@ export default function Sidebar({ groups }: { groups: Group[] }) {
 	const { handleSelectedGroup, selectedGroup } = useSelectedGroup(null);
 
 	return (
-		<aside className=' dark:bg-secondary-dark-2 top-0 hidden h-full min-w-[250px] items-start justify-start gap-2.5 overflow-y-auto rounded-2xl bg-white p-3 max-md:w-full lg:sticky lg:flex lg:h-screen'>
+		<aside className=' top-0 hidden h-full min-w-[250px] items-start justify-start gap-2.5 overflow-y-auto rounded-2xl bg-white p-3 dark:bg-secondary-dark-2 max-md:w-full lg:sticky lg:flex lg:h-screen'>
 			<div className='flex w-full flex-col items-start justify-start gap-5'>
 				{selectedGroup && (
 					<button
-						className='bg-white-800 dark:bg-secondary-dark-2 flex size-9 items-center justify-center rounded-full'
+						className='flex size-9 items-center justify-center rounded-full bg-white-800 dark:bg-secondary-dark-2'
 						onClick={handleSelectedGroup}
 					>
 						<Image
@@ -44,11 +44,11 @@ export default function Sidebar({ groups }: { groups: Group[] }) {
 									<Link href={`/groups/${group._id}`}>
 										<h3
 											title={group.name}
-											className='text-secondary line-clamp-1 text-base font-semibold dark:text-white'
+											className='line-clamp-1 text-base font-semibold text-secondary dark:text-white'
 										>
 											{group.name}
 										</h3>
-										<p className='text-secondary dark:text-secondary-light text-[11px] font-normal'>
+										<p className='text-[11px] font-normal text-secondary dark:text-secondary-light'>
 											Created by{' '}
 											<span className='capitalize'>
 												{group.admins[0].username}

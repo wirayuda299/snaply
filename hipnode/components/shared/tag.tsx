@@ -9,7 +9,7 @@ export default function Tag({ tags }: { tags: Tags[] }) {
 			{tags?.map((tag) => (
 				<button
 					key={tag._id}
-					className='bg-white-700 text-secondary dark:bg-secondary-dark dark:text-white-700 rounded-full px-2 text-xs md:px-4'
+					className='rounded-full bg-white-700 px-2 text-xs text-secondary dark:bg-secondary-dark dark:text-white-700 md:px-4'
 				>
 					{tag.name}
 				</button>

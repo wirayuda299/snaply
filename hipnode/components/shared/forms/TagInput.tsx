@@ -36,7 +36,7 @@ export default function TagInput<T extends FieldValues>({
 						<>
 							<Input
 								placeholder='Add a tag...'
-								className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+								className='min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-secondary-dark-2'
 								onKeyDown={(e) => handleEnter(e, 'tags', 'tags' as Path<T>)}
 							/>
 							{field.value.length > 0 && (
@@ -44,7 +44,7 @@ export default function TagInput<T extends FieldValues>({
 									{field?.value.map((tag: any) => (
 										<div
 											key={tag}
-											className='bg-white-700 text-secondary-light dark:bg-secondary-dark-2 mt-2.5 cursor-pointer rounded-[4px] px-[10px] py-[6px]'
+											className='mt-2.5 cursor-pointer rounded-[4px] bg-white-700 px-[10px] py-[6px] text-secondary-light dark:bg-secondary-dark-2'
 											onClick={() => handleTagRemove(tag, field)}
 										>
 											{tag}

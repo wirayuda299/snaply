@@ -36,7 +36,7 @@ export default function ContentCard({
           )}
         >
           <Image
-            className="h-5 w-5 object-contain"
+            className="size-5 object-contain"
             src={icon}
             width={50}
             height={50}

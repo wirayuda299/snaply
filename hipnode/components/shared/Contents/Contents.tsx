@@ -38,7 +38,7 @@ export default function HeroContents({
         <h2 className="text-lg font-semibold text-secondary dark:text-white-800 md:text-3xl md:font-bold">
           {title}
         </h2>
-        <div className="flex h-full w-full flex-col items-start gap-5 pt-10">
+        <div className="flex size-full flex-col items-start gap-5 pt-10">
           {contents.map((content) => (
             <ContentCard
               key={content.text}

@@ -11,7 +11,7 @@ export default function InterviewDetail() {
 `;
 	return (
 		<div className='mx-auto mt-28 size-full min-h-screen max-w-[785px] p-5'>
-			<section className='dark:bg-secondary-dark-2 flex w-full flex-col justify-center rounded-lg bg-white'>
+			<section className='flex w-full flex-col justify-center rounded-lg bg-white dark:bg-secondary-dark-2'>
 				<Image
 					className='mx-auto object-cover object-center'
 					src={'/banner.png'}
@@ -22,7 +22,7 @@ export default function InterviewDetail() {
 				<div className='p-5'>
 					<div className='flex items-center gap-5'>
 						<h1 className='text-darkSecondary-600 text-lg font-normal'>H1</h1>
-						<h2 className='text-darkSecondary-900 dark:text-white-800 py-5 text-base font-semibold md:text-[26px]'>
+						<h2 className='text-darkSecondary-900 py-5 text-base font-semibold dark:text-white-800 md:text-[26px]'>
 							Leading with Empathy: An Interview with HR and People Management
 							Experts
 						</h2>

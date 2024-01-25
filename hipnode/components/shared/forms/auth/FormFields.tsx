@@ -67,7 +67,7 @@ export default function AuthFormFields({
 											placeholder='Your username...'
 											name='username'
 											id='username'
-											className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 md:min-h-[60px]'
+											className='min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base text-secondary ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 										/>
 									</FormControl>
 									<FormDescription />
@@ -90,7 +90,7 @@ export default function AuthFormFields({
 												placeholder='Your email...'
 												name='email'
 												id='email'
-												className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 md:min-h-[60px]'
+												className='min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base text-secondary ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 											/>
 										</FormControl>
 										<FormDescription />
@@ -113,7 +113,7 @@ export default function AuthFormFields({
 											placeholder='Your password...'
 											name='password'
 											id='password'
-											className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 md:min-h-[60px]'
+											className='min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base text-secondary ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 										/>
 									</FormControl>
 									<FormDescription />
@@ -123,7 +123,7 @@ export default function AuthFormFields({
 						/>
 
 						<Link
-							className='text-secondary dark:text-secondary-light block py-3 text-sm'
+							className='block py-3 text-sm text-secondary dark:text-secondary-light'
 							href={type === 'signin' ? '/sign-up' : 'sign-in'}
 						>
 							{type === 'signin'

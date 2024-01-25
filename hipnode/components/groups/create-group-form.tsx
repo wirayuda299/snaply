@@ -93,7 +93,7 @@ export default function CreateGroupForm() {
 							<FormLabel
 								aria-disabled={isChecking.cover}
 								htmlFor='cover-input'
-								className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28  cursor-pointer gap-2.5 rounded px-2.5  py-2 max-sm:w-full ${
+								className={`flex w-28 cursor-pointer gap-2.5  rounded bg-white-800 px-2.5 py-2  dark:bg-secondary-dark-2 max-sm:w-full ${
 									isChecking.cover ? 'animate-pulse cursor-not-allowed' : ''
 								}`}
 							>
@@ -105,7 +105,7 @@ export default function CreateGroupForm() {
 									className='aspect-square w-5 dark:invert'
 									loading='lazy'
 								/>
-								<span className='text-secondary dark:text-white-800 my-auto cursor-pointer text-xs font-semibold leading-[160%]'>
+								<span className='my-auto cursor-pointer text-xs font-semibold leading-[160%] text-secondary dark:text-white-800'>
 									{isChecking.cover ? 'Checking...' : 'Set Cover'}
 								</span>
 							</FormLabel>
@@ -134,7 +134,7 @@ export default function CreateGroupForm() {
 						/>
 					</div>
 				) : (
-					<div className='bg-white-700 dark:bg-secondary-dark-2 flex min-h-[200px] w-full items-center justify-center rounded-md '>
+					<div className='flex min-h-[200px] w-full items-center justify-center rounded-md bg-white-700 dark:bg-secondary-dark-2 '>
 						<Image
 							width={50}
 							height={50}
@@ -176,7 +176,7 @@ export default function CreateGroupForm() {
 								<FormLabel
 									aria-disabled={isChecking.profileImage}
 									htmlFor='profile'
-									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 cursor-pointer gap-2.5 rounded px-2.5 py-2 max-sm:w-full ${
+									className={`flex w-28 cursor-pointer gap-2.5 rounded bg-white-800 px-2.5 py-2 dark:bg-secondary-dark-2 max-sm:w-full ${
 										isChecking.profileImage
 											? 'animate-pulse cursor-not-allowed'
 											: ''
@@ -190,7 +190,7 @@ export default function CreateGroupForm() {
 										className='aspect-square size-5 object-contain dark:invert'
 										loading='lazy'
 									/>
-									<span className='text-secondary dark:text-white-800 my-auto cursor-pointer text-xs font-semibold leading-[160%]'>
+									<span className='my-auto cursor-pointer text-xs font-semibold leading-[160%] text-secondary dark:text-white-800'>
 										{isChecking.profileImage ? 'Checking...' : 'Set Profile'}
 									</span>
 								</FormLabel>
@@ -222,7 +222,7 @@ export default function CreateGroupForm() {
 								<Input
 									{...field}
 									placeholder='Group name'
-									className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+									className='min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-secondary-dark-2'
 								/>
 							</FormControl>
 							<FormMessage className='text-xs text-red-600' />
@@ -241,7 +241,7 @@ export default function CreateGroupForm() {
 								<Textarea
 									{...field}
 									placeholder='Group description'
-									className='dark:bg-secondary-dark-2 min-h-[100px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+									className='min-h-[100px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-secondary-dark-2'
 								/>
 							</FormControl>
 							<FormMessage className='text-xs text-red-600' />
@@ -264,7 +264,7 @@ export default function CreateGroupForm() {
 									<Input
 										{...field}
 										placeholder='category...'
-										className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
+										className='min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base text-secondary focus-visible:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[60px]'
 									/>
 								</>
 							</FormControl>

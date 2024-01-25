@@ -18,7 +18,7 @@ export default function RelatedPostItem({ post }: { post: Post }) {
 	};
 	return (
 		<Link onClick={incremenetView} className='block' href={`/post/${post._id}`}>
-			<h3 className='text-secondary-light text-base font-medium'>
+			<h3 className='text-base font-medium text-secondary-light'>
 				{post.title}
 			</h3>
 			<div className='flex flex-wrap gap-3'>

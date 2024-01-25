@@ -80,7 +80,7 @@ export default function SharePost({
 					</p>
 				</div>
 			</DialogTrigger>
-			<DialogContent className='dark:bg-primary-dark flex flex-col gap-[30px] rounded-3xl bg-white p-5 max-sm:max-w-[600px]'>
+			<DialogContent className='flex flex-col gap-[30px] rounded-3xl bg-white p-5 dark:bg-primary-dark max-sm:max-w-[600px]'>
 				<DialogHeader>
 					<div className='flex items-center justify-between'>
 						<h3 className='text-lg font-semibold'>Share With</h3>
@@ -106,7 +106,7 @@ export default function SharePost({
 								key={option.label}
 								className='group'
 							>
-								<div className='ease bg-secondary-red-10 dark:bg-darkPrimary-4 dark:group-hover:bg-secondary-red-10 flex size-12 items-center justify-center rounded-full grayscale transition-all duration-300 group-hover:grayscale-0 md:size-[68px] dark:grayscale-0'>
+								<div className='ease bg-secondary-red-10 dark:bg-darkPrimary-4 dark:group-hover:bg-secondary-red-10 flex size-12 items-center justify-center rounded-full grayscale transition-all duration-300 group-hover:grayscale-0 dark:grayscale-0 md:size-[68px]'>
 									<Image
 										className='dark:grayscale dark:group-hover:grayscale-0'
 										src={option.icon}
@@ -121,7 +121,7 @@ export default function SharePost({
 							</a>
 						) : (
 							<button onClick={handleShare} key={option.label}>
-								<div className='ease bg-secondary-red-10 dark:bg-darkPrimary-4 dark:group-hover:bg-secondary-red-10 flex size-12 items-center justify-center rounded-full grayscale transition-all duration-300 group-hover:grayscale-0 md:size-[68px] dark:grayscale-0'>
+								<div className='ease bg-secondary-red-10 dark:bg-darkPrimary-4 dark:group-hover:bg-secondary-red-10 flex size-12 items-center justify-center rounded-full grayscale transition-all duration-300 group-hover:grayscale-0 dark:grayscale-0 md:size-[68px]'>
 									<Image
 										className='dark:grayscale dark:group-hover:grayscale-0'
 										src={option.icon}
@@ -137,12 +137,12 @@ export default function SharePost({
 						)
 					)}
 				</div>
-				<p className='text-secondary dark:text-secondary-light text-center text-xs font-semibold'>
+				<p className='text-center text-xs font-semibold text-secondary dark:text-secondary-light'>
 					or share with link
 				</p>
-				<div className='bg-white-700 dark:bg-secondary-dark-2 w-full rounded-2xl p-5'>
+				<div className='w-full rounded-2xl bg-white-700 p-5 dark:bg-secondary-dark-2'>
 					<div className='flex items-center justify-between gap-2'>
-						<p className='text-secondary dark:text-secondary-light truncate text-sm font-semibold'>
+						<p className='truncate text-sm font-semibold text-secondary dark:text-secondary-light'>
 							{process.env.NEXT_PUBLIC_SITE_URL}/post/{postId}
 						</p>
 						<button

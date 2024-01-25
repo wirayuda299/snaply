@@ -47,7 +47,7 @@ export default function Filter({
 				{items.map((item, i) => (
 					<li
 						onClick={() => (item.label ? handleClick(item.label) : undefined)}
-						className='flex items-center justify-start gap-2 cursor-pointer'
+						className='flex cursor-pointer items-center justify-start gap-2'
 						key={item.label}
 					>
 						<Image
@@ -67,7 +67,7 @@ export default function Filter({
 								{item.title}
 							</h3>
 							{item.subText && (
-								<p className='text-secondary-light hidden text-[10px] md:block'>
+								<p className='hidden text-[10px] text-secondary-light md:block'>
 									{item.subText}
 								</p>
 							)}

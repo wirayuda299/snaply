@@ -16,7 +16,7 @@ export default function Mobile({ groups }: { groups: Group[] }) {
 	};
 
 	return (
-		<div className='dark:bg-secondary-dark-2 relative flex w-full flex-col !rounded-2xl bg-white p-2 lg:hidden'>
+		<div className='relative flex w-full flex-col !rounded-2xl bg-white p-2 dark:bg-secondary-dark-2 lg:hidden'>
 			{selectedGroup ? (
 				<div className='bg-secondary-yellow-10 flex items-center justify-between rounded-2xl p-2'>
 					<h2 className='text-lg font-semibold'>{selectedGroup.name}</h2>
@@ -49,7 +49,7 @@ export default function Mobile({ groups }: { groups: Group[] }) {
 				</div>
 			)}
 			<div
-				className={`ease dark:bg-darkPrimary-3 bg-white-800 absolute left-0 z-10 w-full flex-col overflow-hidden py-3 transition-all duration-500 dark:px-3 [&>*:not(:first-child)]:mt-5  ${
+				className={`ease dark:bg-darkPrimary-3 absolute left-0 z-10 w-full flex-col overflow-hidden bg-white-800 py-3 transition-all duration-500 dark:px-3 [&>*:not(:first-child)]:mt-5  ${
 					isExpanded ? 'top-28 flex' : '-top-full hidden'
 				}`}
 			>
