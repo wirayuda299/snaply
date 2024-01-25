@@ -6,9 +6,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "format": "prettier . --write"
+    "lint": "next lint"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.1",
