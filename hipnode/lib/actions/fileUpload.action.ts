@@ -7,6 +7,7 @@ export async function uploadFile(file: File) {
 
     const res = await fetch(`${serverEndpoint}/upload`, {
       method: "POST",
+
       body: data,
     });
 

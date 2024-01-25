@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import Multer from 'multer';
+import { Router } from "express";
+import Multer from "multer";
 
-import FileUploadService from '../services/fileUpload.service';
+import FileUploadService from "../services/fileUpload.service";
 
 const router = Router();
 
@@ -9,8 +9,8 @@ const storage = Multer.memoryStorage();
 const upload = Multer({ storage });
 
 const uploader = new FileUploadService();
-router.post('/', upload.single('file'), (req, res) =>
-	uploader.upload(req, res)
+router.post("/upload", upload.single("file"), (req, res) =>
+  uploader.upload(req, res)
 );
 
 export default router;
