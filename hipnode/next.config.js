@@ -24,11 +24,6 @@ const nextConfig = {
     EDITOR_API_KEY: process.env.EDITOR_API_KEY,
     SERVER_URL: process.env.SERVER_URL,
   },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
 };
 
 module.exports = nextConfig;
