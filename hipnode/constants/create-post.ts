@@ -20,5 +20,3 @@ export const createPostData = [
     icon: "/assets/general/icons/interview.svg",
   },
 ];
-
-

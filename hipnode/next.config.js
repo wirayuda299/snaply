@@ -3,18 +3,18 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: 'res.cloudinary.com',
-        pathname: '/**/*',
-        protocol: 'https',
-        port: ''
+        hostname: "res.cloudinary.com",
+        pathname: "/**/*",
+        protocol: "https",
+        port: "",
       },
       {
-        hostname: 'img.clerk.com',
-        pathname: '/*',
-        protocol: 'https',
-        port: ''
+        hostname: "img.clerk.com",
+        pathname: "/*",
+        protocol: "https",
+        port: "",
       },
-    ]
+    ],
   },
   env: {
     AWS_S3_REGION: process.env.AWS_S3_REGION,
@@ -29,6 +29,6 @@ const nextConfig = {
       fullUrl: true,
     },
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

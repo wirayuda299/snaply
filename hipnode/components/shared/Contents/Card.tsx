@@ -25,14 +25,14 @@ export default function ContentCard({
         `group flex h-full w-full max-w-[600px] items-center justify-start gap-6 rounded-lg bg-white p-5 dark:bg-secondary-dark-2 ${
           position === "right" ? "hover:!bg-secondary-red-60" : ""
         }`,
-        cardBg
+        cardBg,
       )}
     >
       {icon && (
         <div
           className={cn(
             `flex aspect-square w-[10px] h-[10px] md:h-[60px] md:w-[60px] items-center justify-center rounded-lg dark:bg-secondary-dark-2`,
-            background
+            background,
           )}
         >
           <Image

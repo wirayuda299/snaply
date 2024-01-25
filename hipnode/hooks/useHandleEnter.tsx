@@ -8,12 +8,12 @@ import type {
 import type { KeyboardEvent } from "react";
 
 export default function useHandleEnter<T extends FieldValues>(
-  form: UseFormReturn<T>
+  form: UseFormReturn<T>,
 ) {
   const handleEnter = (
     e: KeyboardEvent<HTMLInputElement>,
     field: string,
-    name: Path<T>
+    name: Path<T>,
   ) => {
     if (e.key === "Enter" && field === name) {
       e.preventDefault();

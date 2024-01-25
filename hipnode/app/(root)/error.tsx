@@ -27,10 +27,10 @@ export default function Error() {
             </svg>
           </div>
         </div>
-        <h1 className="dark:text-secondary-light mt-5 text-[36px] font-bold text-slate-800 lg:text-[50px]">
+        <h1 className="mt-5 text-[36px] font-bold text-slate-800 dark:text-secondary-light lg:text-[50px]">
           500 - Server error
         </h1>
-        <p className="dark:text-secondary-light mt-5 text-slate-600 lg:text-lg">
+        <p className="mt-5 text-slate-600 dark:text-secondary-light lg:text-lg">
           Oops something went wrong. Try to refresh this page or <br /> feel
           free to contact us if the problem presists.
         </p>

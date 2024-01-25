@@ -11,7 +11,7 @@ export default async function Navbar() {
   if (!user) return null;
 
   return (
-    <nav className="dark:bg-primary-dark relative flex items-center justify-end bg-white p-3 md:justify-between lg:sticky lg:top-0 lg:z-50  lg:p-5">
+    <nav className="relative flex items-center justify-end bg-white p-3 dark:bg-primary-dark md:justify-between lg:sticky lg:top-0 lg:z-50  lg:p-5">
       <Link
         href={"/"}
         className="flex flex-1 items-center gap-2 text-2xl font-semibold md:flex-none"
@@ -24,13 +24,13 @@ export default async function Navbar() {
           loading="lazy"
           alt="Logo"
         />
-        <h1 className="dark:text-white-700 hidden sm:block">Snaply</h1>
+        <h1 className="hidden dark:text-white-700 sm:block">Snaply</h1>
       </Link>
       <NavLink />
-      <form className="md:bg-white-800 dark:md:bg-secondary-dark flex items-center gap-3 rounded-lg max-md:w-auto md:w-[200px] md:flex-row-reverse md:p-1 lg:w-[400px]">
+      <form className="flex items-center gap-3 rounded-lg max-md:w-auto md:w-[200px] md:flex-row-reverse md:bg-white-800 md:p-1 dark:md:bg-secondary-dark lg:w-[400px]">
         <label
           htmlFor="search"
-          className="bg-white-800 dark:bg-secondary-dark mr-2 rounded-md p-2 sm:mr-5 md:mr-0"
+          className="mr-2 rounded-md bg-white-800 p-2 dark:bg-secondary-dark sm:mr-5 md:mr-0"
         >
           <Image
             className="aspect-auto w-3 min-w-4 object-contain"
@@ -45,12 +45,12 @@ export default async function Navbar() {
           autoComplete="off"
           type="search"
           placeholder="Search...."
-          className="focus-visible:bg-white-700 hidden bg-transparent pl-2 focus-visible:absolute focus-visible:left-0 focus-visible:block focus-visible:outline-none max-md:focus-visible:w-full md:block md:w-full focus-visible:md:static md:focus-visible:bg-transparent "
+          className="hidden bg-transparent pl-2 focus-visible:absolute focus-visible:left-0 focus-visible:block focus-visible:bg-white-700 focus-visible:outline-none max-md:focus-visible:w-full md:block md:w-full focus-visible:md:static md:focus-visible:bg-transparent "
           id="search"
         />
       </form>
       <div className="flex items-center gap-2 sm:gap-5">
-        <button className="bg-white-800 dark:bg-secondary-dark rounded-md p-2">
+        <button className="rounded-md bg-white-800 p-2 dark:bg-secondary-dark">
           <Image
             className="aspect-auto w-3 min-w-4 object-contain grayscale invert-[20%] dark:grayscale-0 dark:invert-0"
             src="/assets/general/icons/chat.svg"
@@ -60,7 +60,7 @@ export default async function Navbar() {
             alt="bell icon"
           />
         </button>
-        <button className="bg-white-800 dark:bg-secondary-dark rounded-md p-2">
+        <button className="rounded-md bg-white-800 p-2 dark:bg-secondary-dark">
           <Image
             className="aspect-auto w-3 min-w-4 object-contain grayscale invert-[20%] dark:grayscale-0 dark:invert-0"
             src="/assets/general/icons/bell.svg"
@@ -81,7 +81,7 @@ export default async function Navbar() {
           />
           <Link
             href={`/profile/${user.id}`}
-            className="dark:text-white-700 hidden text-lg font-semibold capitalize md:block"
+            className="hidden text-lg font-semibold capitalize dark:text-white-700 md:block"
           >
             {user?.username ?? user?.firstName}
           </Link>

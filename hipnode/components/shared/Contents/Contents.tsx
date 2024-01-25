@@ -31,7 +31,7 @@ export default function HeroContents({
     <section
       className={cn(
         "flex min-h-screen h-full lg:sticky top-0 w-full flex-col items-center justify-center bg-white-800 dark:bg-primary-dark p-5 ",
-        bg
+        bg,
       )}
     >
       <div className="w-full max-w-[442px]">

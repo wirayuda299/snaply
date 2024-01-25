@@ -32,7 +32,7 @@ export default async function PostDetail({ params }: Props) {
   const postStats = getPostStats(
     post.likes.length,
     post.comments.length,
-    post.share
+    post.share,
   );
 
   async function handleComment(data: FormData) {
@@ -74,7 +74,7 @@ export default async function PostDetail({ params }: Props) {
               H1
             </span>
             <div>
-              <h2 className="text-secondary-light text-3xl font-bold md:text-4xl">
+              <h2 className="text-3xl font-bold text-secondary-light md:text-4xl">
                 {post.title}
               </h2>
               <div className="flex flex-wrap gap-3">
@@ -102,7 +102,7 @@ export default async function PostDetail({ params }: Props) {
         </section>
       </section>
       <div className="top-0 w-[380px] space-y-5 max-lg:w-full lg:sticky lg:h-screen">
-        <section className="dark:bg-secondary-dark-2  flex flex-col items-center rounded-xl bg-white p-5 ">
+        <section className="flex  flex-col items-center rounded-xl bg-white p-5 dark:bg-secondary-dark-2 ">
           <div className="w-full">
             <Image
               className="mx-auto rounded-full"
@@ -111,20 +111,20 @@ export default async function PostDetail({ params }: Props) {
               height={100}
               alt="user"
             />
-            <h2 className="text-secondary dark:text-secondary-light py-3 text-center text-3xl font-semibold">
+            <h2 className="py-3 text-center text-3xl font-semibold text-secondary dark:text-secondary-light">
               {post.author.username}
             </h2>
             <Button className="w-full grow">Follow</Button>
-            <p className="text-secondary-light pt-3 text-center text-xs">
+            <p className="pt-3 text-center text-xs text-secondary-light">
               Joined {getCreatedDate(post.author.createdAt)}
             </p>
           </div>
         </section>
-        <section className="dark:bg-secondary-dark-2 mt-3 rounded-xl bg-white p-5">
-          <h2 className="text-secondary text-lg font-semibold dark:text-white">
+        <section className="mt-3 rounded-xl bg-white p-5 dark:bg-secondary-dark-2">
+          <h2 className="text-lg font-semibold text-secondary dark:text-white">
             More from <span className="capitalize">{post.author.username}</span>
           </h2>
-          <div className="divide-secondary-light space-y-3 divide-y divide-solid">
+          <div className="space-y-3 divide-y divide-solid divide-secondary-light">
             {relatedPosts.map((post) => (
               <RelatedPostItem post={post} key={post._id} />
             ))}

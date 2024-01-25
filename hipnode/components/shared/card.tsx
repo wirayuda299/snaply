@@ -17,13 +17,13 @@ export default function Card({
   path,
 }: CardProps) {
   return (
-    <div className="bg-primary text-white-700 w-full rounded-md p-3">
+    <div className="w-full rounded-md bg-primary p-3 text-white-700">
       <header className="flex flex-col gap-5">
         <h2 className="text-lg font-semibold">{title}</h2>
         <p className="text-xs font-medium">{text}</p>
       </header>
       <div className="mt-3 flex justify-between gap-3">
-        <Button className="text-primary-dark hover:text-white-700 w-28 bg-white text-xs">
+        <Button className="w-28 bg-white text-xs text-primary-dark hover:text-white-700">
           {btnLeftText}
         </Button>
         <Link

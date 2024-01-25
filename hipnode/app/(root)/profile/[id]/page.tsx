@@ -30,7 +30,7 @@ export default async function Profile(props: ProfileProps) {
   return (
     <div className="flex w-full flex-col gap-5 md:p-5 lg:flex-row">
       <aside className="w-[200px] min-w-[200px] max-lg:min-w-full lg:h-screen">
-        <header className="from-primary to-primary/80 flex flex-col items-center justify-center rounded-lg bg-gradient-to-b">
+        <header className="flex flex-col items-center justify-center rounded-lg bg-gradient-to-b from-primary to-primary/80">
           <Image
             className="size-28 translate-y-10 rounded-full"
             src={user.profileImage ?? "/avatar.png"}
@@ -44,8 +44,8 @@ export default async function Profile(props: ProfileProps) {
           <p className="text-xs">Developer</p>
           <div className="flex items-center gap-3 pt-3">
             <Button className="grow">Follow</Button>
-            <Button className="bg-blue-10 dark:bg-secondary-dark-2 group hover:bg-transparent">
-              <MessageCircleMore className="group-hover:text-primary dark:text-white-700 bg-transparent text-black transition-colors duration-500 ease-in-out" />
+            <Button className="group bg-blue-10 hover:bg-transparent dark:bg-secondary-dark-2">
+              <MessageCircleMore className="bg-transparent text-black transition-colors duration-500 ease-in-out group-hover:text-primary dark:text-white-700" />
             </Button>
           </div>
           <div className="mt-3 flex flex-wrap justify-center gap-3 text-xs">
@@ -55,7 +55,7 @@ export default async function Profile(props: ProfileProps) {
             &#x2022;
             <span>{user.followers.length} Points</span>
           </div>
-          <p className="text-secondary dark:text-secondary-light mt-4 text-xs">
+          <p className="mt-4 text-xs text-secondary dark:text-secondary-light">
             Hey there... I&apos;m AR Jakir! I&apos;m here to learn from and
             support the other members of this community!
           </p>
@@ -66,7 +66,7 @@ export default async function Profile(props: ProfileProps) {
             </div>
           )}
 
-          <p className="text-secondary dark:text-secondary-light mt-10 text-base font-semibold">
+          <p className="mt-10 text-base font-semibold text-secondary dark:text-secondary-light">
             Joined {getCreatedDate(user.createdAt)}
           </p>
         </div>

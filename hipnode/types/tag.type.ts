@@ -1,5 +1,5 @@
 export type Tag = {
-	_id: string;
-	name: string;
-	postIds: string[];
+  _id: string;
+  name: string;
+  postIds: string[];
 };
