@@ -9,7 +9,7 @@ import { FormEvent, useState } from "react";
 
 import { authSchemaType, authSchema } from "@/lib/validations";
 import AuthFormFields from "./FormFields";
-import { createUser } from "@/lib/actions/user.action";
+import { createUser } from "@/lib/actions";
 
 export default function AuthForm({ type }: { type: "signin" | "signup" }) {
   const { getToken } = useAuth();
@@ -39,7 +39,7 @@ export default function AuthForm({ type }: { type: "signin" | "signup" }) {
 
   const handleAuthOperation = async (
     data: authSchemaType,
-    operation: "signin" | "signup",
+    operation: "signin" | "signup"
   ) => {
     try {
       setLoading(true);
@@ -113,7 +113,7 @@ export default function AuthForm({ type }: { type: "signin" | "signup" }) {
               completeSignUp.username,
               token!,
               user?.imageUrl!,
-              pwd,
+              pwd
             ),
           ]);
           toast.success("Email verification successful");
@@ -144,7 +144,7 @@ export default function AuthForm({ type }: { type: "signin" | "signup" }) {
     username: string,
     token: string,
     image: string,
-    password: string,
+    password: string
   ) => {
     try {
       await createUser(email, id, username, token, image, password);

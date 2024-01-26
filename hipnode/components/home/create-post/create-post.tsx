@@ -21,7 +21,7 @@ export default async function CreatePost() {
       className=" flex h-min w-full items-center gap-3 rounded-xl bg-white p-2 dark:bg-secondary-dark-2 md:p-3"
     >
       <Image
-        className="size-10 rounded-full bg-white-700 object-contain p-2 dark:bg-secondary-dark md:size-14"
+        className=" rounded-full bg-white-700 object-contain p-2 dark:bg-secondary-dark size-14"
         src={user?.imageUrl ?? ""}
         width={50}
         height={50}

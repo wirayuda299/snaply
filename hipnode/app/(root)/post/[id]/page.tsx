@@ -42,7 +42,7 @@ export default async function PostDetail({ params }: Props) {
         <section className="relative h-[400px] w-full">
           <Image
             src={post.image}
-            className="rounded-lg"
+            className="rounded-lg object-cover object-center"
             fill
             fetchPriority="high"
             alt={post.title}

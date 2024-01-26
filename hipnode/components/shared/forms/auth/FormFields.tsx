@@ -1,7 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { UseFormReturn } from "react-hook-form";
+"use client";
+
 import Link from "next/link";
 import type { Dispatch, SetStateAction, FormEvent } from "react";
+import Image from "next/image";
+import { UseFormReturn } from "react-hook-form";
 
 import {
   Form,
@@ -12,9 +14,15 @@ import {
   FormDescription,
   FormMessage,
 } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { authSchemaType } from "@/lib/validations";
 import { Input } from "@/components/ui/input";
-import VerificationForm from "./verification-form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
 
 type AuthFormFieldsType = {
   form: UseFormReturn<{
@@ -50,7 +58,7 @@ export default function AuthFormFields({
           <form
             className="w-full"
             onSubmit={form.handleSubmit(
-              type === "signup" ? handleSignUp : handleSignIn,
+              type === "signup" ? handleSignUp : handleSignIn
             )}
           >
             <FormField
@@ -141,12 +149,36 @@ export default function AuthFormFields({
         </Form>
       )}
       {pendingVerification && (
-        <VerificationForm
-          code={code}
-          loading={loading}
-          onPressVerify={onPressVerify}
-          setCode={setCode}
-        />
+        <Dialog open={pendingVerification}>
+          <DialogContent className="sm:max-w-[425px] dark:border-secondary-dark-2 flex justify-center flex-col items-center">
+            <DialogHeader className="w-full flex flex-col items-center">
+              <Image
+                className="aspect-auto object-contain"
+                src="/assets/general/icons/logo.svg"
+                width={50}
+                height={50}
+                priority
+                fetchPriority="high"
+                alt="Logo"
+              />
+              <DialogDescription>
+                Enter code sended to your email
+              </DialogDescription>
+              <form onSubmit={onPressVerify} className=" space-y-3 w-full">
+                <Input
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  placeholder="Code..."
+                  autoFocus
+                  className="mt-3 min-h-[48px] w-full rounded-lg border-none bg-white px-5 py-3 text-base text-secondary ring-offset-0 focus:border-none focus:outline-none focus-visible:ring-0 dark:bg-secondary-dark-2 dark:text-secondary-light md:min-h-[50px]"
+                />
+                <Button className="w-full" type="submit" disabled={loading}>
+                  {loading ? "Verifying..." : "Verify Email"}
+                </Button>
+              </form>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );

@@ -1,12 +1,13 @@
 import Image from "next/image";
 
 import Tag from "../tag";
-import { cn, getCreatedDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import LikeButton from "./like-button";
 import PostTitle from "./title";
 import Parser from "../parser";
 import { Meetup, Post } from "@/types";
 import { currentUser } from "@clerk/nextjs/server";
+import CardFooter from "./card-footer";
 
 type PostCardTypes =
   | { type: "post"; post: Post }
@@ -26,7 +27,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
         {/* main image */}
         <picture
           className={cn(
-            "relative aspect-square min-h-[120px] w-full h-24 sm:h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48",
+            "relative aspect-square min-h-[120px]  w-full h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48",
             type === "meetup" && "hidden md:block"
           )}
         >
@@ -77,45 +78,8 @@ export default async function PostCard({ post, type }: PostCardTypes) {
               )}
             </div>
           </div>
-
-          {/* author */}
-          <footer className="flex flex-wrap items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Image
-                className="rounded-full object-cover object-center p-2 dark:bg-secondary-dark"
-                src={post?.author?.profileImage ?? "/avatar.png"}
-                loading="lazy"
-                width={50}
-                height={50}
-                alt="user"
-              />
-              <div>
-                <h4 className="text-xs font-semibold text-secondary dark:text-white-700 sm:text-sm">
-                  {type === "post" ? post.author.username : post.companyName}
-                </h4>
-                {type === "post" && (
-                  <p className="truncate text-[10px] text-secondary dark:text-white-700 sm:text-xs">
-                    {getCreatedDate(post.createdAt)}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="hidden sm:block">
-              {type === "post" && (
-                <div className=" mt-auto flex flex-wrap gap-5">
-                  <p className="text-xs font-semibold text-secondary dark:text-white-700">
-                    {post.views} views
-                  </p>
-                  <p className="text-xs font-semibold text-secondary dark:text-white-700">
-                    {post.likes.length} Likes
-                  </p>
-                  <p className="text-xs font-semibold text-secondary dark:text-white-700">
-                    {post.comments.length} comments
-                  </p>
-                </div>
-              )}
-            </div>
-          </footer>
+          {/* @ts-ignore */}
+          <CardFooter post={post} type={type} />
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
+import http from "http";
 
 import Database from "../services/db.service";
 import userRoutes from "../routes/user.route";
@@ -20,6 +21,7 @@ export default class AppService {
   private corsAllowUrl = process.env.CLIENT_URL;
   private app;
   database = new Database(process.env.DATABASE_URL);
+
   private readonly port = process.env.PORT! || 3000;
 
   setCorsHeaders = (req: Request, res: Response, next: NextFunction) => {
@@ -42,9 +44,7 @@ export default class AppService {
     this.app.use(this.setCorsHeaders);
     this.app.use(compression());
     this.app.disable("x-powered-by");
-    this.app.get("/", (req, res) => {
-      res.json({ message: "Hello from server" });
-    });
+
     this.app.use("/api/podcasts", podcastRoutes);
     this.app.use("/api", fileUploadRoutes);
     this.app.use("/api/user", userRoutes);

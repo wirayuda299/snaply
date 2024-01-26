@@ -197,7 +197,9 @@ export default class PostService {
       const posts = await this.PostModel.find({
         author: authorId,
         group: null,
-      }).populate("tags");
+      })
+        .limit(4)
+        .populate("tags");
       res.setHeader("Cache-Control", "public, max-age=3600");
       res
         .status(200)

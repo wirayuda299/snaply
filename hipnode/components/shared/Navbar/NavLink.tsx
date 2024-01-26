@@ -23,11 +23,11 @@ export default function NavLink() {
             <Image
               className={cn(
                 "aspect-auto object-contain grayscale invert-[20%] dark:grayscale-0 dark:invert-0 ",
-                isActive(navLink.path) ? "grayscale-0 invert-0" : "",
+                isActive(navLink.path) ? "grayscale-0 invert-0" : ""
               )}
               src={navLink.icon}
-              width={20}
-              height={20}
+              width={25}
+              height={25}
               alt={navLink.label}
             />
           </Link>
