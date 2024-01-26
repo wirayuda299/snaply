@@ -1,5 +1,3 @@
-"use server";
-
 import { Group } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -141,7 +139,7 @@ export async function getAllGroupsWhereUserJoin(admins: string[]) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     const groups = await res.json();
     if (groups.error) {

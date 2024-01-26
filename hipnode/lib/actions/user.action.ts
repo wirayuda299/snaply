@@ -1,5 +1,3 @@
-"use server";
-
 import { User } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 
@@ -11,7 +9,7 @@ export async function createUser(
   username: string,
   token: string,
   image: string,
-  password: string,
+  password: string
 ) {
   try {
     const serverEndpoint = process.env.SERVER_URL;

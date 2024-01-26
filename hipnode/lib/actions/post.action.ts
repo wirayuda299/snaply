@@ -1,5 +1,3 @@
-"use server";
-
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 
@@ -56,7 +54,7 @@ export async function createPost(props: createPostType) {
 export async function getAllPosts(
   sort: string = "popular",
   page: number = 1,
-  pageSize: number = 10,
+  pageSize: number = 10
 ) {
   try {
     const { getToken } = auth();
@@ -76,7 +74,7 @@ export async function getAllPosts(
         next: {
           tags: ["all-posts"],
         },
-      },
+      }
     );
     const res = await posts.json();
     if (res.error) throw new Error(res.message);
@@ -189,7 +187,7 @@ export async function getRelatedPosts(id: string, authorId: string) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     return (await res.json()) as Post[];
   } catch (error) {

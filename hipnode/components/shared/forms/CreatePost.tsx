@@ -27,16 +27,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CreatePostFormType, PostSchema } from "@/lib/validations";
-import { createPost } from "@/lib/actions/post.action";
-import { createPostData } from "@/constants/create-post";
-import { createMeetup } from "@/lib/actions/meetup.action";
 import { Group } from "@/types";
-import { uploadFile } from "@/lib/actions/fileUpload.action";
 import useUploadFile from "@/hooks/useUploadFile";
 import TagInput from "./TagInput";
 import TextEditor from "./TextEditor";
 import GroupSelectContent from "./GroupSelectContent";
-import { createPodcast } from "@/lib/actions/podcast.action";
+import { uploadFile } from "@/lib/actions/fileUpload.action";
+import { createMeetup, createPodcast, createPost } from "@/lib/actions";
+import { createPostData } from "@/constants";
 
 const CreatePost = ({ groups }: { groups: Group[] }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -59,19 +57,10 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
       group: null,
     },
   });
-  const router = useRouter();
 
+  const router = useRouter();
   const { handleChange, isChecking, preview, files } = useUploadFile(form);
-  // console.log("Address", form.getFieldState("address"));
-  // console.log("Title", form.getFieldState("title"));
-  // console.log("tags", form.getFieldState("tags"));
-  // console.log("category", form.getFieldState("category"));
-  // console.log("company", form.getFieldState("companyName"));
-  // console.log("date", form.getFieldState("date"));
-  // console.log("group", form.getFieldState("group"));
-  // console.log("post", form.getFieldState("post"));
-  // console.log("image", form.getFieldState("postImage"));
-  // console.log("Audio", form.getFieldState("audio"));
+
   const onSubmit = async (values: CreatePostFormType) => {
     const {
       createType,
@@ -146,8 +135,6 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
             toast.success("Podcast has been published");
             router.push("/podcasts");
           }
-
-          // implement your create podcasts here
           break;
         default:
           throw new Error("Invalid action");

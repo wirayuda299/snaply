@@ -23,9 +23,9 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { createGroupSchema, createGroupSchemaTypes } from "@/lib/validations";
-import { createGroup } from "@/lib/actions/group.action";
 import TagInput from "../shared/forms/TagInput";
 import { uploadFile } from "@/lib/actions/fileUpload.action";
+import { createGroup } from "@/lib/actions";
 
 export default function CreateGroupForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -147,7 +147,7 @@ export default function CreateGroupForm() {
           <div
             className={cn(
               "flex w-min sm:h-14 sm:w-14 object-contain items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2",
-              isChecking.profileImage && "animate-pulse cursor-not-allowed",
+              isChecking.profileImage && "animate-pulse cursor-not-allowed"
             )}
           >
             <Image
@@ -163,7 +163,7 @@ export default function CreateGroupForm() {
                 "aspect-auto size-9 object-contain object-center ",
                 preview &&
                   preview.profileImage &&
-                  "h-full w-full rounded-full aspect-auto object-cover",
+                  "h-full w-full rounded-full aspect-auto object-cover"
               )}
               loading="lazy"
             />

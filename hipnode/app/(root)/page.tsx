@@ -15,18 +15,18 @@ import result from "postcss/lib/result";
 const PopularTags = dynamic(() => import("@/components/shared/popular-tags"));
 const Loader = dynamic(() => import("@/components/shared/Loader"));
 
-const uniqueFlatTags = (tagArrays: Tag[][]): Tag[] => {
-  const uniqueNames: Set<string> = new Set();
-  return tagArrays
-    .flat() // Flatten the array
-    .filter((tag) => {
-      if (!uniqueNames.has(tag.name.toLowerCase())) {
-        uniqueNames.add(tag.name);
-        return true;
-      }
-      return false;
-    });
+const uniqueFlatTags = (tagArrays: Tag[][]) => {
+  const uniqueNames: Tag[] = [];
+
+  tagArrays.flat().forEach((tag) => {
+    for (let i = 0; i < uniqueNames.length; i++) {
+      const element = uniqueNames[i];
+      console.log(element);
+    }
+  });
+  return uniqueNames;
 };
+
 export default async function Home({
   searchParams,
 }: {
@@ -34,9 +34,7 @@ export default async function Home({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const { posts } = await getAllPosts(searchParams.sort as string, 1, 10);
-  const tags = posts.map((post) => post.tags);
-  const result = uniqueFlatTags(tags);
-  console.log(result);
+  const tags = posts.map((post) => post.tags).flat();
 
   return (
     <section className="flex flex-col gap-3 py-5 lg:flex-row">
@@ -49,7 +47,7 @@ export default async function Home({
         />
         <Suspense fallback="Loading....">
           {result?.length >= 1 && (
-            <PopularTags items={result} styles="hidden md:block" />
+            <PopularTags items={tags} styles="hidden md:block" />
           )}
         </Suspense>
       </div>
@@ -63,7 +61,7 @@ export default async function Home({
         <Suspense fallback="Loading...">
           {tags.length >= 1 && (
             <PopularTags
-              items={result}
+              items={tags}
               styles="block md:hidden"
               innerStyles="justify-start items-start"
             />

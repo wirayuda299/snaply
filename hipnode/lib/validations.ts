@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const PostSchema = z.object({
   title: z.string(),
-  post: z.string(),
-  postImage: z.string(),
+  post: z.string().min(5, "post caption minimum characters is 5"),
+  postImage: z.string().min(1, "image is required"),
   group: z
     .object({
       id: z.string(),
@@ -19,7 +19,7 @@ export const PostSchema = z.object({
   date: z.string(),
   companyName: z.string(),
   audio: z.any().optional(),
-  category: z.string(),
+  category: z.string().min(2, "category is required"),
 });
 
 export const createCommentSchema = z.object({

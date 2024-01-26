@@ -1,54 +1,54 @@
-import { Service } from 'typedi';
-import { Response, Request } from 'express';
+import { Service } from "typedi";
+import { Response, Request } from "express";
 
-import PodcastServices from '../services/podcast.service';
+import PodcastServices from "../services/podcast.service";
 
 @Service()
 export default class InterviewController {
-	constructor(private podcastService: PodcastServices) {}
+  constructor(private podcastService: PodcastServices) {}
 
-	createPodcast(req: Request, res: Response) {
-		const {
-			audio,
-			audioAssetId,
-			body,
-			tags,
-			postImage,
-			title,
-			author,
-			postImageAssetId,
-			category,
-		} = req.body;
+  createPodcast(req: Request, res: Response) {
+    const {
+      audio,
+      audioAssetId,
+      body,
+      tags,
+      postImage,
+      title,
+      author,
+      postImageAssetId,
+      category,
+    } = req.body;
 
-		if (
-			!audio ||
-			!audioAssetId ||
-			!body ||
-			tags.length < 1 ||
-			!postImage ||
-			!title ||
-			!author ||
-			!postImageAssetId ||
-			!category ||
-			!category
-		) {
-			return res.status(400).json({
-				message: 'Please provide all value for all required fields',
-				error: true,
-			});
-		}
+    if (
+      !audio ||
+      !audioAssetId ||
+      !body ||
+      tags.length < 1 ||
+      !postImage ||
+      !title ||
+      !author ||
+      !postImageAssetId ||
+      !category ||
+      !category
+    ) {
+      return res.status(400).json({
+        message: "Please provide all value for all required fields",
+        error: true,
+      });
+    }
 
-		return this.podcastService.create(req, res);
-	}
+    return this.podcastService.create(req, res);
+  }
 
-	getAll(req: Request, res: Response) {
-		return this.podcastService.getAllPodcasts(req, res);
-	}
+  getAll(req: Request, res: Response) {
+    return this.podcastService.getAllPodcasts(req, res);
+  }
 
-	getPodcast(req: Request, res: Response) {
-		if (!req.query.id) {
-			return res.status(400).json({ message: 'id not provided', error: true });
-		}
-		return this.podcastService.getPodcastById(req, res);
-	}
+  getPodcast(req: Request, res: Response) {
+    if (!req.query.id) {
+      return res.status(400).json({ message: "id not provided", error: true });
+    }
+    return this.podcastService.getPodcastById(req, res);
+  }
 }

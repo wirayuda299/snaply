@@ -1,5 +1,3 @@
-"use server";
-
 import { Comment } from "@/types";
 import { currentUser } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
