@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { currentUser } from "@clerk/nextjs";
 
 import Tag from "../tag";
 import { cn, getCreatedDate } from "@/lib/utils";
@@ -7,6 +6,7 @@ import LikeButton from "./like-button";
 import PostTitle from "./title";
 import Parser from "../parser";
 import { Meetup, Post } from "@/types";
+import { currentUser } from "@clerk/nextjs/server";
 
 type PostCardTypes =
   | { type: "post"; post: Post }
@@ -27,7 +27,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
         <picture
           className={cn(
             "relative aspect-square min-h-[120px] w-full h-24 sm:h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48",
-            type === "meetup" && "hidden md:block",
+            type === "meetup" && "hidden md:block"
           )}
         >
           <Image

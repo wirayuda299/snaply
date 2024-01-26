@@ -2,18 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
 import type { Comment as PostComment } from "@/types/index";
 import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CommentInput from "./CommentInput";
 import { cn, getCreatedDate } from "@/lib/utils";
-import {
-  getCommentsReply,
-  likeComments,
-  uploadComment,
-} from "@/lib/actions/comment.action";
+import { getCommentsReply, likeComments } from "@/lib/actions";
 
 const Comment = ({
   comment,
@@ -27,25 +23,8 @@ const Comment = ({
   const [showReplyInput, setShowReplyInput] = useState<boolean>(false);
   const [replies, setReplies] = useState<PostComment[]>([]);
 
-  const { user } = useUser();
-  const isLikedByCurrentUser = likes?.includes(user?.id as string);
-
-  const handleReply = async (data: FormData) => {
-    try {
-      await Promise.all([
-        uploadComment({
-          comment: data.get("comment")?.toString() ?? "",
-          parentId: _id,
-          postId: postId!,
-          author: user?.id!,
-        }),
-      ]);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast(error.message);
-      }
-    }
-  };
+  const { userId } = useAuth();
+  const isLikedByCurrentUser = likes?.includes(userId as string);
 
   const handleLike = async () => {
     try {
@@ -141,11 +120,7 @@ const Comment = ({
 
           {showReplyInput && (
             <div className="mt-3 pr-4">
-              <CommentInput
-                image={user?.imageUrl ?? ""}
-                // @ts-ignore
-                handleReply={handleReply}
-              />
+              <CommentInput parentId={_id} postId={postId} />
             </div>
           )}
         </div>

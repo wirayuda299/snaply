@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { updateView } from "@/lib/actions/post.action";
+import { updateView } from "@/lib/actions";
 import { toast } from "sonner";
 
 export default function PostTitle({

@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { currentUser } from "@clerk/nextjs";
 
 import { getPostById, getRelatedPosts } from "@/lib/actions/post.action";
 import { getCreatedDate, getPostStats } from "@/lib/utils";
@@ -12,7 +10,6 @@ import {
   RelatedPostItem,
   Parser,
 } from "@/components/index";
-import { uploadComment } from "@/lib/actions/comment.action";
 
 type Props = {
   params: {
@@ -24,29 +21,13 @@ export const dynamic = "force-dynamic";
 
 export default async function PostDetail({ params }: Props) {
   const { post } = await getPostById(params.id);
-  const user = await currentUser();
-  if (!user) return null;
-  if (!post) return notFound();
 
   const relatedPosts = await getRelatedPosts(params.id, post.author._id);
   const postStats = getPostStats(
     post.likes.length,
     post.comments.length,
-    post.share,
+    post.share
   );
-
-  async function handleComment(data: FormData) {
-    "use server";
-    const comment = data.get("comment");
-    if (comment === "") return;
-
-    await uploadComment({
-      comment: comment?.toString() ?? "",
-      parentId: null,
-      postId: params?.id,
-      author: user?.id!,
-    });
-  }
 
   return (
     <div className="flex flex-col gap-5 py-5 lg:flex-row">
@@ -88,11 +69,7 @@ export default async function PostDetail({ params }: Props) {
             </div>
           </div>
           <div className="mt-5">
-            <CommentInput
-              image={user?.imageUrl ?? ""}
-              // @ts-ignore
-              handleReply={handleComment}
-            />
+            <CommentInput parentId={null} postId={post._id} />
           </div>
         </section>
         <section className="ml-1 space-y-3">
