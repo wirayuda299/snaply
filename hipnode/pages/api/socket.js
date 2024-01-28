@@ -1,7 +1,7 @@
 import { getAuth } from "@clerk/nextjs/server";
 import { Server } from "socket.io";
 
-export default function SocketHandler(req, res) {
+export default function handler(req, res) {
   const userMap = new Map()
 
   if (res.socket.server.io) {
