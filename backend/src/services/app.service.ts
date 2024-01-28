@@ -5,7 +5,6 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-import http from "http";
 
 import Database from "../services/db.service";
 import userRoutes from "../routes/user.route";

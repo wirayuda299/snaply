@@ -1,4 +1,3 @@
-import { Inject, Service } from "typedi";
 import { Request, Response } from "express";
 
 import type { Types } from "mongoose";
@@ -7,9 +6,8 @@ import bcrypt from "bcrypt";
 import { userModelType } from "../models/user.model";
 import UserCountry from "../utils/userCountry";
 
-@Service()
 export default class UserService {
-  constructor(@Inject("UserModel") private userModel: userModelType) {}
+  constructor(private userModel: userModelType) { }
 
   async createUser(req: Request, res: Response) {
     try {

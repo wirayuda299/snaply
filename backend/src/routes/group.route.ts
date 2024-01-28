@@ -1,22 +1,16 @@
-import Container from "typedi";
 import { Router } from "express";
 
-import postModel from "../models/post.model";
 import tagModel from "../models/tag.model";
 import groupModel from "../models/group.model";
-import User from "../controllers/user.controller";
 import { RequestWithQuery } from "../types/group";
 import GroupController from "../controllers/group.controller";
 import userModel from "../models/user.model";
+import GroupService from "../services/group.service";
 
 const router = Router();
-Container.set("PostModel", postModel);
-Container.set("Model", tagModel);
-Container.set("GroupModel", groupModel);
-Container.set("UserController", User);
-Container.set("UserModel", userModel);
 
-const group = Container.get(GroupController);
+const groupService = new GroupService(groupModel, tagModel, userModel);
+const group = new GroupController(groupService);
 
 router.post(
   "/join",

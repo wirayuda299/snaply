@@ -1,11 +1,9 @@
-import { Service } from "typedi";
 import { Response, Request } from "express";
 
 import PodcastServices from "../services/podcast.service";
 
-@Service()
 export default class InterviewController {
-  constructor(private podcastService: PodcastServices) {}
+  constructor(private podcastService: PodcastServices) { }
 
   createPodcast(req: Request, res: Response) {
     const {

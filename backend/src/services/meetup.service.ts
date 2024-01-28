@@ -1,17 +1,16 @@
-import { Service, Inject } from "typedi";
 import { Request, Response } from "express";
 
 import { meetupType } from "../models/meetup.model";
 import Tag from "../services/tag.service";
 import { TagModel } from "../models/tag.model";
 import { userModelType } from "../models/user.model";
-@Service()
+
 export default class MeetupService {
   constructor(
-    @Inject("MeetupModel") private meetupModel: meetupType,
-    @Inject("TagModel") private tagModel: TagModel,
-    @Inject("UserModel") private userModel: userModelType
-  ) {}
+    private meetupModel: meetupType,
+    private tagModel: TagModel,
+    private userModel: userModelType,
+  ) { }
 
   async createMeetup(req: Request, res: Response) {
     try {
@@ -47,7 +46,7 @@ export default class MeetupService {
 
       await new Tag(this.meetupModel, this.tagModel).createTagIfExists(
         tags,
-        meetup.id
+        meetup.id,
       );
       user.meetups.push(meetup.id);
       user.points += 5;

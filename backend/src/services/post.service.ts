@@ -1,19 +1,19 @@
 import type { Request, Response } from "express";
-import { Service, Inject } from "typedi";
+
 import TagController from "../services/tag.service";
 import { userModelType } from "../models/user.model";
 import { postModelType } from "../models/post.model";
 import { TagModel } from "../models/tag.model";
 import { groupModelType } from "./../models/group.model";
 import UserCountry from "../utils/userCountry";
-@Service()
+
 export default class PostService {
   constructor(
-    @Inject("PostModel") private PostModel: postModelType,
-    @Inject("TagModel") private tagModel: TagModel,
-    @Inject("UserModel") private userModel: userModelType,
-    @Inject("GroupModel") private groupModel: groupModelType
-  ) {}
+    private PostModel: postModelType,
+    private tagModel: TagModel,
+    private userModel: userModelType,
+    private groupModel: groupModelType,
+  ) { }
 
   async createPost(req: Request, res: Response) {
     try {
@@ -47,7 +47,7 @@ export default class PostService {
       if (tags && tags.length >= 1) {
         await new TagController<typeof this.PostModel>(
           this.PostModel,
-          this.tagModel
+          this.tagModel,
         ).createTagIfExists(tags, post.id);
       }
 

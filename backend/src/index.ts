@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 
 import AppService from './services/app.service';
 

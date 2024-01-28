@@ -1,21 +1,18 @@
-import { Router } from 'express';
-import Container from 'typedi';
+import { Router } from "express";
 
-import PodcastController from '../controllers/podcasts.controller';
-import postModel from '../models/post.model';
-import tagModel from '../models/tag.model';
-import podcastModel from '../models/podcast.model';
-import userModel from '../models/user.model';
+import PodcastController from "../controllers/podcasts.controller";
+import postModel from "../models/post.model";
+import tagModel from "../models/tag.model";
+import podcastModel from "../models/podcast.model";
+import userModel from "../models/user.model";
+import PodcastServices from "../services/podcast.service";
 
 const router = Router();
 
-Container.set('UserModel', userModel);
-Container.set('PodcastModel', podcastModel);
-Container.set('TagModel', tagModel);
+const service = new PodcastServices(podcastModel, userModel, tagModel);
+const podcast = new PodcastController(service);
 
-const podcast = Container.get(PodcastController);
-
-router.get('/all', (req, res) => podcast.getAll(req, res));
-router.post('/create', (req, res) => podcast.createPodcast(req, res));
-router.get('/', (req, res) => podcast.getPodcast(req, res));
+router.get("/all", (req, res) => podcast.getAll(req, res));
+router.post("/create", (req, res) => podcast.createPodcast(req, res));
+router.get("/", (req, res) => podcast.getPodcast(req, res));
 export default router;

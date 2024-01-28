@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-import { Inject, Service } from "typedi";
 import {
   RequestBody,
   RequestBodyTypes,
@@ -12,43 +11,49 @@ import { Types } from "mongoose";
 import Tag from "../services/tag.service";
 import { groupModelType } from "../models/group.model";
 import { TagModel } from "../models/tag.model";
-import User from "../services/user.service";
 import { userModelType } from "../models/user.model";
+import UserService from "../services/user.service";
 
-@Service()
 export default class GroupService {
-  constructor(
-    @Inject("GroupModel") private groupModel: groupModelType,
-    @Inject("TagModel") private tagModel: TagModel,
-    @Inject("UserModel") private userModel: userModelType,
-    @Inject(() => User) private userService: User
-  ) {}
+  groupModel;
+  tagModel;
+  userModel;
 
-  private isAdmin(admins: string[], members: string[]) {
+  constructor(
+    groupModel: groupModelType,
+    tagModel: TagModel,
+    userModel: userModelType,
+  ) {
+    this.groupModel = groupModel;
+    this.tagModel = tagModel;
+    this.userModel = userModel;
+  }
+
+  isAdmin(admins: string[], members: string[]) {
     return admins.findIndex((admin) => members.includes(admin));
   }
 
-  private async createTagsForGroup(tags: string[], groupId: string) {
+  async createTagsForGroup(tags: string[], groupId: string) {
     await new Tag(this.groupModel, this.tagModel).createTagIfExists(
       tags,
-      groupId
+      groupId,
     );
   }
 
-  private async populateGroupFieldWithUsers(
+  async populateGroupFieldWithUsers(
     users: string[],
     field: string,
-    groupId: Types.ObjectId
+    groupId: Types.ObjectId,
   ) {
     for (const user of users) {
       await this.groupModel.findByIdAndUpdate(groupId, {
         $push: { [field]: user },
       });
-
+      const userService = new UserService(this.userModel);
       if (field === "members") {
-        await this.userService.updateGroupFields(user, "groupMembers", groupId);
+        await userService.updateGroupFields(user, "groupMembers", groupId);
       } else {
-        await this.userService.updateGroupFields(user, "groups", groupId);
+        await userService.updateGroupFields(user, "groups", groupId);
       }
     }
   }
@@ -104,7 +109,7 @@ export default class GroupService {
       if (tags && tags.length >= 1) {
         await new Tag<typeof this.groupModel>(
           this.groupModel,
-          this.tagModel
+          this.tagModel,
         ).createTagIfExists(tags, group.id);
       }
 
@@ -145,7 +150,7 @@ export default class GroupService {
           .json({ message: "Group not found", error: true });
       }
       res.setHeader("Cache-Control", "public, max-age=3600");
-      return res.status(200).json({ data: foundGroup, error: false });
+      return res.json({ data: foundGroup, error: false });
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message, error: true }).end();
@@ -181,7 +186,7 @@ export default class GroupService {
       groupId: string;
       userId: string;
     }>,
-    res: Response
+    res: Response,
   ) {
     try {
       const group = await this.groupModel.findById(req.query.groupId);

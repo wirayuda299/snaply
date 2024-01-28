@@ -1,4 +1,3 @@
-import { Inject, Service } from "typedi";
 import { Request, Response } from "express";
 
 import { podcastModelType } from "../models/podcast.model";
@@ -6,13 +5,12 @@ import Tag from "./tag.service";
 import { TagModel } from "../models/tag.model";
 import { userModelType } from "../models/user.model";
 
-@Service()
 export default class PodcastServices {
   constructor(
-    @Inject("PodcastModel") private podcastModel: podcastModelType,
-    @Inject("UserModel") private userModel: userModelType,
-    @Inject("TagModel") private tagModel: TagModel
-  ) {}
+    private podcastModel: podcastModelType,
+    private userModel: userModelType,
+    private tagModel: TagModel,
+  ) { }
 
   async create(req: Request, res: Response) {
     try {
@@ -47,7 +45,7 @@ export default class PodcastServices {
       if (tags && tags.length >= 1) {
         await new Tag<typeof this.podcastModel>(
           this.podcastModel,
-          this.tagModel
+          this.tagModel,
         ).createTagIfExists(tags, podcast.id);
       }
 

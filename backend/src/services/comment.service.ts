@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { Inject, Service } from "typedi";
 
 import { commentModelType } from "../models/comment.model";
 import { postModelType } from "../models/post.model";
 
-@Service()
 export default class CommentService {
-  constructor(
-    @Inject("CommentModel") private commentModel: commentModelType,
-    @Inject("PostModel") private postModel: postModelType
-  ) {}
+  private commentModel;
+  private postModel;
+
+  constructor(commentModel: commentModelType, postModel: postModelType) {
+    this.commentModel = commentModel;
+    this.postModel = postModel;
+  }
 
   async uploadComment(req: Request, res: Response) {
     try {
@@ -32,7 +33,7 @@ export default class CommentService {
       post.comments.push(c.id);
       await post.save();
 
-      res.status(200).json({ message: "Comment uploaded", error: false }).end();
+      return res.json({ message: "Comment uploaded", error: false });
     } catch (error) {
       res
         .status(500)
