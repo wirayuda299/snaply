@@ -42,6 +42,7 @@ export const SocketProvider: FC<ContextProviderProps> = ({ children }) => {
 
         const socketConnection = io(URL!, {
           addTrailingSlash: false,
+          ...(process.env.NODE_ENV === "production" && { path: "/api/socket" }),
         });
 
         socket?.connect();
