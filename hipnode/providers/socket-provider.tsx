@@ -35,17 +35,7 @@ export const SocketProvider: FC<ContextProviderProps> = ({ children }) => {
     const connectSocket = async () => {
       try {
         await fetch("/api/socket");
-        const URL =
-          process.env.NODE_ENV === "production"
-            ? process.env.NEXT_PUBLIC_SITE_URL
-            : "http://localhost:3000";
-
-        const socketConnection = io(URL!, {
-          addTrailingSlash: false,
-          ...(process.env.NODE_ENV === "production" && { path: "/api/socket" }),
-        });
-
-        socket?.connect();
+        const socketConnection = io();
         setSocket(socketConnection);
       } catch (error) {
         console.error("Fetch error: ", error);
