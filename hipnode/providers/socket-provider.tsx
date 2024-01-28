@@ -35,10 +35,12 @@ export const SocketProvider: FC<ContextProviderProps> = ({ children }) => {
     const connectSocket = async () => {
       try {
         const URL =
-          process.env.NODE_ENV === "production" &&
-          process.env.NEXT_PUBLIC_SITE_URL;
+          process.env.NODE_ENV === "production"
+            ? "https://snaply-hazel.vercel.app"
+            : "http://localhost:3000";
+
         await fetch(URL + "/api/socket");
-        const socketConnection = io();
+        const socketConnection = io({ addTrailingSlash: false });
         setSocket(socketConnection);
       } catch (error) {
         console.error("Fetch error: ", error);
