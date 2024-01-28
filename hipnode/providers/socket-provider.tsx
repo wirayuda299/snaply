@@ -34,7 +34,10 @@ export const SocketProvider: FC<ContextProviderProps> = ({ children }) => {
   useEffect(() => {
     const connectSocket = async () => {
       try {
-        await fetch("/api/socket");
+        const URL =
+          process.env.NODE_ENV === "production" &&
+          process.env.NEXT_PUBLIC_SITE_URL;
+        await fetch(URL + "/api/socket");
         const socketConnection = io();
         setSocket(socketConnection);
       } catch (error) {
