@@ -33,7 +33,8 @@ export const SocketProvider: FC<ContextProviderProps> = ({ children }) => {
 	useEffect(() => {
 		const connectSocket = async () => {
 			try {
-				await fetch('/api/socket');
+				const serverUrl = process.env.NEXT_PUBLIC_SITE_URL;
+				await fetch(`${serverUrl}/api/socket`);
 				const socketConnection = io({
 					addTrailingSlash: false,
 				});
