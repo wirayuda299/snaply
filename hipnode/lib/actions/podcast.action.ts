@@ -13,7 +13,7 @@ export async function createPodcast(
   postImage: string,
   title: string,
   postImageAssetId: string,
-  category: string
+  category: string,
 ) {
   try {
     const { getToken, userId } = auth();
@@ -53,7 +53,7 @@ export async function createPodcast(
 export async function getAllPodcasts(
   sort: string = "newest",
   page: number = 1,
-  pageSize: number = 10
+  pageSize: number = 10,
 ) {
   try {
     const { getToken } = auth();
@@ -72,7 +72,7 @@ export async function getAllPodcasts(
         next: {
           tags: ["all-podcasts"],
         },
-      }
+      },
     );
     const res = await podcasts.json();
     return {

@@ -28,7 +28,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
         <picture
           className={cn(
             "relative aspect-square min-h-[120px]  w-full h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48",
-            type === "meetup" && "hidden md:block"
+            type === "meetup" && "hidden md:block",
           )}
         >
           <Image
@@ -66,6 +66,8 @@ export default async function PostCard({ post, type }: PostCardTypes) {
               {type === "post" ? (
                 <LikeButton
                   post={post}
+                  userId={user.id}
+                  username={user.username!}
                   isLikedByCurrentUser={isLikedByCurrentUser}
                 />
               ) : (

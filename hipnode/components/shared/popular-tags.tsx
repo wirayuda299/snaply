@@ -16,13 +16,13 @@ export default function PopularTags({
     <aside
       className={cn(
         "rounded-lg bg-white dark:bg-secondary-dark-2 p-3 min-w-[218px] max-lg:w-full w-[218px] hidden md:block",
-        styles
+        styles,
       )}
     >
       <ul
         className={cn(
           "no-scrollbar flex flex-col items-center gap-5 space-x-3 overflow-x-auto md:flex-col md:items-start md:space-x-0",
-          innerStyles
+          innerStyles,
         )}
       >
         {Array.from(names).map((item) => (

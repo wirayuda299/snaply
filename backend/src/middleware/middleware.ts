@@ -8,13 +8,17 @@ export default class Middleware {
 	) {
 		try {
 			const header = req.headers.authorization?.split(' ')[1];
+
 			if (!header) {
 				return res
 					.status(403)
-					.json({ message: 'Unauthorized', error: true })
-					.end();
+					.json({ message: 'Unauthorized', error: true }).end()
+			} else {
+
+				return next();
+
 			}
-			return next();
+
 		} catch (error) {
 			return res
 				.status(500)

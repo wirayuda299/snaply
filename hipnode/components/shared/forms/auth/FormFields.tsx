@@ -58,7 +58,7 @@ export default function AuthFormFields({
           <form
             className="w-full"
             onSubmit={form.handleSubmit(
-              type === "signup" ? handleSignUp : handleSignIn
+              type === "signup" ? handleSignUp : handleSignIn,
             )}
           >
             <FormField

@@ -139,7 +139,7 @@ export async function getAllGroupsWhereUserJoin(admins: string[]) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     const groups = await res.json();
     if (groups.error) {

@@ -17,6 +17,7 @@ export default class Meetup {
       assetId,
       category,
     } = req.body;
+
     if (
       !address ||
       !companyName ||

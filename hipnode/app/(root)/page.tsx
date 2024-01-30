@@ -9,12 +9,12 @@ import { getAllPosts } from "@/lib/actions/post.action";
 import PodcastCard from "@/components/shared/podcast-card";
 import PopularTags from "@/components/shared/popular-tags";
 
-export default async function Home({
-  searchParams,
-}: {
+type Props = {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
+};
+
+export default async function Home({ searchParams }: Props) {
   const { posts } = await getAllPosts(searchParams.sort as string, 1, 10);
   const tags = posts.map((post) => post.tags).flat();
 

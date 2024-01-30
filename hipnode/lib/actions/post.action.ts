@@ -28,7 +28,6 @@ export async function createPost(props: createPostType) {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      credentials: "include",
       method: "POST",
       body: JSON.stringify({
         title,
@@ -54,7 +53,7 @@ export async function createPost(props: createPostType) {
 export async function getAllPosts(
   sort: string = "popular",
   page: number = 1,
-  pageSize: number = 10
+  pageSize: number = 10,
 ) {
   try {
     const { getToken } = auth();
@@ -74,7 +73,7 @@ export async function getAllPosts(
         next: {
           tags: ["all-posts"],
         },
-      }
+      },
     );
     const res = await posts.json();
     if (res.error) throw new Error(res.message);
@@ -187,7 +186,7 @@ export async function getRelatedPosts(id: string, authorId: string) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return (await res.json()) as Post[];
   } catch (error) {

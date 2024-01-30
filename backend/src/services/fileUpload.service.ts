@@ -16,6 +16,7 @@ export default class FileUploadService {
 				res
 					.status(200)
 					.json({
+						error: false,
 						public_id: response.public_id,
 						secure_url: response.secure_url,
 					})

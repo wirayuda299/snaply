@@ -26,7 +26,7 @@ export default async function PostDetail({ params }: Props) {
   const postStats = getPostStats(
     post.likes.length,
     post.comments.length,
-    post.share
+    post.share,
   );
 
   return (

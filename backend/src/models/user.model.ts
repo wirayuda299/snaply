@@ -20,11 +20,11 @@ const userSchema = new Schema(
     },
     region: {
       type: String,
-      required: true,
+      required: false,
     },
     country: {
       type: String,
-      required: true,
+      required: false,
     },
     points: {
       type: Number,
@@ -91,6 +91,13 @@ const userSchema = new Schema(
         ref: "Podcasts",
       },
     ],
+    notifications: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Notification",
+
+      }
+    ]
   },
   {
     timestamps: true,

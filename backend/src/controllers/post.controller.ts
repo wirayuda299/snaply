@@ -7,7 +7,6 @@ export default class PostController {
 
   create(req: Request, res: Response) {
     const { title, body, image, assetId, category } = req.body;
-
     if (!title || !body || !image || !assetId || !category) {
       return res
         .status(400)

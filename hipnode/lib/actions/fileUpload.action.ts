@@ -7,11 +7,13 @@ export async function uploadFile(file: File) {
 
     const res = await fetch(`${serverEndpoint}/upload`, {
       method: "POST",
-
       body: data,
     });
 
     const image = await res.json();
+    if (image.error) {
+      throw new Error(image.message);
+    }
     return image;
   } catch (error) {
     throw error;

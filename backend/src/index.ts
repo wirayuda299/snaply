@@ -1,6 +1,4 @@
-
-import AppService from './services/app.service';
-
-const app = new AppService();
+import Application from "./application/application";
+const app = new Application();
 
 app.listen();

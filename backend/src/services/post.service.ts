@@ -5,7 +5,6 @@ import { userModelType } from "../models/user.model";
 import { postModelType } from "../models/post.model";
 import { TagModel } from "../models/tag.model";
 import { groupModelType } from "./../models/group.model";
-import UserCountry from "../utils/userCountry";
 
 export default class PostService {
   constructor(
@@ -27,7 +26,6 @@ export default class PostService {
           .json({ message: "User not found", error: true })
           .end();
 
-      const country = await UserCountry.getUserCountry();
 
       const post = await this.PostModel.create({
         title,
@@ -36,8 +34,7 @@ export default class PostService {
         author: user,
         assetId,
         category,
-        // @ts-ignore
-        country: country.country_name,
+        country: "",
         ...(group ? { group: group } : { group: null }),
       });
       user?.posts.push(post.id);
