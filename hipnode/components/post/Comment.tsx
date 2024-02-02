@@ -19,6 +19,7 @@ const Comment = ({
   author,
   parentId,
   _id,
+  postAuthor
 }: PostComment) => {
   const [showReplyInput, setShowReplyInput] = useState<boolean>(false);
   const [replies, setReplies] = useState<PostComment[]>([]);
@@ -120,7 +121,7 @@ const Comment = ({
 
           {showReplyInput && (
             <div className="mt-3 pr-4">
-              <CommentInput parentId={_id} postId={postId} />
+              <CommentInput postAuthorId={postAuthor._id} parentId={_id} postId={postId} />
             </div>
           )}
         </div>
@@ -128,6 +129,7 @@ const Comment = ({
       <div className="mt-5">
         {replies?.map((reply) => (
           <Comment
+            postAuthor={postAuthor}
             parentId={reply.parentId}
             key={reply._id}
             postId={postId}

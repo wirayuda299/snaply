@@ -41,9 +41,10 @@ import {
 
 import { createUser, deleteUser, getUserById, updateUser } from "./user.action";
 
-import { createNotification, deleteNotification } from "./notification.action";
+import { getAllNotifications, createNotification, deleteNotification } from "./notification.action";
 
 export {
+  getAllNotifications,
   deleteNotification,
   createNotification,
   getCommentsReply,

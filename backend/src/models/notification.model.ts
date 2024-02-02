@@ -19,6 +19,13 @@ const schema = new Schema(
       type: Boolean,
       default: false
     },
+
+    postId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    modelPath: String
+
   },
   {
     timestamps: true,

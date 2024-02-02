@@ -4,11 +4,15 @@ import Link from "next/link";
 
 import NavLink from "./NavLink";
 import ModeToggle from "./theme-switch";
+import { getAllNotifications } from "@/lib/actions";
+import Notification from "./Notification";
 
 export default async function Navbar() {
   const user = await currentUser();
 
   if (!user) return null;
+  const allNotifications = await getAllNotifications()
+  console.log(allNotifications);
 
   return (
     <nav className="relative flex items-center justify-end bg-white p-3 dark:bg-primary-dark md:justify-between lg:sticky lg:top-0 lg:z-50  lg:p-5">
@@ -60,16 +64,7 @@ export default async function Navbar() {
             alt="bell icon"
           />
         </button>
-        <button className="rounded-md bg-white-800 p-2 dark:bg-secondary-dark">
-          <Image
-            className="aspect-auto w-3 min-w-4 object-contain grayscale invert-[20%] dark:grayscale-0 dark:invert-0"
-            src="/assets/general/icons/bell.svg"
-            width={20}
-            height={20}
-            loading="lazy"
-            alt="bell icon"
-          />
-        </button>
+        <Notification />
         <button className="flex w-8 items-center gap-2 md:w-auto">
           <Image
             className="aspect-auto min-w-4 rounded-lg border-2 object-contain"

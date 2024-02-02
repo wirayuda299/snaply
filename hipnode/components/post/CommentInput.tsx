@@ -6,15 +6,16 @@ import { toast } from "sonner";
 
 import { Input } from "../ui/input";
 import { useUser } from "@clerk/nextjs";
-import { uploadComment } from "@/lib/actions";
+import { createNotification, uploadComment } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 
 type Props = {
   parentId: string | null;
   postId: string;
+  postAuthorId: string
 };
 
-export default function CommentInput({ parentId, postId }: Props) {
+export default function CommentInput({ parentId, postId, postAuthorId }: Props) {
   const user = useUser();
   const [loading, setIsLoading] = useState<boolean>(false);
 
@@ -29,7 +30,16 @@ export default function CommentInput({ parentId, postId }: Props) {
         parentId: parentId ? parentId : null,
         postId,
         author: user?.user?.id!,
-      });
+      })
+      await createNotification({
+        to: postAuthorId,
+        from: user.user?.id!,
+        model: 'post',
+        message: `${user.user?.username} comment on your post`,
+        postId,
+        type: 'comment'
+      })
+
       //@ts-ignore
       e.target.comment.value = "";
       setIsLoading(false);

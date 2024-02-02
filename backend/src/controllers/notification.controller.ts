@@ -11,4 +11,8 @@ export default class NotificationController {
   deleteNotification(req: Request, res: Response) {
     return this.notificationService.deleteNotification(req, res);
   }
+
+  getAllNotifications(req: Request, res: Response) {
+    return this.notificationService.getAllNotification(req, res)
+  }
 }

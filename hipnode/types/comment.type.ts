@@ -7,4 +7,9 @@ export type Comment = {
   parentId?: string;
   createdAt: Date;
   updatedAt: Date;
+  postAuthor: {
+    _id: string
+    username: string
+    profileImage?: string
+  }
 };
