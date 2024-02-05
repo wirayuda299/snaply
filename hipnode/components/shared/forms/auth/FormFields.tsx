@@ -150,8 +150,8 @@ export default function AuthFormFields({
       )}
       {pendingVerification && (
         <Dialog open={pendingVerification}>
-          <DialogContent className="sm:max-w-[425px] dark:border-secondary-dark-2 flex justify-center flex-col items-center">
-            <DialogHeader className="w-full flex flex-col items-center">
+          <DialogContent className="flex flex-col items-center justify-center dark:border-secondary-dark-2 sm:max-w-[425px]">
+            <DialogHeader className="flex w-full flex-col items-center">
               <Image
                 className="aspect-auto object-contain"
                 src="/assets/general/icons/logo.svg"
@@ -164,7 +164,7 @@ export default function AuthFormFields({
               <DialogDescription>
                 Enter code sended to your email
               </DialogDescription>
-              <form onSubmit={onPressVerify} className=" space-y-3 w-full">
+              <form onSubmit={onPressVerify} className=" w-full space-y-3">
                 <Input
                   value={code}
                   onChange={(e) => setCode(e.target.value)}

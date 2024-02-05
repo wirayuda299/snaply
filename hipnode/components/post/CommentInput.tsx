@@ -12,10 +12,14 @@ import { cn } from "@/lib/utils";
 type Props = {
   parentId: string | null;
   postId: string;
-  postAuthorId: string
+  postAuthorId: string;
 };
 
-export default function CommentInput({ parentId, postId, postAuthorId }: Props) {
+export default function CommentInput({
+  parentId,
+  postId,
+  postAuthorId,
+}: Props) {
   const user = useUser();
   const [loading, setIsLoading] = useState<boolean>(false);
 
@@ -27,20 +31,22 @@ export default function CommentInput({ parentId, postId, postAuthorId }: Props) 
       await uploadComment({
         // @ts-ignore
         comment: e.target.comment.value,
-        parentId: parentId ? parentId : null,
+        parentId: parentId || null,
         postId,
         author: user?.user?.id!,
-      })
+      });
       await createNotification({
         to: postAuthorId,
         from: user.user?.id!,
-        model: 'post',
-        message: `${user.user?.username} comment on your post`,
+        model: "post",
+        message: "comment on your post",
         postId,
-        type: 'comment'
-      })
+        type: "comment",
+        // @ts-ignore
+        comments: e.target.comment.value,
+      });
 
-      //@ts-ignore
+      // @ts-ignore
       e.target.comment.value = "";
       setIsLoading(false);
     } catch (e) {

@@ -11,16 +11,14 @@ import {
 } from "@/lib/actions";
 
 type LikeButtonProps = {
-  username: string;
   userId: string;
   isLikedByCurrentUser: boolean;
   post: Post;
-}
+};
 
 export default function LikeButton({
   post,
   userId,
-  username,
   isLikedByCurrentUser,
 }: LikeButtonProps) {
   const handleLike = async () => {
@@ -32,10 +30,10 @@ export default function LikeButton({
         await createNotification({
           to: post.author._id,
           from: userId,
-          message: `${username} like your post`,
+          message: `like your post`,
           type: "like",
           postId: post._id,
-          model: 'post'
+          model: "post",
         });
       } else {
         await deleteNotification("like", post._id);
@@ -54,7 +52,7 @@ export default function LikeButton({
       onClick={handleLike}
     >
       <Image
-        className='size-9 rounded-lg bg-white-700 object-contain p-2 dark:bg-secondary-dark'
+        className="size-9 rounded-lg bg-white-700 object-contain p-2 dark:bg-secondary-dark"
         src={"/assets/general/icons/filled-heart.svg"}
         width={40}
         height={40}
