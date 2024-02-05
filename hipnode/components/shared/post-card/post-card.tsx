@@ -67,7 +67,6 @@ export default async function PostCard({ post, type }: PostCardTypes) {
                 <LikeButton
                   post={post}
                   userId={user.id}
-                  username={user.username!}
                   isLikedByCurrentUser={isLikedByCurrentUser}
                 />
               ) : (

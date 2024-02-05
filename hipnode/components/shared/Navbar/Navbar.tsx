@@ -11,7 +11,7 @@ export default async function Navbar() {
   const user = await currentUser();
 
   if (!user) return null;
-  const allNotifications = await getAllNotifications()
+  const allNotifications = await getAllNotifications();
   console.log(allNotifications);
 
   return (
@@ -64,7 +64,7 @@ export default async function Navbar() {
             alt="bell icon"
           />
         </button>
-        <Notification />
+        <Notification notifications={allNotifications ?? []} />
         <button className="flex w-8 items-center gap-2 md:w-auto">
           <Image
             className="aspect-auto min-w-4 rounded-lg border-2 object-contain"

@@ -6,12 +6,12 @@ type createNotificationProps = {
   from: string;
   message: string;
   type: string;
-  postId: string
-  model: string
+  postId: string;
+  model: string;
+  comments?: string;
 };
 
 const serverUrl = process.env.SERVER_URL;
-
 
 export async function createNotification(props: createNotificationProps) {
   try {
@@ -22,7 +22,7 @@ export async function createNotification(props: createNotificationProps) {
       throw new Error("token is required");
     }
 
-    const { to, from, message, type, postId, model } = props;
+    const { to, from, message, type, postId, model, comments } = props;
 
     await fetch(`${serverUrl}/notification/create`, {
       method: "POST",
@@ -30,7 +30,15 @@ export async function createNotification(props: createNotificationProps) {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ to, from, type, message, postId, model }),
+      body: JSON.stringify({
+        to,
+        from,
+        type,
+        message,
+        postId,
+        model,
+        comments,
+      }),
     });
   } catch (e) {
     throw e;
@@ -63,7 +71,6 @@ export async function deleteNotification(type: string, postId: string) {
 }
 
 export async function getAllNotifications() {
-
   try {
     const { getToken, userId } = auth();
     const token = await getToken();
@@ -72,19 +79,21 @@ export async function getAllNotifications() {
       throw new Error("token is required");
     }
 
-    const res = await fetch(`${serverUrl}/notification/all-notifications?userId=${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${serverUrl}/notification/all-notifications?userId=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       },
-    })
+    );
 
-    const allNotifications = await res.json()
+    const allNotifications = await res.json();
     if (!allNotifications.error) {
-      return allNotifications.data as Notification[]
+      return allNotifications.data as Notification[];
     }
-
   } catch (error) {
-    throw error
+    throw error;
   }
 }
