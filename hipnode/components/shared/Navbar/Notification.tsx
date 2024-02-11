@@ -1,11 +1,12 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { cn, formUrlQuery } from '@/lib/utils';
-import { Notification as NotificationType } from '@/types';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { cn, formUrlQuery } from '@/lib/utils';
+import { Notification as NotificationType } from '@/types';
 
 const tabValues = [
 	{
@@ -23,7 +24,7 @@ const tabValues = [
 		icon: '/assets/general/icons/chat.svg',
 		title: 'Comments',
 	},
-];
+] as const;
 
 const notificationType = {
 	comment: '/assets/notification/comment.svg',
@@ -79,8 +80,8 @@ export default function Notification({
 							onClick={() => handleClick(tab.label)}
 							key={tab.label}
 							className={cn(
-								"flex w-max h-auto before:content-[''] before:absolute before:left-0 before:bottom-0 before:right-0 before:rounded-full before:h-[2px] before:bg-primary transition-all ease-in-out duration-500  relative before:w-full before:opacity-0 before:transition-all before:ease-linear before:duration-500 items-center gap-2 ",
-								tab.label === type && 'before:opacity-100'
+								"flex w-max h-auto before:content-[''] before:absolute before:left-0 before:bottom-0 before:right-0 before:rounded-full before:h-[2px] before:bg-primary transition-all ease-in-out duration-500  relative before:w-full before:scale-x-0 before:transition-all before:ease-linear before:duration-300 items-center gap-2",
+								tab.label === type && 'before:scale-x-100'
 							)}
 						>
 							{tab.icon && (
@@ -91,43 +92,95 @@ export default function Notification({
 					))}
 				</div>
 				<ul className='space-y-5 pt-5'>
-					{notifications.map((notification) => (
-						<li key={notification._id}>
-							<div className='flex gap-3'>
-								<div className='relative h-[50px] w-[60px]'>
-									<Image
-										src={notification.from.profileImage ?? '/avatar.png'}
-										width={45}
-										height={45}
-										alt='user'
-										className='aspect-auto rounded-full object-contain'
-									/>
-									<Image
-										// @ts-ignore
-										src={notificationType[notification.notificationType!]}
-										width={20}
-										height={20}
-										alt='notification'
-										className='absolute -bottom-1 right-2 aspect-auto rounded-full object-contain'
-									/>
-								</div>
-
-								<div>
-									<h3 className='inline-flex items-center gap-3 text-lg font-bold'>
-										{notification.from.username}
-										<span className='inline-block text-sm font-light'>
-											{notification.message}
-										</span>
-									</h3>
-									{notification.comments && (
-										<div className='bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2'>
-											<p>{notification.comments}</p>
+					{type === 'all'
+						? notifications.map((notification) => (
+								<li key={notification._id}>
+									<div className='flex gap-3'>
+										<div className='relative h-[50px] w-[60px]'>
+											<Image
+												src={notification.from.profileImage ?? '/avatar.png'}
+												width={45}
+												height={45}
+												alt='user'
+												className='aspect-auto rounded-full object-contain'
+											/>
+											<Image
+												// @ts-ignore
+												src={notificationType[notification.notificationType!]}
+												width={20}
+												height={20}
+												alt='notification'
+												className='absolute -bottom-1 right-2 aspect-auto rounded-full object-contain'
+											/>
 										</div>
-									)}
-								</div>
-							</div>
-						</li>
-					))}
+
+										<div
+											className={cn(
+												'w-full',
+												notification.is_read && 'text-primary'
+											)}
+										>
+											<h3 className='inline-flex items-center gap-3 text-lg font-bold'>
+												{notification.from.username}
+												<span className='inline-block text-sm font-light'>
+													{notification.message}
+												</span>
+											</h3>
+											{notification.comments && (
+												<div className='bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2'>
+													<p>{notification.comments}</p>
+												</div>
+											)}
+										</div>
+									</div>
+								</li>
+							))
+						: notifications
+								.filter(
+									(notification) => notification.notificationType === type
+								)
+								.map((notification) => (
+									<li key={notification._id}>
+										<div className='flex gap-3'>
+											<div className='relative h-[50px] w-[60px]'>
+												<Image
+													src={notification.from.profileImage ?? '/avatar.png'}
+													width={45}
+													height={45}
+													alt='user'
+													className='aspect-auto rounded-full object-contain'
+												/>
+												<Image
+													// @ts-ignore
+													src={notificationType[notification.notificationType!]}
+													width={20}
+													height={20}
+													alt='notification'
+													className='absolute -bottom-1 right-2 aspect-auto rounded-full object-contain'
+												/>
+											</div>
+
+											<div
+												className={cn(
+													'w-full',
+													notification.is_read && 'text-primary'
+												)}
+											>
+												<h3 className='inline-flex items-center gap-3 text-lg font-bold'>
+													{notification.from.username}
+													<span className='inline-block text-sm font-light'>
+														{notification.message}
+													</span>
+												</h3>
+												{notification.comments && (
+													<div className='bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2'>
+														<p>{notification.comments}</p>
+													</div>
+												)}
+											</div>
+										</div>
+									</li>
+								))}
 				</ul>
 			</ul>
 		</div>
