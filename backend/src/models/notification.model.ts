@@ -17,15 +17,18 @@ const schema = new Schema(
     },
     is_read: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     postId: {
       type: Schema.Types.ObjectId,
-      required: true
+      required: true,
     },
-    modelPath: String
-
+    modelPath: String,
+    comments: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,

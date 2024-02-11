@@ -13,4 +13,5 @@ export type Notification = {
 	modelPath: string;
 	createdAt: Date;
 	updatedAt: Date;
+	comments?: string;
 };

@@ -69,7 +69,11 @@ export default async function PostDetail({ params }: Props) {
             </div>
           </div>
           <div className="mt-5">
-            <CommentInput parentId={null} postId={post._id} postAuthorId={post.author._id} />
+            <CommentInput
+              parentId={null}
+              postId={post._id}
+              postAuthorId={post.author._id}
+            />
           </div>
         </section>
         <section className="ml-1 space-y-3">

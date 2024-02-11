@@ -10,7 +10,7 @@ export default class NotificationService {
 	) {}
 
 	async createNotification(req: Request, res: Response) {
-		const { to, from, message, type, postId, model } = req.body;
+		const { to, from, message, type, postId, model, comments } = req.body;
 
 		try {
 			const user = await this.userModel.findById(to);
@@ -25,6 +25,7 @@ export default class NotificationService {
 				message,
 				postId,
 				modelPath: model,
+				comments,
 			});
 
 			return res.status(200).end();
@@ -75,7 +76,10 @@ export default class NotificationService {
 
 			const allNotif = await this.notificationModel
 				.find({ to: userId })
-				.populate('from', '_id username profileImage');
+				.populate('from', '_id username profileImage')
+				.populate({
+					path: 'postId',
+				});
 
 			return res.status(200).json({ data: allNotif, error: false });
 		} catch (e) {

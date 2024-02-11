@@ -1,12 +1,11 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { cn, formUrlQuery } from '@/lib/utils';
+import { Notification as NotificationType } from '@/types';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { cn, formUrlQuery } from '@/lib/utils';
-import { Notification as NotificationType } from '@/types/index';
 
 const tabValues = [
 	{
@@ -25,6 +24,11 @@ const tabValues = [
 		title: 'Comments',
 	},
 ];
+
+const notificationType = {
+	comment: '/assets/notification/comment.svg',
+	like: '/assets/notification/like.svg',
+};
 
 export default function Notification({
 	notifications,
@@ -56,26 +60,26 @@ export default function Notification({
 					alt='bell icon'
 				/>
 			</button>
-			<div
+			<ul
 				className={cn(
-					'absolute min-h-96 top-0 hidden -left-40 p-1 bg-white rounded-lg border-white-800 dark:border-secondary-dark-2 dark:bg-secondary-dark-2 border max-sm:w-64 w-96 sm:-left-80',
+					'absolute min-h-96 top-0 hidden -left-40 p-3 bg-white rounded-lg border-white-800 dark:border-secondary-dark-2 dark:bg-secondary-dark-2 border max-sm:w-64 w-96 sm:-left-80',
 					open && 'block top-10'
 				)}
 			>
-				<header className='flex items-center justify-between border-b pb-5'>
-					<h3 className='text-xs font-semibold'>3 Notifications</h3>
+				<header className='border-white-800 dark:border-secondary flex items-center justify-between border-b pb-5'>
+					<h3 className='text-sm font-semibold'>3 Notifications</h3>
 					<Button variant={'ghost'} className='text-xs font-semibold'>
 						Mark All Read
 					</Button>
 				</header>
 
-				<div className='no-scrollbar mt-5 flex snap-mandatory items-center gap-3 overflow-x-auto'>
+				<div className='no-scrollbar mt-5 flex snap-mandatory items-center gap-3 space-x-3 overflow-x-auto'>
 					{tabValues.map((tab) => (
 						<button
 							onClick={() => handleClick(tab.label)}
 							key={tab.label}
 							className={cn(
-								"flex w-max h-auto before:content-[''] before:absolute before:w-full before:left-0 before:bottom-0 before:right-0 before:rounded-full before:h-[2px] before:bg-primary transition-all ease-in-out duration-500  relative  before:opacity-0 before:transition-all before:ease-linear before:duration-500 items-center gap-2 ",
+								"flex w-max h-auto before:content-[''] before:absolute before:left-0 before:bottom-0 before:right-0 before:rounded-full before:h-[2px] before:bg-primary transition-all ease-in-out duration-500  relative before:w-full before:opacity-0 before:transition-all before:ease-linear before:duration-500 items-center gap-2 ",
 								tab.label === type && 'before:opacity-100'
 							)}
 						>
@@ -86,14 +90,46 @@ export default function Notification({
 						</button>
 					))}
 				</div>
-				<ul>
+				<ul className='space-y-5 pt-5'>
 					{notifications.map((notification) => (
 						<li key={notification._id}>
-							<h3>{notification.from.username}</h3>
+							<div className='flex gap-3'>
+								<div className='relative h-[50px] w-[60px]'>
+									<Image
+										src={notification.from.profileImage ?? '/avatar.png'}
+										width={45}
+										height={45}
+										alt='user'
+										className='aspect-auto rounded-full object-contain'
+									/>
+									<Image
+										// @ts-ignore
+										src={notificationType[notification.notificationType!]}
+										width={20}
+										height={20}
+										alt='notification'
+										className='absolute -bottom-1 right-2 aspect-auto rounded-full object-contain'
+									/>
+								</div>
+
+								<div>
+									<h3 className='inline-flex items-center gap-3 text-lg font-bold'>
+										{notification.from.username}
+										<span className='inline-block text-sm font-light'>
+											{notification.message}
+										</span>
+									</h3>
+									{notification.comments && (
+										<div className='bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2'>
+											<p>{notification.comments}</p>
+										</div>
+									)}
+								</div>
+							</div>
 						</li>
 					))}
 				</ul>
-			</div>
+			</ul>
 		</div>
 	);
 }

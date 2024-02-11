@@ -1,6 +1,17 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import queryString from "query-string";
+import { auth } from "@clerk/nextjs/server";
+
+export const fetchConfig = async (url: string) => {
+  const { getToken } = auth();
+  return await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${await getToken()}`,
+      "Content-type": "application/json",
+    },
+  }).then((res) => res.json());
+};
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,29 +36,23 @@ export const getCreatedDate = (createdAt: Date) => {
       case diffInSeconds < 60:
         return "just now";
       case diffInMinutes < 60:
-        return `${roundDown(diffInMinutes)} ${
-          roundDown(diffInMinutes) > 1 ? "minutes" : "minute"
-        } ago`;
+        return `${roundDown(diffInMinutes)} ${roundDown(diffInMinutes) > 1 ? "minutes" : "minute"
+          } ago`;
       case diffInHours < 24:
-        return `${roundDown(diffInHours)} ${
-          roundDown(diffInHours) > 1 ? "hours" : "hour"
-        } ago`;
+        return `${roundDown(diffInHours)} ${roundDown(diffInHours) > 1 ? "hours" : "hour"
+          } ago`;
       case diffInDays < 7:
-        return `${roundDown(diffInDays)} ${
-          roundDown(diffInDays) > 1 ? "days" : "day"
-        } ago`;
+        return `${roundDown(diffInDays)} ${roundDown(diffInDays) > 1 ? "days" : "day"
+          } ago`;
       case diffInWeeks < 4:
-        return `${roundDown(diffInWeeks)} ${
-          roundDown(diffInWeeks) > 1 ? "weeks" : "week"
-        } ago`;
+        return `${roundDown(diffInWeeks)} ${roundDown(diffInWeeks) > 1 ? "weeks" : "week"
+          } ago`;
       case diffInMonths < 12:
-        return `${roundDown(diffInMonths)} ${
-          roundDown(diffInMonths + 1) > 1 ? "months" : "month"
-        } ago`;
+        return `${roundDown(diffInMonths)} ${roundDown(diffInMonths + 1) > 1 ? "months" : "month"
+          } ago`;
       default:
-        return `${roundDown(diffInYears)} ${
-          roundDown(diffInYears) > 1 ? "years" : "year"
-        } ago`;
+        return `${roundDown(diffInYears)} ${roundDown(diffInYears) > 1 ? "years" : "year"
+          } ago`;
     }
   } catch (error: any) {
     console.log(error.message);
