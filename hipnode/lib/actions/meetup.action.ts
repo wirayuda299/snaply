@@ -1,117 +1,78 @@
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { auth } from "@clerk/nextjs/server";
+import { revalidateTag } from 'next/cache';
+import { z } from 'zod';
+import { auth } from '@clerk/nextjs/server';
 
-import { Meetup } from "@/types";
+import { Meetup } from '@/types';
+import { fetchConfig } from '../utils';
 
 const schema = z.object({
-  address: z.string(),
-  companyName: z.string(),
-  category: z.string(),
-  date: z.string(),
-  image: z.string(),
-  assetId: z.string(),
-  title: z.string(),
-  body: z.string(),
-  tags: z.array(z.string()),
+	address: z.string(),
+	companyName: z.string(),
+	category: z.string(),
+	date: z.string(),
+	image: z.string(),
+	assetId: z.string(),
+	title: z.string(),
+	body: z.string(),
+	tags: z.array(z.string()),
 });
 
-const serverEndpoint = process.env.SERVER_URL;
-
 export async function getAllMeetups() {
-  try {
-    const { getToken } = auth();
-
-    const token = await getToken();
-    if (!token) {
-      throw new Error("You are not allowed to do this request");
-    }
-    const res = await fetch(`${serverEndpoint}/meetup/all`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const meetups = await res.json();
-    return meetups.data as Meetup[];
-  } catch (error) {
-    throw error;
-  }
+	try {
+		const res = await fetchConfig(
+			`/meetup/all?page=1&limit=10`,
+			['meetups'],
+			'GET'
+		);
+		return res.data as Meetup[];
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function createMeetup(props: z.infer<typeof schema>) {
-  try {
-    const { getToken, userId } = auth();
+	try {
+		const { userId } = auth();
 
-    const parsed = schema.safeParse(props);
-    if (!parsed.success) throw new Error("Data is not valid");
+		const parsed = schema.safeParse(props);
+		if (!parsed.success) throw new Error('Data is not valid');
 
-    const {
-      address,
-      companyName,
-      date,
-      image,
-      title,
-      tags,
-      body,
-      assetId,
-      category,
-    } = props;
+		const {
+			address,
+			companyName,
+			date,
+			image,
+			title,
+			tags,
+			body,
+			assetId,
+			category,
+		} = props;
 
-    const token = await getToken();
-    if (!token) {
-      throw new Error("You are not allowed to do this request");
-    }
+		await fetchConfig(`/meetup/create`, [], 'POST', {
+			address,
+			companyName,
+			date,
+			image,
+			title,
+			tags,
+			body,
+			author: userId,
+			assetId,
+			category,
+		});
 
-    const res = await fetch(`${serverEndpoint}/meetup/create`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        address,
-        companyName,
-        date,
-        image,
-        title,
-        tags,
-        body,
-        author: userId,
-        assetId,
-        category,
-      }),
-    });
-    const meetup = await res.json();
-    if (meetup.error) throw new Error(meetup.message);
-
-    revalidatePath("/meetups");
-    return meetup;
-  } catch (error) {
-    throw error;
-  }
+		revalidateTag('meetups');
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function getMeetupById(id: string) {
-  try {
-    const { getToken } = auth();
-    const token = await getToken();
-    if (!token) {
-      throw new Error("You are not allowed to do this request");
-    }
-    const res = await fetch(`${serverEndpoint}/meetup?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const meetup = await res.json();
-
-    if (meetup.error) throw new Error(meetup.message);
-
-    return meetup[0] as Meetup;
-  } catch (error) {
-    throw error;
-  }
+	try {
+		const res = await fetchConfig(`/meetup?id=${id}`, [], 'GET');
+		return res[0] as Meetup;
+	} catch (error) {
+		throw error;
+	}
 }

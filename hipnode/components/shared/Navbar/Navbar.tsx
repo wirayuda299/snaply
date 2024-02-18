@@ -12,7 +12,6 @@ export default async function Navbar() {
 
 	if (!user) return null;
 	const allNotifications = await getAllNotifications();
-	console.log(allNotifications);
 
 	return (
 		<nav className='dark:bg-primary-dark relative flex items-center justify-end bg-white p-3 md:justify-between lg:sticky lg:top-0 lg:z-50  lg:p-5'>
