@@ -7,8 +7,10 @@ type Props = {
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 export default async function Podcasts({ searchParams }: Props) {
-	const { podcasts } = await getAllPodcasts();
-	const meetups = await getAllMeetups();
+	const [{ podcasts }, meetups] = await Promise.all([
+		getAllPodcasts(),
+		getAllMeetups(),
+	]);
 	const categoriesSet = new Set(podcasts.map((podcast) => podcast.category));
 	const category = searchParams.category;
 

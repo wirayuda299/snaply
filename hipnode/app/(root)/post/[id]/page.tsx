@@ -4,11 +4,11 @@ import { getPostById, getRelatedPosts } from '@/lib/actions';
 import { getCreatedDate, getPostStats } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
-	PostStats,
+	Parser,
 	Comment,
+	PostStats,
 	CommentInput,
 	RelatedPostItem,
-	Parser,
 } from '@/components/index';
 
 type Props = {

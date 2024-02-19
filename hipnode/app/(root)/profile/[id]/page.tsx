@@ -1,17 +1,17 @@
-import { Globe, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
+import { Globe, MessageCircleMore } from 'lucide-react';
 
 import {
 	Card,
-	InterviewPostCard,
-	PodcastCard,
 	PostCard,
+	PodcastCard,
+	InterviewPostCard,
 } from '@/components/index';
 import Tab from '@/components/profile/tab';
+import { User } from '@/types';
 import { Button } from '@/components/ui/button';
 import { getUserById } from '@/lib/actions';
 import { getCreatedDate } from '@/lib/utils';
-import { User } from '@/types';
 
 type ProfileProps = {
 	params: {
@@ -22,10 +22,10 @@ type ProfileProps = {
 	};
 };
 
-export default async function Profile(props: ProfileProps) {
+export default async function Profile({ searchParams, params }: ProfileProps) {
 	// @ts-ignore
-	const user: User = await getUserById(props.params.id);
-	const type = props.searchParams.type;
+	const user: User = await getUserById(params.id);
+	const type = searchParams.type;
 
 	return (
 		<div className='flex w-full flex-col gap-5 md:p-5 lg:flex-row'>

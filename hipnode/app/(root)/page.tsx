@@ -1,14 +1,20 @@
+import { Suspense } from 'react';
+
 import {
-	HomeCreatePost,
-	HomeFilter,
-	MeetupCard,
 	PostCard,
+	MeetupCard,
+	HomeFilter,
+	HomeCreatePost,
+	PopularTagsCard,
+	SharedPodcastCard,
 } from '@/components/index';
-import { FILTER_ITEMS } from '@/constants/home';
-import { getAllPosts } from '@/lib/actions/post.action';
-import PodcastCard from '@/components/shared/podcast-card';
-import PopularTags from '@/components/shared/popular-tags';
-import { getAllMeetups, getAllPodcasts, getAllTags } from '@/lib/actions';
+import {
+	getAllTags,
+	getAllPosts,
+	getAllMeetups,
+	getAllPodcasts,
+} from '@/lib/actions';
+import { FILTER_ITEMS } from '@/constants';
 
 type Props = {
 	params: { slug: string };
@@ -16,10 +22,12 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-	const { posts } = await getAllPosts(searchParams.sort as string);
-	const allTags = await getAllTags();
-	const meetups = await getAllMeetups();
-	const podcasts = await getAllPodcasts('popular', 1, 3);
+	const [{ posts }, allTags, meetups, { podcasts }] = await Promise.all([
+		getAllPosts(searchParams.sort as string),
+		getAllTags(),
+		getAllMeetups(),
+		getAllPodcasts('popular', 1, 3),
+	]);
 
 	return (
 		<section className='flex h-full flex-col gap-3 pb-16 pt-10 lg:flex-row'>
@@ -30,26 +38,49 @@ export default async function Home({ searchParams }: Props) {
 					rootStyles='max-h-min h-min'
 					titleStyles='hidden sm:block'
 				/>
-				{allTags?.length >= 1 && (
-					<PopularTags items={allTags} styles='hidden md:block' />
-				)}
+
+				<Suspense
+					fallback={
+						<div className='dark:bg-secondary-dark-2 min-h-[300px] min-w-[250px] bg-white'></div>
+					}
+				>
+					{allTags?.length >= 1 && (
+						<PopularTagsCard items={allTags} styles='hidden md:block' />
+					)}
+				</Suspense>
 			</div>
 			<section className='flex size-full flex-col gap-5'>
 				<HomeCreatePost />
-				{posts?.map((post) => (
-					<PostCard type='post' key={post.title} post={post} />
-				))}
-				{allTags.length >= 1 && (
-					<PopularTags
-						items={allTags}
-						styles='block md:hidden'
-						innerStyles='justify-start items-start'
-					/>
-				)}
+				<Suspense
+					fallback={
+						<div className='dark:bg-secondary-dark min-h-[300px] w-full rounded-lg bg-white'></div>
+					}
+				>
+					{posts?.map((post) => (
+						<PostCard type='post' key={post.title} post={post} />
+					))}
+				</Suspense>
+				<Suspense
+					fallback={
+						<div className='dark:bg-secondary-dark-2 min-h-[300px] min-w-[250px] bg-white'></div>
+					}
+				>
+					{allTags.length >= 1 && (
+						<PopularTagsCard
+							items={allTags}
+							styles='block md:hidden'
+							innerStyles='justify-start items-start'
+						/>
+					)}
+				</Suspense>
 			</section>
 			<section className='top-0 min-w-80 space-y-5 max-lg:min-w-full lg:sticky lg:h-screen'>
-				<MeetupCard meetups={meetups} />
-				<PodcastCard podcasts={podcasts.podcasts} />
+				<Suspense fallback={<p>Loading meetups...</p>}>
+					<MeetupCard meetups={meetups} />
+				</Suspense>
+				<Suspense fallback={<p>Loading podcasts</p>}>
+					<SharedPodcastCard podcasts={podcasts} />
+				</Suspense>
 			</section>
 		</section>
 	);

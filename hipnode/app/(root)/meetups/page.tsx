@@ -1,5 +1,9 @@
-import { Category, Card, PostCard } from '@/components/index';
-import PodcastCard from '@/components/shared/podcast-card';
+import {
+	Category,
+	Card,
+	PostCard,
+	SharedPodcastCard,
+} from '@/components/index';
 import { getAllPodcasts, getAllMeetups } from '@/lib/actions';
 
 type Props = {
@@ -8,10 +12,12 @@ type Props = {
 	};
 };
 export default async function Meetups({ searchParams }: Props) {
-	const meetups = await getAllMeetups();
-	const podcasts = await getAllPodcasts('popular', 1, 3);
-	const categoriesSet = new Set(meetups.map((meetup) => meetup.category));
 	const category = searchParams?.category;
+	const [meetups, { podcasts }] = await Promise.all([
+		getAllMeetups(),
+		getAllPodcasts('popular', 1, 3),
+	]);
+	const categoriesSet = new Set(meetups.map((meetup) => meetup.category));
 
 	return (
 		<div className='flex flex-col gap-5 py-5 lg:flex-row'>
@@ -37,7 +43,7 @@ export default async function Meetups({ searchParams }: Props) {
 					title='Host a meetup'
 					text='Find other Hipnoders in your area so you can learn, share, and work together.'
 				/>
-				<PodcastCard podcasts={podcasts.podcasts} />
+				<SharedPodcastCard podcasts={podcasts} />
 			</section>
 		</div>
 	);

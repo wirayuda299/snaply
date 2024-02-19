@@ -1,18 +1,21 @@
 import {
-	GroupSidebar,
 	MeetupCard,
-	GroupSidebarMobile,
+	GroupSidebar,
 	GroupPostCard,
+	SharedPodcastCard,
+	GroupSidebarMobile,
 } from '@/components/index';
-import PodcastCard from '@/components/shared/podcast-card';
-import { getAllMeetups, getAllPodcasts } from '@/lib/actions';
-import { getAllGroups } from '@/lib/actions/group.action';
+import { getAllMeetups, getAllPodcasts, getAllGroups } from '@/lib/actions';
 
 export default async function Groups() {
-	const groups = await getAllGroups();
+	const [groups, meetups, { podcasts }] = await Promise.all([
+		getAllGroups(),
+		getAllMeetups(),
+		getAllPodcasts('popular', 1, 3),
+	]);
+
 	const posts = groups.map((group) => group.posts).flat(2);
-	const meetups = await getAllMeetups();
-	const podcasts = await getAllPodcasts('popular', 1, 3);
+
 	return (
 		<div className='flex flex-col gap-3 py-5 lg:flex-row'>
 			<GroupSidebar groups={groups} />
@@ -26,7 +29,7 @@ export default async function Groups() {
 			</section>
 			<section className='top-0 min-w-[250px] space-y-5 lg:sticky lg:h-screen'>
 				<MeetupCard meetups={meetups} />
-				<PodcastCard podcasts={podcasts.podcasts} />
+				<SharedPodcastCard podcasts={podcasts} />
 			</section>
 		</div>
 	);

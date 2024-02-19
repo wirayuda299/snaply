@@ -1,5 +1,9 @@
-import { Category, Card, InterviewPostCard } from '@/components/index';
-import PodcastCard from '@/components/shared/podcast-card';
+import {
+	Card,
+	Category,
+	InterviewPostCard,
+	SharedPodcastCard,
+} from '@/components/index';
 
 export default function Interviews() {
 	return (
@@ -27,7 +31,7 @@ export default function Interviews() {
 					btnLeftText='Code of Conduct'
 					btnRightText='Submit a Story'
 				/>
-				<PodcastCard podcasts={[]} />
+				<SharedPodcastCard podcasts={[]} />
 			</div>
 		</div>
 	);
