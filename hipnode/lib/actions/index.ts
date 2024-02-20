@@ -39,13 +39,7 @@ import {
 	updateView,
 } from './post.action';
 
-import {
-	createUser,
-	deleteUser,
-	getUserById,
-	updateUser,
-	handleFollow,
-} from './user.action';
+import { createUser, getUserById, handleFollow } from './user.action';
 
 import {
 	getAllNotifications,
@@ -86,8 +80,6 @@ export {
 	updatePost,
 	updateView,
 	createUser,
-	deleteUser,
 	getUserById,
-	updateUser,
 };
 export type { CreateGroupType };

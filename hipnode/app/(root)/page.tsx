@@ -14,7 +14,6 @@ import {
 	getAllMeetups,
 	getAllPodcasts,
 } from '@/lib/actions';
-import { FILTER_ITEMS } from '@/constants';
 
 type Props = {
 	params: { slug: string };
@@ -32,12 +31,13 @@ export default async function Home({ searchParams }: Props) {
 	return (
 		<section className='flex h-full flex-col gap-3 pb-16 pt-10 lg:flex-row'>
 			<div className='top-0 flex flex-col gap-5 lg:sticky lg:h-screen'>
-				<HomeFilter
-					items={FILTER_ITEMS}
-					innerStyles='md:space-x-0 gap-8 justify-center'
-					rootStyles='max-h-min h-min'
-					titleStyles='hidden sm:block'
-				/>
+				<Suspense fallback='Loading...'>
+					<HomeFilter
+						innerStyles='md:space-x-0 gap-8 justify-center '
+						rootStyles='max-h-min h-min'
+						titleStyles='hidden sm:block'
+					/>
+				</Suspense>
 
 				<Suspense
 					fallback={
@@ -53,7 +53,7 @@ export default async function Home({ searchParams }: Props) {
 				<HomeCreatePost />
 				<Suspense
 					fallback={
-						<div className='dark:bg-secondary-dark min-h-[300px] w-full rounded-lg bg-white'></div>
+						<div className='dark:bg-secondary-dark min-h-[200px] w-full rounded-lg bg-white'></div>
 					}
 				>
 					{posts?.map((post) => (
@@ -69,7 +69,7 @@ export default async function Home({ searchParams }: Props) {
 						<PopularTagsCard
 							items={allTags}
 							styles='block md:hidden'
-							innerStyles='justify-start items-start'
+							innerStyles='justify-start !items-start'
 						/>
 					)}
 				</Suspense>

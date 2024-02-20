@@ -13,7 +13,6 @@ export default async function GroupsAdmin({
 	admins: Admin[] | undefined;
 }) {
 	const user = await currentUser();
-	console.log(admins);
 
 	return (
 		<section className='text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex w-[210px] flex-col gap-5 rounded-2xl bg-white p-5 max-lg:w-full'>

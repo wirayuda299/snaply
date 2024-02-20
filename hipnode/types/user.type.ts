@@ -1,5 +1,4 @@
-import { Group, Meetup, Post } from './index';
-import { Podcast } from './podcast.type';
+import { Group, Meetup, Post, Podcast } from './index';
 
 export interface User {
 	_id: string;
@@ -21,5 +20,4 @@ export interface User {
 	interviews: any[];
 	createdAt: Date;
 	updatedAt: Date;
-	__v: number;
 }

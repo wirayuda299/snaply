@@ -58,7 +58,7 @@ export default async function GroupDetail({ params }: Props) {
 						btnRightText='Create group.'
 					/>
 					<ActiveMember />
-					<RecentMedia />
+					<RecentMedia recentMedia={group.posts.map((post) => post.image)} />
 				</aside>
 			</div>
 		</div>

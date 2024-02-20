@@ -23,12 +23,12 @@ export default function PodcastCard({ podcasts }: { podcasts: Podcast[] }) {
 						className='mt-3 overflow-hidden'
 						key={c._id}
 					>
-						<div className='dark:text-white-700 flex justify-between gap-3'>
+						<div className='dark:text-white-700 flex justify-between gap-2'>
 							<div className='flex gap-3'>
 								<Image src={c.postImage} width={60} height={50} alt={c.title} />
-								<h3 className='text-secondary dark:text-secondary-light line-clamp-2 truncate text-sm  font-semibold capitalize md:text-lg'>
+								<h3 className='text-secondary dark:text-white-700 line-clamp-2 truncate text-sm font-semibold capitalize md:text-lg'>
 									{c.title}
-									<p className='text-secondary-light truncate text-sm font-light'>
+									<p className='text-secondary-light truncate text-xs font-normal'>
 										by {c.author.username}
 									</p>
 								</h3>

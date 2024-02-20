@@ -10,9 +10,9 @@ import {
 import Tab from '@/components/profile/tab';
 import { User } from '@/types';
 import { Button } from '@/components/ui/button';
+import FollowButton from '@/components/shared/follow-button';
 import { getUserById } from '@/lib/actions';
 import { getCreatedDate } from '@/lib/utils';
-import FollowButton from '@/components/shared/follow-button';
 
 type ProfileProps = {
 	params: {
@@ -39,13 +39,18 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 						width={100}
 						height={100}
 						alt='user'
+						priority
 					/>
 				</header>
 				<div className='pt-12 text-center'>
 					<h2 className='text-2xl font-semibold capitalize'>{user.username}</h2>
 					<p className='text-xs'>Developer</p>
 					<div className='flex items-center gap-3 pt-3'>
-						<FollowButton id={user._id} followers={user.followers} />
+						<FollowButton
+							id={user._id}
+							followers={user.followers}
+							path={`/profile/${user._id}`}
+						/>
 						<Button className='bg-blue-10 dark:bg-secondary-dark-2 group hover:bg-transparent'>
 							<MessageCircleMore className='group-hover:text-primary dark:text-white-700 bg-transparent text-black transition-colors duration-500 ease-in-out' />
 						</Button>

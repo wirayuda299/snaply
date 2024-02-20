@@ -9,16 +9,18 @@ import { Button } from '../ui/button';
 export default function FollowButton({
 	id,
 	followers,
+	path,
 }: {
 	id: string;
 	followers: string[];
+	path: string;
 }) {
 	const { userId } = useAuth();
 	const isFollowing = followers.includes(userId!);
 
 	async function handleFollowUnFollow() {
 		try {
-			await handleFollow(id);
+			await handleFollow(id, path);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -26,7 +28,7 @@ export default function FollowButton({
 		}
 	}
 	return (
-		<Button className='grow' onClick={handleFollowUnFollow}>
+		<Button className='w-full grow' onClick={handleFollowUnFollow}>
 			{isFollowing ? 'UnFollow' : 'Follow'}
 		</Button>
 	);

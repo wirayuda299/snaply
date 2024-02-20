@@ -13,7 +13,7 @@ export default function NavLink() {
 	const isActive = (path: string) => pathname === path;
 
 	return (
-		<ul className='dark:border-secondary-dark-2 dark:bg-secondary-dark-2 fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-1 border-t bg-white p-3 sm:gap-3 md:static md:border-none md:bg-transparent md:p-0 lg:gap-5 xl:gap-8 md:dark:bg-transparent'>
+		<ul className='dark:border-secondary-dark-2 dark:bg-secondary-dark-2 fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-1 border-t bg-white p-3 sm:gap-3 md:static md:gap-5 md:border-none md:bg-transparent md:p-0  xl:gap-8 md:dark:bg-transparent'>
 			{navLinks.map((navLink) => (
 				<li
 					key={navLink.label}

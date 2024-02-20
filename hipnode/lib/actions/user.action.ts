@@ -24,22 +24,6 @@ export async function createUser(
 	}
 }
 
-export async function updateUser(email: string, name: string) {
-	try {
-		console.log('update user');
-	} catch (error) {
-		console.log('Error with update user', error);
-	}
-}
-
-export async function deleteUser(email: string) {
-	try {
-		console.log(' delete user');
-	} catch (error) {
-		console.log('error with delete user', error);
-	}
-}
-
 export async function getUserById(id: string) {
 	try {
 		const res = await fetchConfig(`/user?id=${id}`, [`/profile/${id}`], 'GET');
@@ -49,17 +33,15 @@ export async function getUserById(id: string) {
 	}
 }
 
-export async function handleFollow(id: string) {
+export async function handleFollow(id: string, path: string) {
 	try {
 		const { userId } = auth();
 		await fetchConfig(`/user/follow`, [], 'POST', {
 			userId: id,
 			followerId: userId,
 		});
-		revalidatePath(`/profile/${userId}`);
+		revalidatePath(path);
 	} catch (error) {
-		console.log(error);
-
 		throw error;
 	}
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { cn, formUrlQuery } from '@/lib/utils';
@@ -10,21 +11,25 @@ export default function Tab() {
 	const params = useSearchParams();
 	const router = useRouter();
 
-	const paramsType = params?.get('type') || 'posts';
+	const [paramsType, setParamsType] = useState(params.get('type') || 'posts');
 
-	function handleClick(type: string) {
-		const url = formUrlQuery(params.toString(), 'type', type) as string;
-		router.push(url);
-	}
+	const handleClick = useCallback(
+		(type: string) => {
+			const url = formUrlQuery(params.toString(), 'type', type) as string;
+			router.push(url, { scroll: false });
+			setParamsType(type);
+		},
+		[params, router]
+	);
 
 	return (
-		<div className='no-scrollbar bg-white-700 dark:bg-secondary-dark-2 flex  w-full snap-mandatory justify-center gap-5 overflow-x-auto rounded-md p-2  md:justify-evenly md:p-4'>
+		<div className='no-scrollbar dark:bg-secondary-dark-2 flex w-full  justify-between gap-5 overflow-x-auto rounded-md bg-white p-2  md:p-4'>
 			{tabs.map((tab) => (
 				<button
 					onClick={() => handleClick(tab)}
 					className={cn(
-						'min-w-20 h-8 md:w-24 md:h-10 text-sm md:text-lg font-semibold text-center flex items-center justify-center  rounded-full bg-transparent capitalize',
-						paramsType === tab && 'bg-primary'
+						'min-w-20 h-8 md:w-24 md:h-10 text-sm md:text-lg font-semibold text-center flex items-center justify-center rounded-full bg-transparent capitalize transition-all ease duration-300',
+						paramsType === tab && 'bg-primary text-white-700'
 					)}
 					key={tab}
 				>

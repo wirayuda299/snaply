@@ -15,7 +15,7 @@ export default function Interviews() {
 				{[1, 2, 3].map((post) => (
 					<InterviewPostCard
 						key={post}
-						image='/banner.png'
+						image='/img.png'
 						createdAt='Today, 17 February'
 						name='Valentin Hinov'
 						authorImage='/avatar.png'

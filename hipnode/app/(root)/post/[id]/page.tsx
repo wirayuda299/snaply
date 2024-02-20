@@ -1,8 +1,7 @@
 import Image from 'next/image';
 
-import { getPostById, getRelatedPosts } from '@/lib/actions';
+import { getPostById, getRelatedPosts, getUserById } from '@/lib/actions';
 import { getCreatedDate, getPostStats } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import {
 	Parser,
 	Comment,
@@ -10,6 +9,8 @@ import {
 	CommentInput,
 	RelatedPostItem,
 } from '@/components/index';
+import FollowButton from '@/components/shared/follow-button';
+import { currentUser } from '@clerk/nextjs/server';
 
 type Props = {
 	params: {
@@ -21,6 +22,8 @@ export const dynamic = 'force-dynamic';
 
 export default async function PostDetail({ params }: Props) {
 	const { post } = await getPostById(params.id);
+	const userSession = await currentUser();
+	const user = await getUserById(userSession?.id as string);
 
 	const relatedPosts = await getRelatedPosts(params.id, post.author._id);
 	const postStats = getPostStats(
@@ -95,7 +98,11 @@ export default async function PostDetail({ params }: Props) {
 						<h2 className='text-secondary dark:text-secondary-light py-3 text-center text-3xl font-semibold'>
 							{post.author.username}
 						</h2>
-						<Button className='w-full grow'>Follow</Button>
+						<FollowButton
+							followers={user.followers}
+							id={userSession?.id!}
+							path={`/post/${post._id}`}
+						/>
 						<p className='text-secondary-light pt-3 text-center text-xs'>
 							Joined {getCreatedDate(post.author.createdAt)}
 						</p>

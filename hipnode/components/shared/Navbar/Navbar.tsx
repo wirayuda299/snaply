@@ -22,12 +22,12 @@ export default async function Navbar() {
 				<Image
 					className='aspect-auto object-contain'
 					src='/assets/general/icons/logo.svg'
-					width={28}
+					width={30}
 					height={34}
 					loading='lazy'
 					alt='Logo'
 				/>
-				<h1 className='dark:text-white-700 hidden sm:block'>Snaply</h1>
+				<h1 className='dark:text-white-700 hidden lg:block'>Snaply</h1>
 			</Link>
 			<NavLink />
 			<form className='md:bg-white-800 dark:md:bg-secondary-dark flex items-center gap-3 rounded-lg max-md:w-auto md:w-[200px] md:flex-row-reverse md:p-1 lg:w-[400px]'>
@@ -64,7 +64,10 @@ export default async function Navbar() {
 					/>
 				</button>
 				<Notification notifications={allNotifications ?? []} />
-				<button className='flex w-8 items-center gap-2 md:w-auto'>
+				<Link
+					href={`/profile/${user.id}`}
+					className='flex w-8 items-center gap-2 md:w-auto'
+				>
 					<Image
 						className='aspect-auto min-w-4 rounded-lg border-2 object-contain'
 						src={user?.imageUrl ?? ''}
@@ -73,13 +76,10 @@ export default async function Navbar() {
 						height={35}
 						alt=' user'
 					/>
-					<Link
-						href={`/profile/${user.id}`}
-						className='dark:text-white-700 hidden text-lg font-semibold capitalize md:block'
-					>
+					<p className='dark:text-white-700 hidden text-lg font-semibold capitalize md:block'>
 						{user?.username ?? user?.firstName}
-					</Link>
-				</button>
+					</p>
+				</Link>
 				<ModeToggle />
 			</div>
 		</nav>

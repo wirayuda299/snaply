@@ -19,7 +19,7 @@ export default function PopularTags({
 		>
 			<ul
 				className={cn(
-					'no-scrollbar flex flex-col items-center gap-5 space-x-3 overflow-x-auto md:flex-col md:items-start md:space-x-0',
+					'no-scrollbar flex flex-col items-center gap-5  overflow-x-auto md:flex-col md:items-start ',
 					innerStyles
 				)}
 			>

@@ -21,10 +21,10 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
 				{meetups?.map((c) => (
 					<Link
 						href={`/meetup/${c._id}`}
-						className='mt-4 flex gap-3'
+						className='mt-4 flex gap-4'
 						key={c._id}
 					>
-						<div className='text-secondary dark:bg-secondary-dark-2 dark:text-white-700 flex w-10 flex-col items-center dark:rounded-md dark:p-2'>
+						<div className='text-secondary dark:bg-secondary-dark dark:text-white-700 flex w-10 flex-col items-center dark:rounded-md dark:p-2'>
 							<h3 className='text-xl font-semibold uppercase'>
 								{new Date(c.createdAt).toLocaleString('en-US', {
 									month: 'short',
@@ -42,12 +42,12 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
 							<div className='flex items-center gap-2'>
 								<Image
 									src={c.image}
-									className='size-6 rounded-full object-cover'
+									className='mt-2 size-6 rounded-full object-cover'
 									width={15}
 									height={15}
 									alt=''
 								/>
-								<p className='dark:text-white-700 text-xs'>
+								<p className='dark:text-white-700 pt-2 text-xs'>
 									{c.companyName} {c.address}
 								</p>
 							</div>

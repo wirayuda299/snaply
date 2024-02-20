@@ -1,7 +1,7 @@
 import { createPostData } from './create-post';
-import { navLinks } from './general';
-import { FILTER_ITEMS } from './home';
+import { navLinks, tabValues } from './general';
 import { reportTags } from './post';
+
 import {
 	interests,
 	introductionItems,
@@ -11,9 +11,9 @@ import {
 export {
 	createPostData,
 	navLinks,
-	FILTER_ITEMS,
 	interests,
 	introductionItems,
 	programmingLevels,
 	reportTags,
+	tabValues,
 };

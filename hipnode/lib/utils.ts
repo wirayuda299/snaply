@@ -11,11 +11,11 @@ export const fetchConfig = async (
 	body?: Record<string, any>
 ) => {
 	const { getToken } = auth();
+
 	const token = await getToken();
 	if (!token) throw new Error('Unauthorized');
 
-	const serverEndpoint = process.env.SERVER_URL;
-	const res = await fetch(`${serverEndpoint}${url}`, {
+	const config = {
 		method,
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -23,14 +23,18 @@ export const fetchConfig = async (
 		},
 		next: { tags },
 		...(method !== 'GET' && { body: JSON.stringify(body) }),
-	});
+	};
+
+	const serverEndpoint = process.env.SERVER_URL;
+	const res = await fetch(`${serverEndpoint}${url}`, { ...config });
+
 	if (!res.headers.get('content-type')?.includes('application/json')) {
 		return;
 	}
 	const data = await res.json();
 	if (data.error) throw new Error(data.message);
 
-	if (method !== 'GET' && tags.length > 0) {
+	if (method !== 'GET' && tags.length >= 1) {
 		revalidateTag(tags[0]);
 	}
 	return data;
