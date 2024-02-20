@@ -12,6 +12,7 @@ import { User } from '@/types';
 import { Button } from '@/components/ui/button';
 import { getUserById } from '@/lib/actions';
 import { getCreatedDate } from '@/lib/utils';
+import FollowButton from '@/components/shared/follow-button';
 
 type ProfileProps = {
 	params: {
@@ -25,7 +26,8 @@ type ProfileProps = {
 export default async function Profile({ searchParams, params }: ProfileProps) {
 	// @ts-ignore
 	const user: User = await getUserById(params.id);
-	const type = searchParams.type;
+
+	const type = searchParams.type ?? 'posts';
 
 	return (
 		<div className='flex w-full flex-col gap-5 md:p-5 lg:flex-row'>
@@ -43,7 +45,7 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 					<h2 className='text-2xl font-semibold capitalize'>{user.username}</h2>
 					<p className='text-xs'>Developer</p>
 					<div className='flex items-center gap-3 pt-3'>
-						<Button className='grow'>Follow</Button>
+						<FollowButton id={user._id} followers={user.followers} />
 						<Button className='bg-blue-10 dark:bg-secondary-dark-2 group hover:bg-transparent'>
 							<MessageCircleMore className='group-hover:text-primary dark:text-white-700 bg-transparent text-black transition-colors duration-500 ease-in-out' />
 						</Button>

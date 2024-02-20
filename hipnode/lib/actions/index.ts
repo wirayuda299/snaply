@@ -39,7 +39,13 @@ import {
 	updateView,
 } from './post.action';
 
-import { createUser, deleteUser, getUserById, updateUser } from './user.action';
+import {
+	createUser,
+	deleteUser,
+	getUserById,
+	updateUser,
+	handleFollow,
+} from './user.action';
 
 import {
 	getAllNotifications,
@@ -48,6 +54,7 @@ import {
 } from './notification.action';
 import { getAllTags } from './tag.action';
 export {
+	handleFollow,
 	getAllTags,
 	getAllNotifications,
 	deleteNotification,

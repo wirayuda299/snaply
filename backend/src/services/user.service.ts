@@ -85,4 +85,33 @@ export default class UserService {
 			throw error;
 		}
 	}
+
+	async handleFollow(req: Request, res: Response) {
+		try {
+			const { userId, followerId } = req.body;
+
+			const user = await this.userModel.findById(userId);
+			const follower = await this.userModel.findById(followerId);
+			if (!user || !follower)
+				return res
+					.status(404)
+					.json({ message: 'User not found', error: false });
+
+			const followersIndex = user.followers.indexOf(followerId);
+			if (followersIndex === -1) {
+				user.followers.push(followerId);
+				follower.followings.push(user._id);
+			} else {
+				follower.followings.filter((following) => following !== user._id);
+				user.followers.splice(followersIndex, 1);
+			}
+			await user.save();
+			await follower.save();
+			res.status(200).end();
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			}
+		}
+	}
 }

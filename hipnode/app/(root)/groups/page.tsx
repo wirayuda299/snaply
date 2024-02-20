@@ -28,8 +28,8 @@ export default async function Groups() {
 				)}
 			</section>
 			<section className='top-0 min-w-[250px] space-y-5 lg:sticky lg:h-screen'>
-				<MeetupCard meetups={meetups} />
-				<SharedPodcastCard podcasts={podcasts} />
+				{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
+				{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
 			</section>
 		</div>
 	);

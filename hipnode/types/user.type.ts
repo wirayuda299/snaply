@@ -11,8 +11,8 @@ export interface User {
 	role: string;
 	bio: string;
 	website: string;
-	followers: User[];
-	followings: User[];
+	followers: string[];
+	followings: string[];
 	posts: Post[];
 	groups: Group[];
 	podcasts: Podcast[];

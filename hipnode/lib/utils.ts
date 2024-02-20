@@ -7,7 +7,7 @@ import { revalidateTag } from 'next/cache';
 export const fetchConfig = async (
 	url: string,
 	tags: string[],
-	method: string,
+	method?: string,
 	body?: Record<string, any>
 ) => {
 	const { getToken } = auth();

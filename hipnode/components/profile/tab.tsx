@@ -1,7 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { cn, formUrlQuery } from '@/lib/utils';
 
@@ -9,23 +8,28 @@ const tabs = ['posts', 'meetups', 'interviews', 'podcasts'];
 
 export default function Tab() {
 	const params = useSearchParams();
-	const type = params?.get('type') || 'posts';
+	const router = useRouter();
+
+	const paramsType = params?.get('type') || 'posts';
+
+	function handleClick(type: string) {
+		const url = formUrlQuery(params.toString(), 'type', type) as string;
+		router.push(url);
+	}
 
 	return (
-		<div className='no-scrollbar bg-white-700 dark:bg-secondary-dark-2 flex  w-full snap-mandatory justify-center gap-5 overflow-x-auto rounded p-2  md:justify-evenly md:p-4'>
+		<div className='no-scrollbar bg-white-700 dark:bg-secondary-dark-2 flex  w-full snap-mandatory justify-center gap-5 overflow-x-auto rounded-md p-2  md:justify-evenly md:p-4'>
 			{tabs.map((tab) => (
-				<Link
-					href={
-						formUrlQuery(params?.toString()!, 'type', tab) || params?.toString()
-					}
+				<button
+					onClick={() => handleClick(tab)}
 					className={cn(
 						'min-w-20 h-8 md:w-24 md:h-10 text-sm md:text-lg font-semibold text-center flex items-center justify-center  rounded-full bg-transparent capitalize',
-						type === tab && 'bg-primary'
+						paramsType === tab && 'bg-primary'
 					)}
 					key={tab}
 				>
 					{tab}
-				</Link>
+				</button>
 			))}
 		</div>
 	);

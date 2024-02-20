@@ -79,7 +79,7 @@ export default async function Home({ searchParams }: Props) {
 					<MeetupCard meetups={meetups} />
 				</Suspense>
 				<Suspense fallback={<p>Loading podcasts</p>}>
-					<SharedPodcastCard podcasts={podcasts} />
+					{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
 				</Suspense>
 			</section>
 		</section>

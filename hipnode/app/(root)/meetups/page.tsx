@@ -7,9 +7,7 @@ import {
 import { getAllPodcasts, getAllMeetups } from '@/lib/actions';
 
 type Props = {
-	searchParams: {
-		category: string;
-	};
+	searchParams: { category: string };
 };
 export default async function Meetups({ searchParams }: Props) {
 	const category = searchParams?.category;
@@ -43,7 +41,7 @@ export default async function Meetups({ searchParams }: Props) {
 					title='Host a meetup'
 					text='Find other Hipnoders in your area so you can learn, share, and work together.'
 				/>
-				<SharedPodcastCard podcasts={podcasts} />
+				{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
 			</section>
 		</div>
 	);

@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import { Meetup, Post } from '@/types';
 import { cn, getCreatedDate } from '@/lib/utils';
+import Link from 'next/link';
 
 type PostCardTypes =
 	| { type: 'post'; post: Post }
@@ -24,7 +25,10 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 				<div>
 					<h4 className='text-secondary dark:text-white-700 text-xs font-semibold sm:text-sm'>
 						{type === 'post' ? (
-							<span className='inline-flex items-center gap-3'>
+							<Link
+								href={`/profile/${post.author._id}`}
+								className='inline-flex items-center gap-3'
+							>
 								{post.author.username}{' '}
 								<span
 									className={cn(
@@ -32,7 +36,7 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 										'bg-green-600'
 									)}
 								></span>
-							</span>
+							</Link>
 						) : (
 							post.companyName
 						)}
