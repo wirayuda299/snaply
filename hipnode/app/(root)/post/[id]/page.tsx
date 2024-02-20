@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { currentUser } from '@clerk/nextjs/server';
 
 import { getPostById, getRelatedPosts, getUserById } from '@/lib/actions';
 import { getCreatedDate, getPostStats } from '@/lib/utils';
@@ -10,7 +11,6 @@ import {
 	RelatedPostItem,
 } from '@/components/index';
 import FollowButton from '@/components/shared/follow-button';
-import { currentUser } from '@clerk/nextjs/server';
 
 type Props = {
 	params: {
@@ -21,9 +21,11 @@ type Props = {
 export const dynamic = 'force-dynamic';
 
 export default async function PostDetail({ params }: Props) {
-	const { post } = await getPostById(params.id);
 	const userSession = await currentUser();
-	const user = await getUserById(userSession?.id as string);
+	const [{ post }, user] = await Promise.all([
+		getPostById(params.id),
+		getUserById(userSession?.id as string),
+	]);
 
 	const relatedPosts = await getRelatedPosts(params.id, post.author._id);
 	const postStats = getPostStats(
@@ -81,7 +83,17 @@ export default async function PostDetail({ params }: Props) {
 				</section>
 				<section className='ml-1 space-y-3'>
 					{post.comments.map((comment) => (
-						<Comment key={comment._id} {...comment} />
+						<Comment
+							key={comment._id}
+							_id={comment._id}
+							author={comment.author}
+							comment={comment.comment}
+							createdAt={comment.createdAt}
+							likes={comment.likes}
+							postAuthor={post.author}
+							postId={post._id}
+							updatedAt={comment.updatedAt}
+						/>
 					))}
 				</section>
 			</section>

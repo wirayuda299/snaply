@@ -176,16 +176,16 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 					)}
 				/>
 
-				<div className='flex gap-5'>
+				<div className='flex w-full gap-5 overflow-x-auto pb-2 '>
 					<FormField
 						control={form.control}
 						name='postImage'
 						render={() => (
-							<FormItem className='w-fit max-sm:w-full'>
+							<FormItem>
 								<FormLabel
 									aria-disabled={isChecking.postImage}
 									htmlFor='cover-input'
-									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 gap-2.5 rounded p-2.5 max-sm:w-full${
+									className={`bg-white-800 dark:bg-secondary-dark-2 flex w-28 gap-2.5 rounded p-2.5 max-sm:w-max ${
 										isChecking.postImage ? 'animate-pulse' : ''
 									}`}
 								>
@@ -197,11 +197,11 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 										className='aspect-square w-5 dark:invert'
 										loading='lazy'
 									/>
-									<span className='text-secondary dark:text-white-800 my-auto cursor-pointer text-xs font-semibold leading-[160%]'>
+									<p className='text-secondary dark:text-white-800 my-auto cursor-pointer text-xs font-semibold leading-[160%]'>
 										{isChecking.postImage ? 'Checking...' : 'Set Cover'}
-									</span>
+									</p>
 								</FormLabel>
-								<FormControl>
+								<FormControl className='w-full'>
 									<Input
 										disabled={isChecking.postImage}
 										type='file'

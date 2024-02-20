@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 
 import { Post } from '@/types';
-import { updateView } from '@/lib/actions/post.action';
+import { updateView } from '@/lib/actions';
 
 export default function RelatedPostItem({ post }: { post: Post }) {
 	const incremenetView = async () => {
