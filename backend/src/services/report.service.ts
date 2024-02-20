@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { postModelType } from '../models/post.model';
 import { reportModelType } from '../models/report.model';
-import console from 'console';
 
 export default class ReportService {
 	constructor(
@@ -13,7 +12,6 @@ export default class ReportService {
 	async reportPost(req: Request, res: Response) {
 		try {
 			const { postId, reasons, userId } = req.body;
-
 			const post = await this.postModel.findById(postId);
 			if (!post)
 				return res
@@ -23,10 +21,9 @@ export default class ReportService {
 			const report = await this.reportModel.create({
 				postId: post._id,
 				reportBy: userId,
+				reasons: [...reasons],
 			});
-			report.reasons.push(reasons);
 			post.report.push(report._id);
-			await report.save();
 			await post.save();
 			res
 				.status(201)

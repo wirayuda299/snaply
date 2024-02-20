@@ -45,7 +45,7 @@ const ReportConfirmation = ({
 							setIsOpen(false);
 							closeParentModal();
 						}}
-						className='heading-3 !bg-secondary-blue min-w-[160px] cursor-pointer rounded-md p-2.5 text-center text-white hover:!opacity-90 dark:text-white'
+						className=' min-w-[160px] cursor-pointer rounded-md p-2.5 text-center '
 					>
 						Go Back
 					</Button>
