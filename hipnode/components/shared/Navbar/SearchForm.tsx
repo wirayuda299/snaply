@@ -24,7 +24,13 @@ export default function SearchForm() {
 		try {
 			setDisabled(true);
 			const res = await search(data.get('search') as string);
-			if (!searchRes)
+			if (
+				searchRes &&
+				(!searchRes.posts ||
+					!searchRes?.meetups ||
+					!searchRes.podcasts ||
+					!searchRes.groups)
+			)
 				return toast.error(
 					"Sorry, we couldn't find any results matching your search. Please try a different query"
 				);
