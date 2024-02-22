@@ -6,9 +6,10 @@ import { cn } from '@/lib/utils';
 import { Post, Meetup, Group, Podcast } from '@/types';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { Dispatch, SetStateAction, useRef } from 'react';
+
 type SearchResultType = {
 	groups: Group[];
-	posts: Post[];
+	post: Post[];
 	podcasts: Podcast[];
 	meetups: Meetup[];
 };
@@ -16,7 +17,7 @@ type SearchResultType = {
 const tabs = ['posts', 'meetups', 'podcasts', 'groups'];
 
 const icons = {
-	posts: '/assets/general/icons/post.svg',
+	post: '/assets/general/icons/post.svg',
 	meetups: '/assets/general/icons/calendar.svg',
 	groups: '/assets/general/icons/group.svg',
 	podcasts: '/assets/general/icons/podcast.svg',

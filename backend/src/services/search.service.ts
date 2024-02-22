@@ -49,7 +49,7 @@ export default class SearchService {
 					data: {
 						meetups: datas[0],
 						groups: datas[1],
-						posts: datas[2],
+						post: datas[2],
 						podcasts: datas[3],
 					},
 				})

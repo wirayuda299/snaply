@@ -14,7 +14,7 @@ export async function search(searchTerm: string) {
 	);
 	return filteredData as {
 		groups: Group[];
-		posts: Post[];
+		post: Post[];
 		podcasts: Podcast[];
 		meetups: Meetup[];
 	};

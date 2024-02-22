@@ -10,7 +10,7 @@ import SearchResult from './SearchResult';
 
 type SearchResultType = {
 	groups: Group[];
-	posts: Post[];
+	post: Post[];
 	podcasts: Podcast[];
 	meetups: Meetup[];
 };
@@ -26,7 +26,7 @@ export default function SearchForm() {
 			const res = await search(data.get('search') as string);
 			if (
 				searchRes &&
-				(!searchRes.posts ||
+				(!searchRes.post ||
 					!searchRes?.meetups ||
 					!searchRes.podcasts ||
 					!searchRes.groups)
