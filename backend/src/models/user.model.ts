@@ -102,6 +102,7 @@ const userSchema = new Schema(
 		timestamps: true,
 	}
 );
+userSchema.index({ _id: 'text', username: 'text', email: 'text' });
 const userModel = model('User', userSchema);
 export type userSchemaType = typeof userSchema;
 export type userModelType = typeof userModel;

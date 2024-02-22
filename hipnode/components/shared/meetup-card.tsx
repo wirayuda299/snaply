@@ -47,7 +47,7 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
 									height={15}
 									alt=''
 								/>
-								<p className='dark:text-white-700 pt-2 text-xs'>
+								<p className='dark:text-white-700 truncate pt-2 text-xs'>
 									{c.companyName} - {c.address}
 								</p>
 							</div>

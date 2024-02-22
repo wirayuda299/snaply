@@ -19,6 +19,7 @@ import podcastRoutes from '../routes/podcast.route';
 import fileUploadRoutes from '../routes/fileupload.route';
 import tagsRoutes from '../routes/tag.route';
 import reportRoutes from '../routes/report.route';
+import searchRoutes from '../routes/search.route';
 
 export default class Application {
 	private corsAllowUrl = process.env.CLIENT_URL;
@@ -81,6 +82,7 @@ export default class Application {
 		this.app.use('/api/meetup', Middleware.validate, meetupRoutes);
 		this.app.use('/api/tags', Middleware.validate, tagsRoutes);
 		this.app.use('/api/report', Middleware.validate, reportRoutes);
+		this.app.use('/api/search', Middleware.validate, searchRoutes);
 	}
 
 	connectDb() {

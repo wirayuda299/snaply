@@ -51,14 +51,18 @@ export default function Filter({
 		error,
 		isError,
 	} = useQuery({
-		queryKey: ['user'],
+		queryKey: [user.userId],
 		queryFn: () => getUserById(user.userId as string),
 	});
 
 	const handleClick = (label: string) => {
 		router.push(formUrlQuery(params?.toString()!, 'sort', label)!);
 	};
-	if (isLoading) return <p>Loading....</p>;
+
+	if (isLoading)
+		return (
+			<div className='dark:bg-secondary-dark min-h-[100px] w-full animate-pulse rounded-lg bg-white'></div>
+		);
 	if (isError) return <p>{error.message}</p>;
 
 	return (

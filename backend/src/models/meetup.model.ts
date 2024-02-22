@@ -50,6 +50,8 @@ const meetupSchema = new Schema(
 	}
 );
 
+meetupSchema.index({ title: 'text', companyName: 'text' });
+
 const meetupModel = model('Meetup', meetupSchema);
 
 export type meetupType = typeof meetupModel;

@@ -19,7 +19,7 @@ import {
 } from './group.action';
 
 import { createMeetup, getAllMeetups, getMeetupById } from './meetup.action';
-
+import { search } from './search.action';
 import {
 	createPodcast,
 	getAllPodcasts,
@@ -48,6 +48,7 @@ import {
 } from './notification.action';
 import { getAllTags } from './tag.action';
 export {
+	search,
 	handleFollow,
 	getAllTags,
 	getAllNotifications,

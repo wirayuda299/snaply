@@ -10,7 +10,7 @@ export default function Sidebar({ groups }: { groups: Group[] }) {
 	const { handleSelectedGroup, selectedGroup } = useSelectedGroup(null);
 
 	return (
-		<aside className=' dark:bg-secondary-dark-2 top-0 hidden h-full min-w-[250px] items-start justify-start gap-2.5 overflow-y-auto rounded-2xl bg-white p-3 max-md:w-full lg:sticky lg:flex lg:h-screen'>
+		<aside className=' dark:bg-secondary-dark-2 top-0 hidden h-full min-w-[250px] items-start justify-start gap-2.5 overflow-y-auto rounded-2xl bg-white p-3 max-md:w-full lg:sticky lg:flex lg:max-h-screen'>
 			<div className='flex w-full flex-col items-start justify-start gap-5'>
 				{selectedGroup && (
 					<button

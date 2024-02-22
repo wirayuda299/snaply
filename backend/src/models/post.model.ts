@@ -66,6 +66,7 @@ const postSchema = new Schema(
 		timestamps: true,
 	}
 );
+postSchema.index({ title: 'text', body: 'text' });
 const postModel = model('Post', postSchema);
 export type postModelType = typeof postModel;
 

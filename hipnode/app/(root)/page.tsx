@@ -31,13 +31,11 @@ export default async function Home({ searchParams }: Props) {
 	return (
 		<section className='flex h-full flex-col gap-3 pb-16 pt-10 lg:flex-row'>
 			<div className='top-0 flex flex-col gap-5 lg:sticky lg:h-screen'>
-				<Suspense fallback='Loading...'>
-					<HomeFilter
-						innerStyles='md:space-x-0 gap-8 justify-center '
-						rootStyles='max-h-min h-min'
-						titleStyles='hidden sm:block'
-					/>
-				</Suspense>
+				<HomeFilter
+					innerStyles='md:space-x-0 gap-8 justify-center '
+					rootStyles='max-h-min h-min'
+					titleStyles='hidden sm:block'
+				/>
 
 				<Suspense
 					fallback={
@@ -76,7 +74,7 @@ export default async function Home({ searchParams }: Props) {
 			</section>
 			<section className='top-0 min-w-80 space-y-5 max-lg:min-w-full lg:sticky lg:h-screen'>
 				<Suspense fallback={<p>Loading meetups...</p>}>
-					<MeetupCard meetups={meetups} />
+					{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
 				</Suspense>
 				<Suspense fallback={<p>Loading podcasts</p>}>
 					{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}

@@ -1,6 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
 
-import { Notification } from '@/types';
 import { fetchConfig } from '../utils';
 
 type createNotificationProps = {
@@ -52,7 +51,7 @@ export async function getAllNotifications() {
 			'GET'
 		);
 
-		return res.data as Notification[];
+		return res;
 	} catch (error) {
 		throw error;
 	}

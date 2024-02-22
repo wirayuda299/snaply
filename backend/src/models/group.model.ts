@@ -55,6 +55,8 @@ const groupSchema = new Schema(
 	}
 );
 
+groupSchema.index({ name: 'text', category: 'text' });
+
 const groupModel = model('Group', groupSchema);
 
 export type groupModelType = typeof groupModel;

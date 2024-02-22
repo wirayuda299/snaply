@@ -1,5 +1,4 @@
-import exp from 'constants';
-import { Schema, Types, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const interviewSchema = new Schema(
 	{
@@ -47,6 +46,8 @@ const interviewSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+interviewSchema.index({ title: 'text' });
 
 const podcastModel = model('Podcasts', interviewSchema);
 export type podcastModelType = typeof podcastModel;

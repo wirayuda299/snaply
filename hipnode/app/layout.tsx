@@ -30,8 +30,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 					<ReactQueryProvider>
 						<ThemeProvider
 							attribute='class'
-							defaultTheme='system'
-							enableSystem
+							defaultTheme='light'
+							enableSystem={false}
 							disableTransitionOnChange
 						>
 							{children}
