@@ -58,7 +58,7 @@ export default function SearchResult({
 								className={cn(
 									' rounded-full px-3 py-1 text-sm font-normal capitalize',
 									responseKeys.includes(tab)
-										? 'bg-primary'
+										? 'bg-primary text-white-700 '
 										: 'bg-white-700 dark:bg-secondary-dark'
 								)}
 							>

@@ -18,13 +18,16 @@ type SearchResultType = {
 export default function SearchForm() {
 	const [disabled, setDisabled] = useState<boolean>(false);
 	const [responseKeys, setresponseKeys] = useState<string[]>([]);
-
 	const [searchRes, setSearchRes] = useState<SearchResultType | null>(null);
 
 	const handleSearch = async (data: FormData) => {
 		try {
 			setDisabled(true);
 			const res = await search(data.get('search') as string);
+			if (!searchRes)
+				return toast.error(
+					"Sorry, we couldn't find any results matching your search. Please try a different query"
+				);
 			setresponseKeys(Object.keys(res));
 			setSearchRes(res);
 		} catch (error) {
