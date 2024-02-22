@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Podcast } from '@/types/podcast.type';
+import { Podcast } from '@/types';
 
 export default function PodcastCard({ podcasts }: { podcasts: Podcast[] }) {
 	return (
@@ -19,7 +19,7 @@ export default function PodcastCard({ podcasts }: { podcasts: Podcast[] }) {
 			<div className='flex flex-col gap-3 pt-4'>
 				{podcasts?.map((c) => (
 					<Link
-						href={`/podcast/${c._id}`}
+						href={`/podcasts/${c._id}`}
 						className='mt-3 overflow-hidden'
 						key={c._id}
 					>

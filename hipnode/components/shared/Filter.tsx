@@ -2,11 +2,11 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@clerk/nextjs';
 
 import { cn, formUrlQuery } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 import { getUserById } from '@/lib/actions';
-import { useAuth } from '@clerk/nextjs';
 import { User } from '@/types';
 
 type Props = {
@@ -46,7 +46,7 @@ export default function Filter({
 	const params = useSearchParams();
 	const router = useRouter();
 	const user = useAuth();
-	const [currentUser, setCurrentUser] = useState<User>();
+	const [currentUser, setCurrentUser] = useState<User | null>(null);
 
 	const handleClick = (label: string) => {
 		router.push(formUrlQuery(params?.toString()!, 'sort', label)!);
@@ -59,7 +59,12 @@ export default function Filter({
 			setCurrentUser(await getUserById(user.userId as string));
 			filterItems(currentUser?.followings.length);
 		})();
-	}, []);
+
+		return () => {
+			setCurrentUser(null);
+			filterItems(0);
+		};
+	}, [currentUser?.followings.length, user]);
 
 	return (
 		<aside

@@ -1,9 +1,10 @@
-type Tags = {
+type TagType = {
 	_id: string;
 	name: string;
 	postIds: string[];
 };
-export default function Tag({ tags }: { tags: Tags[] }) {
+
+export default function Tag({ tags }: { tags: TagType[] }) {
 	return (
 		<div className='mb-auto mt-3 flex flex-wrap gap-3'>
 			{tags.map((tag) => (

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Tag } from '../index';
+import { Tag } from '@/components/index';
 import { Meetup } from '@/types';
 
 export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
@@ -20,12 +20,12 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
 			<div className='flex flex-col gap-3 overflow-hidden pt-2'>
 				{meetups?.map((c) => (
 					<Link
-						href={`/meetup/${c._id}`}
+						href={`/meetups/${c._id}`}
 						className='mt-4 flex gap-4'
 						key={c._id}
 					>
-						<div className='text-secondary dark:bg-secondary-dark dark:text-white-700 flex w-10 flex-col items-center dark:rounded-md dark:p-2'>
-							<h3 className='text-xl font-semibold uppercase'>
+						<div className='text-secondary bg-white-700 dark:bg-secondary-dark dark:text-white-700 flex h-max w-11 flex-col items-center p-2 dark:rounded-md'>
+							<h3 className='text-xl font-bold uppercase'>
 								{new Date(c.createdAt).toLocaleString('en-US', {
 									month: 'short',
 								})}
@@ -35,8 +35,8 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
 							</p>
 						</div>
 						<div>
-							<h3 className='text-secondary dark:text-white-700 line-clamp-1 truncate text-sm font-semibold'>
-								{c.companyName}
+							<h3 className='text-secondary dark:text-white-700 line-clamp-1 truncate text-sm font-semibold capitalize md:text-base'>
+								{c.title}
 							</h3>
 
 							<div className='flex items-center gap-2'>
@@ -48,7 +48,7 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
 									alt=''
 								/>
 								<p className='dark:text-white-700 pt-2 text-xs'>
-									{c.companyName} {c.address}
+									{c.companyName} - {c.address}
 								</p>
 							</div>
 							<Tag tags={c.tags} />
