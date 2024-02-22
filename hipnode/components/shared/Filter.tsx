@@ -2,12 +2,11 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
+import { useQuery } from '@tanstack/react-query';
 
 import { cn, formUrlQuery } from '@/lib/utils';
 import { getUserById } from '@/lib/actions';
-import { User } from '@/types';
 
 type Props = {
 	rootStyles?: string;
@@ -46,25 +45,21 @@ export default function Filter({
 	const params = useSearchParams();
 	const router = useRouter();
 	const user = useAuth();
-	const [currentUser, setCurrentUser] = useState<User | null>(null);
+	const {
+		isLoading,
+		data: currentUser,
+		error,
+		isError,
+	} = useQuery({
+		queryKey: ['user'],
+		queryFn: () => getUserById(user.userId as string),
+	});
 
 	const handleClick = (label: string) => {
 		router.push(formUrlQuery(params?.toString()!, 'sort', label)!);
 	};
-
-	useEffect(() => {
-		if (!user) return;
-
-		(async () => {
-			setCurrentUser(await getUserById(user.userId as string));
-			filterItems(currentUser?.followings.length);
-		})();
-
-		return () => {
-			setCurrentUser(null);
-			filterItems(0);
-		};
-	}, [currentUser?.followings.length, user]);
+	if (isLoading) return <p>Loading....</p>;
+	if (isError) return <p>{error.message}</p>;
 
 	return (
 		<aside
@@ -79,7 +74,7 @@ export default function Filter({
 					innerStyles
 				)}
 			>
-				{filterItems().map((item, i) => (
+				{filterItems(currentUser?.followings.length).map((item, i) => (
 					<li
 						onClick={() =>
 							item.label !== 'following' ? handleClick(item.label) : undefined

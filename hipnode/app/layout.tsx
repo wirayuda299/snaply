@@ -4,7 +4,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
+import ReactQueryProvider from '@/providers/react-query-provider';
 
 const sourceSansPro = SourceSans3({
 	subsets: ['latin'],
@@ -26,15 +27,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 				<body
 					className={`${sourceSansPro.variable} bg-white-800 dark:bg-primary-dark`}
 				>
-					<ThemeProvider
-						attribute='class'
-						defaultTheme='system'
-						enableSystem
-						disableTransitionOnChange
-					>
-						{children}
-						<Toaster />
-					</ThemeProvider>
+					<ReactQueryProvider>
+						<ThemeProvider
+							attribute='class'
+							defaultTheme='system'
+							enableSystem
+							disableTransitionOnChange
+						>
+							{children}
+							<Toaster />
+						</ThemeProvider>
+					</ReactQueryProvider>
 				</body>
 			</ClerkProvider>
 		</html>
