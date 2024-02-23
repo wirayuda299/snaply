@@ -5,9 +5,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
-
+import { uploadFile } from '@/lib/actions/fileUpload.action';
+import { createGroup } from '@/lib/actions';
 import {
 	Form,
 	FormControl,
@@ -24,16 +25,16 @@ import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
 import { createGroupSchema, createGroupSchemaTypes } from '@/lib/validations';
 import TagInput from '../shared/forms/TagInput';
-import { uploadFile, createGroup } from '@/lib/actions';
 
 export default function CreateGroupForm() {
+	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
-	const { isLoaded, isSignedIn, user } = useUser();
+	const { userId } = useAuth();
 
 	const form = useForm<createGroupSchemaTypes>({
 		resolver: zodResolver(createGroupSchema),
 		defaultValues: {
-			admins: [],
+			admins: [userId!],
 			tags: [],
 			cover: '',
 			description: '',
@@ -43,36 +44,29 @@ export default function CreateGroupForm() {
 			category: '',
 		},
 	});
-	const router = useRouter();
 	const { isChecking, handleChange, preview, files } = useUploadFile(form);
-
-	if (!isLoaded || !isSignedIn) return null;
 
 	async function onSubmit(data: createGroupSchemaTypes) {
 		try {
 			setLoading(true);
-			if (!user) throw new Error('Please sign in to perform this action');
 
 			if (files && files.cover && files.profileImage) {
-				const [cover, profileImage] = await Promise.all([
-					uploadFile(files.cover),
-					uploadFile(files.profileImage),
-				]);
-				await createGroup({
-					admins: [user?.id!],
-					banner: cover?.secure_url,
-					bannerAssetId: cover.public_id,
-					description: data.description,
-					members: data.members,
-					name: data.name,
-					logo: profileImage?.secure_url,
-					logoAssetId: profileImage.public_id,
-					tags: data.tags,
-					category: data.category,
-				}).then(() => {
-					toast.success('Group has been created 🎉');
-					router.push('/groups');
-				});
+				const cover = await uploadFile(files?.cover);
+				const profileImage = await uploadFile(files?.profileImage);
+
+				await createGroup(
+					data.admins,
+					data.tags,
+					cover?.secure_url,
+					cover?.public_id,
+					data.description,
+					profileImage?.secure_url,
+					profileImage?.public_id,
+					data.name,
+					data.category
+				);
+				toast.success('Group has been created 🎉');
+				router.push('/groups');
 			}
 		} catch (error) {
 			toast.error('Something went wrong while create a group 😢');
@@ -83,7 +77,7 @@ export default function CreateGroupForm() {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 pb-10'>
 				<FormField
 					control={form.control}
 					name='cover'
@@ -145,7 +139,7 @@ export default function CreateGroupForm() {
 				<div className='flex items-center gap-3'>
 					<div
 						className={cn(
-							'flex w-min sm:h-14 sm:w-14 object-contain items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2',
+							'flex w-15 sm:size-16 object-contain items-center justify-center rounded-full bg-white-700 p-2 dark:bg-secondary-dark-2',
 							isChecking.profileImage && 'animate-pulse cursor-not-allowed'
 						)}
 					>
@@ -159,7 +153,7 @@ export default function CreateGroupForm() {
 							}
 							alt='profile image'
 							className={cn(
-								'aspect-auto size-9 object-contain object-center ',
+								'aspect-auto size-7 sm:size-9 object-contain object-center ',
 								preview &&
 									preview.profileImage &&
 									'h-full w-full rounded-full aspect-auto object-cover'

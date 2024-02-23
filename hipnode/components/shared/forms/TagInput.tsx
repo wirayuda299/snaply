@@ -1,4 +1,4 @@
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import {
 	FormControl,
@@ -18,9 +18,10 @@ export default function TagInput<T extends FieldValues>({
 	const { handleEnter } = useHandleEnter(form);
 
 	const handleTagRemove = (tag: string, field: any) => {
-		const newTags = field.value.filter((t: string) => t !== tag);
-
-		form.setValue('tags' as Path<T>, newTags);
+		form.setValue(
+			'tags' as Path<T>,
+			field.value.filter((t: string) => t !== tag)
+		);
 	};
 	return (
 		<FormField

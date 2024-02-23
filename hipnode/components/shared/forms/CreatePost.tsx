@@ -157,7 +157,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className='w-full space-y-8 p-4'
+				className='w-full space-y-8 px-4 pb-10'
 			>
 				<FormField
 					control={form.control}
@@ -223,17 +223,13 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							name='group'
 							render={() => (
 								<FormItem>
-									<Select
-										onValueChange={(e) => {}}
-										value={group?.name ?? 'Select Group'}
-									>
+									<Select value={group?.name ?? 'Select Group'}>
 										<FormControl>
-											<SelectTrigger className='bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex items-center gap-2 rounded border-none'>
+											<SelectTrigger className='bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-white-800 flex items-center gap-2 truncate rounded border-none'>
 												{group?.name ?? 'Select group'}
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent className='dark:bg-secondary-dark-2 max-h-[500px] overflow-y-auto bg-white'>
-											{/* @ts-ignore */}
 											<GroupSelectContent groups={groups} form={form} />
 										</SelectContent>
 									</Select>

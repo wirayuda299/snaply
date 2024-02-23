@@ -1,10 +1,10 @@
-import { Group } from '@/types';
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
+
+import { Group } from '@/types';
 import { fetchConfig } from '../utils';
 
 export type CreateGroupType = {
-	admins: string[];
 	tags: string[];
 	members: string[];
 	banner: string;
@@ -16,27 +16,22 @@ export type CreateGroupType = {
 	category: string;
 };
 
-const serverEndpoint = process.env.SERVER_URL;
-
-export async function createGroup(props: CreateGroupType) {
+export async function createGroup(
+	admins: string[],
+	tags: string[],
+	banner: string,
+	bannerAssetId: string,
+	description: string,
+	logo: string,
+	logoAssetId: string,
+	name: string,
+	category: string
+) {
 	try {
-		const {
-			admins,
-			tags,
-			members,
-			banner,
-			description,
-			logo,
-			name,
-			bannerAssetId,
-			logoAssetId,
-			category,
-		} = props;
-
 		await fetchConfig(`/group/create`, [], 'POST', {
 			admins,
 			tags,
-			members,
+			members: [],
 			banner,
 			description,
 			logo,
@@ -47,6 +42,8 @@ export async function createGroup(props: CreateGroupType) {
 		});
 		revalidateTag('groups');
 	} catch (error) {
+		console.log(error);
+
 		throw error;
 	}
 }
@@ -83,25 +80,15 @@ export async function leaveGroup(groupId: string, userId: string) {
 
 export async function getAllGroupsWhereUserJoin(admins: string[]) {
 	try {
-		const { getToken, userId } = auth();
+		const { userId } = auth();
 
-		const token = await getToken();
-		if (!token) throw new Error('token is required');
-
-		const res = await fetch(
-			`${serverEndpoint}/group/group-member?admins=${admins}&members=${userId}`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-Type': 'application/json',
-				},
-			}
+		const res = await fetchConfig(
+			`/group/group-member?admins=${admins}&members=${userId}`,
+			[],
+			'GET'
 		);
-		const groups = await res.json();
-		if (groups.error) {
-			throw new Error(groups.message);
-		}
-		return groups.data as Group[];
+
+		return res.data as Group[];
 	} catch (error) {
 		throw error;
 	}

@@ -1,45 +1,35 @@
 'use client';
 
 import Image from 'next/image';
-import type { UseFormReturn } from 'react-hook-form';
+import type {
+	FieldValues,
+	Path,
+	PathValue,
+	UseFormReturn,
+} from 'react-hook-form';
 
 import { Group } from '@/types';
 
-type ReturnTypes = {
-	title: string;
-	post: string;
-	postImage: string;
-	group: {
-		id: string;
-		name: string;
-		profileImage: string;
-	} | null;
-	date: string;
-	createType: string;
-	tags: string[];
-	country: string;
-	address: string;
-	companyName: string;
-	audio: string;
-};
-
-export default function GroupSelectContent({
+export default function GroupSelectContent<T extends FieldValues>({
 	groups,
 	form,
 }: {
 	groups: Group[];
-	form: UseFormReturn<ReturnTypes>;
+	form: UseFormReturn<T>;
 }) {
 	return (
 		<div className='dark:bg-secondary-dark-2 flex w-full flex-col gap-3 p-3 md:flex-row'>
 			{groups.map((group) => (
 				<div
 					onClick={() =>
-						form.setValue('group', {
-							id: group._id,
-							name: group.name,
-							profileImage: group.logo,
-						})
+						form.setValue(
+							'group' as Path<T>,
+							{
+								id: group._id,
+								name: group.name,
+								profileImage: group.logo,
+							} as PathValue<T, Path<T>>
+						)
 					}
 					className='mb-2 flex cursor-pointer flex-col items-start  space-y-5'
 					key={group._id}
