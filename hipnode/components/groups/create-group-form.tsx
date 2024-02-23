@@ -139,7 +139,7 @@ export default function CreateGroupForm() {
 				<div className='flex items-center gap-3'>
 					<div
 						className={cn(
-							'flex w-15 sm:size-16 object-contain items-center justify-center rounded-full bg-white-700 p-2 dark:bg-secondary-dark-2',
+							'flex w-15 sm:size-16 object-contain items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2',
 							isChecking.profileImage && 'animate-pulse cursor-not-allowed'
 						)}
 					>
@@ -153,7 +153,7 @@ export default function CreateGroupForm() {
 							}
 							alt='profile image'
 							className={cn(
-								'aspect-auto size-7 sm:size-9 object-contain object-center ',
+								'aspect-auto size-7 sm:size-12 object-contain object-center ',
 								preview &&
 									preview.profileImage &&
 									'h-full w-full rounded-full aspect-auto object-cover'
@@ -214,6 +214,7 @@ export default function CreateGroupForm() {
 							<FormControl>
 								<Input
 									{...field}
+									autoComplete='off'
 									placeholder='Group name'
 									className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
 								/>
@@ -256,8 +257,9 @@ export default function CreateGroupForm() {
 								<>
 									<Input
 										{...field}
+										autoComplete='off'
 										placeholder='category...'
-										className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
+										className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg  bg-white px-5 py-3 text-base  md:min-h-[60px]'
 									/>
 								</>
 							</FormControl>

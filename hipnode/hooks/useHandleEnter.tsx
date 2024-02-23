@@ -15,37 +15,43 @@ export default function useHandleEnter<T extends FieldValues>(
 		field: string,
 		name: Path<T>
 	) => {
-		if (e.key === 'Enter' && field === name) {
-			e.preventDefault();
+		if (e.key !== 'Enter' || field !== name) return;
+		e.preventDefault();
 
-			const tagInput = e.target as HTMLInputElement;
-			const tagValue = tagInput.value.trim();
+		const tagInput = e.target as HTMLInputElement;
+		const tagValue = tagInput.value
+			.trim()
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-');
 
-			if (tagValue !== '') {
-				if (tagValue.length > 15) {
-					return form.setError(name, {
-						type: 'required',
-						message: 'Tags must be less than 15 characters',
-					});
-				}
-
-				if (!field.includes(tagValue)) {
-					const currentValues = form.getValues(field as Path<T>);
-					if (currentValues.length > 0) {
-						form.setValue(
-							name as Path<T>,
-							[currentValues, tagValue] as PathValue<T, Path<T>>
-						);
-					} else {
-						form.setValue(name as Path<T>, [tagValue] as PathValue<T, Path<T>>);
-					}
-					tagInput.value = '';
-					form.clearErrors(name);
-				}
-			} else {
-				form.trigger();
-			}
+		if (tagValue === '') {
+			form.trigger();
+			return;
 		}
+
+		if (tagValue.length > 15) {
+			form.setError(name, {
+				type: 'required',
+				message: 'Tags must be less than  15 characters',
+			});
+			return;
+		}
+
+		const currentValues = form.getValues(field as Path<T>);
+		const values = new Set(currentValues as string[]);
+
+		if (values.has(tagValue)) return;
+
+		if (values.size >= 5) {
+			form.setError(name, { message: 'Tag can only maximum  5' });
+			return;
+		}
+
+		values.add(tagValue);
+		form.setValue(name as Path<T>, Array.from(values) as PathValue<T, Path<T>>);
+		tagInput.value = '';
+		form.clearErrors(name);
 	};
+
 	return { handleEnter };
 }

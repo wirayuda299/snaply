@@ -2,12 +2,13 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { cn, formUrlQuery } from '@/lib/utils';
 import { Notification as NotificationType } from '@/types';
 import { tabValues } from '@/constants';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 const notificationType = {
 	comment: '/assets/notification/comment.svg',
@@ -22,12 +23,15 @@ export default function Notification({
 	const params = useSearchParams();
 	const type = params.get('notificationType') || 'all';
 	const router = useRouter();
+	const ref = useRef(null);
 	const [open, setOpen] = useState(false);
 
 	const handleClick = (value: string) => {
 		const url = formUrlQuery(params.toString(), 'notificationType', value);
 		router.push(url!);
 	};
+
+	useClickOutside(ref, () => setOpen(false));
 
 	return (
 		<div className='relative'>
@@ -45,6 +49,7 @@ export default function Notification({
 				/>
 			</button>
 			<ul
+				ref={ref}
 				className={cn(
 					'absolute min-h-96 top-0 hidden -left-40 p-3 bg-white rounded-lg border-white-800 dark:border-secondary-dark-2 dark:bg-secondary-dark-2 border z-50 max-sm:w-64 w-96 sm:-left-80',
 					open && 'block top-10'
