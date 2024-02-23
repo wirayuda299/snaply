@@ -42,8 +42,6 @@ export async function createGroup(
 		});
 		revalidateTag('groups');
 	} catch (error) {
-		console.log(error);
-
 		throw error;
 	}
 }

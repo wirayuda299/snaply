@@ -76,7 +76,7 @@ export default function CommentInput({
 				name='comment'
 				placeholder='Add comment'
 				className={cn(
-					'rounded-full bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0',
+					'rounded-full bg-transparent border dark:border-secondary focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none',
 					loading && 'animate-pulse'
 				)}
 			/>

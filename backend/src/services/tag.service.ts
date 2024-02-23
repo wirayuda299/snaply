@@ -1,5 +1,6 @@
 import { Model } from 'mongoose';
 import { Response } from 'express';
+
 import { TagModel } from '../models/tag.model';
 
 export default class Tag<T extends Model<any>> {

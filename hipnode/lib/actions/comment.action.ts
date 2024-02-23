@@ -1,5 +1,4 @@
 import { currentUser } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { Comment } from '@/types';
@@ -27,7 +26,7 @@ export async function uploadComment(data: Props) {
 	}
 }
 
-export async function likeComments(commentId: string, postId: string) {
+export async function likeComments(commentId: string) {
 	try {
 		const user = await currentUser();
 
@@ -46,11 +45,6 @@ export async function likeComments(commentId: string, postId: string) {
 
 export async function getCommentsReply(commentId: string) {
 	try {
-		const { getToken } = auth();
-		const token = await getToken();
-
-		if (!token) throw new Error('You must sign in to perform this action');
-
 		const res = await fetchConfig(`/comment/${commentId}`, [], 'GET');
 
 		return res.data as Comment[];

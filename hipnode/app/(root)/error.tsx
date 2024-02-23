@@ -28,7 +28,7 @@ export default function Error() {
 					</div>
 				</div>
 				<h1 className='dark:text-secondary-light mt-5 text-[36px] font-bold text-slate-800 lg:text-[50px]'>
-					500 - Server error
+					500 - Server Error
 				</h1>
 				<p className='dark:text-secondary-light mt-5 text-slate-600 lg:text-lg'>
 					Oops something went wrong. Try to refresh this page or <br /> feel

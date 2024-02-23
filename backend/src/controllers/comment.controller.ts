@@ -1,39 +1,37 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import CommentService from "../services/comment.service";
+import CommentService from '../services/comment.service';
 
 export default class CommentController {
-  constructor(private commentService: CommentService) {
-    this.commentService = commentService;
-  }
+	constructor(private commentService: CommentService) {}
 
-  createComment(req: Request, res: Response) {
-    const { author, comment, postId } = req.body;
+	createComment(req: Request, res: Response) {
+		const { author, comment, postId } = req.body;
 
-    if (!author || !postId || !comment) {
-      return res
-        .status(400)
-        .json({ message: "Author, Post ID and comment are required" });
-    }
-    return this.commentService.uploadComment(req, res);
-  }
+		if (!author || !postId || !comment) {
+			return res
+				.status(400)
+				.json({ message: 'Author, Post ID and comment are required' });
+		}
+		return this.commentService.uploadComment(req, res);
+	}
 
-  getReplies(req: Request, res: Response) {
-    if (!req.params.id) {
-      return res.status(400).json({ message: "Id is required", error: true });
-    }
+	getReplies(req: Request, res: Response) {
+		if (!req.params.id) {
+			return res.status(400).json({ message: 'Id is required', error: true });
+		}
 
-    return this.commentService.getCommentReplies(req, res);
-  }
+		return this.commentService.getCommentReplies(req, res);
+	}
 
-  like(req: Request, res: Response) {
-    const { userId, commentId } = req.body;
-    if (!userId || !commentId) {
-      return res
-        .status(400)
-        .json({ message: "user id and comment id are required", error: true });
-    }
+	like(req: Request, res: Response) {
+		const { userId, commentId } = req.body;
+		if (!userId || !commentId) {
+			return res
+				.status(400)
+				.json({ message: 'user id and comment id are required', error: true });
+		}
 
-    return this.commentService.likeComment(req, res);
-  }
+		return this.commentService.likeComment(req, res);
+	}
 }

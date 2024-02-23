@@ -32,6 +32,7 @@ export const fetchConfig = async (
 		return;
 	}
 	const data = await res.json();
+
 	if (data.error) throw new Error(data.message);
 
 	if (method !== 'GET' && tags.length >= 1) {

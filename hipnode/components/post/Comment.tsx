@@ -6,10 +6,10 @@ import type { Comment as PostComment } from '@/types/index';
 import { toast } from 'sonner';
 import { useAuth } from '@clerk/nextjs';
 
+import { getCommentsReply, likeComments } from '@/lib/actions';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import CommentInput from './CommentInput';
 import { cn, getCreatedDate } from '@/lib/utils';
-import { getCommentsReply, likeComments } from '@/lib/actions';
 
 const Comment = ({
 	comment,
@@ -29,7 +29,7 @@ const Comment = ({
 
 	const handleLike = async () => {
 		try {
-			await likeComments(_id, postId);
+			await likeComments(_id);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -42,16 +42,18 @@ const Comment = ({
 			if (replies.length < 1) {
 				const commentsReply = await getCommentsReply(_id);
 				if (commentsReply.length < 1) {
-					toast.message('There are no comments');
+					return toast.message('There are no replies yet');
 				} else {
-					setReplies(commentsReply);
+					return setReplies(commentsReply);
 				}
 			} else {
-				setReplies([]);
+				return setReplies([]);
 			}
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
+			} else {
+				toast.error('Something went wrong');
 			}
 		}
 	};

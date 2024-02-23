@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-
 import type { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 
@@ -102,8 +101,10 @@ export default class UserService {
 				user.followers.push(followerId);
 				follower.followings.push(user._id);
 			} else {
-				follower.followings.filter((following) => following !== user._id);
 				user.followers.splice(followersIndex, 1);
+				follower.followings.filter(
+					(following) => following !== user._id.toString()
+				);
 			}
 			await user.save();
 			await follower.save();
