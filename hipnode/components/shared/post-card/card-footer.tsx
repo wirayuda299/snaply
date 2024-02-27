@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Meetup, Post } from '@/types';
 import { cn, getCreatedDate } from '@/lib/utils';
-import Link from 'next/link';
 
 type PostCardTypes =
 	| { type: 'post'; post: Post }
@@ -26,10 +26,10 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 					<h4 className='text-secondary dark:text-white-700 text-xs font-semibold sm:text-sm'>
 						{type === 'post' ? (
 							<Link
-								href={`/profile/${post.author._id}`}
+								href={`/profile/${post?.author?._id}`}
 								className='inline-flex items-center gap-3'
 							>
-								{post.author.username}{' '}
+								{post?.author?.username}{' '}
 								<span
 									className={cn(
 										'w-2 h-2 rounded-full bg-slate-500 inline-block',
@@ -38,12 +38,12 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 								></span>
 							</Link>
 						) : (
-							post.companyName
+							post?.companyName
 						)}
 					</h4>
 					{type === 'post' && (
 						<p className='text-secondary dark:text-white-700 truncate text-[10px] sm:text-xs'>
-							{getCreatedDate(post.createdAt)}
+							{getCreatedDate(post?.createdAt)}
 						</p>
 					)}
 				</div>
@@ -52,13 +52,13 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 				{type === 'post' && (
 					<div className=' mt-auto flex flex-wrap gap-5'>
 						<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
-							{post.views} views
+							{post?.views} views
 						</p>
 						<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
-							{post.likes.length} Likes
+							{post?.likes.length} Likes
 						</p>
 						<p className='text-secondary dark:text-white-700 text-xs font-semibold'>
-							{post.comments.length} comments
+							{post?.comments.length} comments
 						</p>
 					</div>
 				)}
