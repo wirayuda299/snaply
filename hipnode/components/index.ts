@@ -14,6 +14,7 @@ export { default as MeetupCard } from '@/components/shared/meetup-card';
 export { default as Tag } from '@/components/shared/tag';
 export { default as PodcastCard } from '@/components/podcasts/podcastCard';
 export { default as PopularTagsCard } from '@/components/shared/popular-tags';
+export { default as SideContent } from '@/components/shared/SideContent/SideContent';
 // post
 export { default as PostStats } from '@/components/post/PostStats';
 export { default as RelatedPostItem } from '@/components/post/related-post-item';

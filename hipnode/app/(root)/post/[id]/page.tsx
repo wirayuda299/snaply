@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { currentUser } from '@clerk/nextjs/server';
 
 import { getPostById, getRelatedPosts, getUserById } from '@/lib/actions';
 import { getCreatedDate, getPostStats } from '@/lib/utils';
@@ -21,12 +20,9 @@ type Props = {
 export const dynamic = 'force-dynamic';
 
 export default async function PostDetail({ params }: Props) {
-	const userSession = await currentUser();
-	const [{ post }, user] = await Promise.all([
-		getPostById(params.id),
-		getUserById(userSession?.id as string),
-	]);
+	const { post } = await getPostById(params.id);
 
+	const user = await getUserById(post.author._id);
 	const relatedPosts = await getRelatedPosts(params.id, post.author._id);
 	const postStats = getPostStats(
 		post.likes.length,
@@ -112,7 +108,7 @@ export default async function PostDetail({ params }: Props) {
 						</h2>
 						<FollowButton
 							followers={user.followers}
-							id={userSession?.id!}
+							id={post.author._id}
 							path={`/post/${post._id}`}
 						/>
 						<p className='text-secondary-light pt-3 text-center text-xs'>
@@ -120,16 +116,19 @@ export default async function PostDetail({ params }: Props) {
 						</p>
 					</div>
 				</section>
-				<section className='dark:bg-secondary-dark-2 mt-3 rounded-xl bg-white p-5'>
-					<h2 className='text-secondary text-lg font-semibold dark:text-white'>
-						More from <span className='capitalize'>{post.author.username}</span>
-					</h2>
-					<div className='divide-secondary-light space-y-3 divide-y divide-solid'>
-						{relatedPosts.map((post) => (
-							<RelatedPostItem post={post} key={post._id} />
-						))}
-					</div>
-				</section>
+				{relatedPosts.length >= 1 && (
+					<section className='dark:bg-secondary-dark-2 mt-3 rounded-xl bg-white p-5'>
+						<h2 className='text-secondary text-lg font-semibold dark:text-white'>
+							More from{' '}
+							<span className='capitalize'>{post.author.username}</span>
+						</h2>
+						<div className='divide-secondary-light space-y-3 divide-y divide-solid'>
+							{relatedPosts.map((post) => (
+								<RelatedPostItem post={post} key={post._id} />
+							))}
+						</div>
+					</section>
+				)}
 			</div>
 		</div>
 	);

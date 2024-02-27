@@ -76,6 +76,8 @@ export default function AuthForm({ type }: { type: 'signin' | 'signup' }) {
 					toast.error(e.message);
 				});
 			} else if (err instanceof Error) {
+				console.log(err);
+
 				toast.error(err.message);
 			} else {
 				console.log(err);
@@ -108,8 +110,8 @@ export default function AuthForm({ type }: { type: 'signin' | 'signup' }) {
 						handleCreateUser(
 							completeSignUp.emailAddress,
 							completeSignUp.createdUserId,
-							completeSignUp.username,
 							user?.imageUrl!,
+							completeSignUp.username,
 							pwd
 						),
 					]);
@@ -138,12 +140,12 @@ export default function AuthForm({ type }: { type: 'signin' | 'signup' }) {
 	const handleCreateUser = async (
 		email: string,
 		id: string,
-		username: string,
 		image: string,
+		username: string,
 		password: string
 	) => {
 		try {
-			await createUser(email, id, username, image, password);
+			await createUser(email, id, image, username, password);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);

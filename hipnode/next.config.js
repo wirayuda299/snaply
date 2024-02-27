@@ -46,6 +46,7 @@ const nextConfig = {
   env: {
     EDITOR_API_KEY: process.env.EDITOR_API_KEY,
     SERVER_URL: process.env.SERVER_URL,
+    WEBHOOK_SECRET: process.env.WEBHOOK_SECRET
   },
   reactStrictMode: true,
   eslint: {

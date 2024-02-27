@@ -19,7 +19,7 @@ type HeroContentsProps = {
 	path?: string;
 };
 
-export default function HeroContents({
+export default function SideContent({
 	contents,
 	title,
 	bg,

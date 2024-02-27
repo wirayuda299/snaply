@@ -1,8 +1,10 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import queryString from 'query-string';
-import { auth } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs';
 import { revalidateTag } from 'next/cache';
+
+const serverEndpoint = process.env.SERVER_URL;
 
 export const fetchConfig = async (
 	url: string,
@@ -13,7 +15,9 @@ export const fetchConfig = async (
 	const { getToken } = auth();
 
 	const token = await getToken();
-	if (!token) throw new Error('Unauthorized');
+	if (token === null) {
+		throw new Error('Unauthorized');
+	}
 
 	const config = {
 		method,
@@ -25,7 +29,6 @@ export const fetchConfig = async (
 		...(method !== 'GET' && { body: JSON.stringify(body) }),
 	};
 
-	const serverEndpoint = process.env.SERVER_URL;
 	const res = await fetch(`${serverEndpoint}${url}`, { ...config });
 
 	if (!res.headers.get('content-type')?.includes('application/json')) {

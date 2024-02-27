@@ -47,7 +47,7 @@ export default async function Home({ searchParams }: Props) {
 					)}
 				</Suspense>
 			</div>
-			<section className='flex size-full flex-col gap-5'>
+			<section className='flex size-full grow flex-col gap-5'>
 				<HomeCreatePost />
 				<Suspense
 					fallback={

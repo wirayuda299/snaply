@@ -1,6 +1,7 @@
 import { createPostData } from './create-post';
 import { navLinks, tabValues } from './general';
 import { reportTags } from './post';
+import { signInContents, signupContents } from './auth';
 
 import {
 	interests,
@@ -16,4 +17,6 @@ export {
 	programmingLevels,
 	reportTags,
 	tabValues,
+	signInContents,
+	signupContents,
 };

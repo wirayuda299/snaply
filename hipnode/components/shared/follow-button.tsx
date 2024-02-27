@@ -2,7 +2,7 @@
 
 import { toast } from 'sonner';
 import { useAuth } from '@clerk/nextjs';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { handleFollow } from '@/lib/actions';
 import { Button } from '../ui/button';
@@ -17,8 +17,7 @@ export default function FollowButton({
 	path: string;
 }) {
 	const { userId } = useAuth();
-	const followersList = useMemo(() => followers, [followers]);
-	const isFollowing = followersList.includes(userId!);
+	const isFollowing = followers.includes(userId!);
 
 	const handleFollowUnFollow = useCallback(async () => {
 		try {
@@ -29,6 +28,9 @@ export default function FollowButton({
 			}
 		}
 	}, [id, path]);
+
+	console.log(followers);
+
 	return (
 		<Button className='w-full grow' onClick={handleFollowUnFollow}>
 			{isFollowing ? 'UnFollow' : 'Follow'}

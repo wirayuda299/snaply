@@ -56,7 +56,7 @@ export default function AuthFormFields({
 			{!pendingVerification && (
 				<Form {...form}>
 					<form
-						className='w-full'
+						className='w-full max-w-xl'
 						onSubmit={form.handleSubmit(
 							type === 'signup' ? handleSignUp : handleSignIn
 						)}

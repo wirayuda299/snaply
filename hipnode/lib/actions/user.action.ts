@@ -7,19 +7,27 @@ import { fetchConfig } from '../utils';
 export async function createUser(
 	email: string,
 	id: string,
-	username: string,
 	image: string,
+	username: string,
 	password: string
 ) {
 	try {
-		await fetchConfig(`/user/create`, [], 'POST', {
-			email,
-			id,
-			image,
-			password,
-			username,
+		await fetch(`${process.env.SERVER_URL}/user/create`, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify({
+				email,
+				id,
+				image,
+				username,
+				password,
+			}),
 		});
 	} catch (error) {
+		console.log(error);
+
 		throw error;
 	}
 }

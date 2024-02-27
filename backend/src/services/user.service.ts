@@ -10,6 +10,7 @@ export default class UserService {
 	async createUser(req: Request, res: Response) {
 		try {
 			const { email, id, image, password, username } = req.body;
+			console.log(req.body);
 
 			bcrypt.hash(password, 10, async (err, hash) => {
 				if (err) {
@@ -90,11 +91,12 @@ export default class UserService {
 			const { userId, followerId } = req.body;
 
 			const user = await this.userModel.findById(userId);
-			const follower = await this.userModel.findById(followerId);
+			let follower = await this.userModel.findById(followerId);
 			if (!user || !follower)
 				return res
 					.status(404)
 					.json({ message: 'User not found', error: false });
+			console.log(userId, followerId);
 
 			const followersIndex = user.followers.indexOf(followerId);
 			if (followersIndex === -1) {
@@ -102,12 +104,11 @@ export default class UserService {
 				follower.followings.push(user._id);
 			} else {
 				user.followers.splice(followersIndex, 1);
-				follower.followings.filter(
+				follower.followings = follower.followings.filter(
 					(following) => following !== user._id.toString()
 				);
 			}
-			await user.save();
-			await follower.save();
+			await Promise.all([user.save(), follower.save()]);
 			res.status(200).end();
 		} catch (error) {
 			if (error instanceof Error) {
