@@ -35,7 +35,6 @@ export const fetchConfig = async (
 		return;
 	}
 	const data = await res.json();
-
 	if (data.error) throw new Error(data.message);
 
 	if (method !== 'GET' && tags.length >= 1) {
@@ -121,18 +120,6 @@ export const getPostStats = (
 			label: 'Share',
 		},
 	];
-};
-
-export const getUserCountry = async () => {
-	try {
-		const response1 = await fetch('https://api.ipify.org/?format=json');
-		const { ip } = await response1.json();
-
-		const response2 = await fetch(`https://ipapi.co/${ip}/json/`);
-		return await response2.json();
-	} catch (error) {
-		throw error;
-	}
 };
 
 export const copyText = (text: string) => {

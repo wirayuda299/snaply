@@ -34,7 +34,7 @@ export default class PostService {
 				assetId,
 				category,
 				country: '',
-				...(group ? { group: group } : { group: null }),
+				...(group ? { group } : { group: null }),
 			});
 			user?.posts.push(post.id);
 			user.points += 5;

@@ -11,6 +11,8 @@ export async function uploadFile(file: File) {
 		});
 
 		const image = await res.json();
+		console.log(image);
+
 		if (image.error) {
 			throw new Error(image.message);
 		}

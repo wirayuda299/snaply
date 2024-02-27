@@ -416,6 +416,7 @@ const CreatePost = ({ groups }: { groups: Group[] }) => {
 							<FormControl>
 								<Input
 									{...field}
+									autoComplete='off'
 									placeholder='category...'
 									className='text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light min-h-[48px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-0 md:min-h-[60px]'
 								/>

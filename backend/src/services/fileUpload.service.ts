@@ -19,6 +19,7 @@ export default class FileUploadService {
 						error: false,
 						public_id: response.public_id,
 						secure_url: response.secure_url,
+						thumbnail: response.placeholder,
 					})
 					.end();
 			}
