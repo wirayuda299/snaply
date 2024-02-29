@@ -30,7 +30,7 @@ export default function SearchForm() {
 				!searchRes?.podcasts ||
 				!searchRes?.groups
 			)
-				return toast.error(
+				return toast.message(
 					"Sorry, we couldn't find any results matching your search. Please try a different query"
 				);
 			setresponseKeys(Object.keys(res));
