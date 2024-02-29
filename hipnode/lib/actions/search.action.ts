@@ -12,6 +12,7 @@ export async function search(searchTerm: string) {
 			([key, value]) => Array.isArray(value) && value.length >= 1
 		)
 	);
+
 	return filteredData as {
 		groups: Group[];
 		post: Post[];

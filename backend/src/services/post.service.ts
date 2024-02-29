@@ -1,9 +1,11 @@
 import type { Request, Response } from 'express';
 
-import TagController from '../services/tag.service';
+import TagService from '../services/tag.service';
+import FileUploadService from './fileUpload.service';
+
+import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { postModelType } from '../models/post.model';
-import { TagModel } from '../models/tag.model';
 import { groupModelType } from './../models/group.model';
 
 export default class PostService {
@@ -41,7 +43,7 @@ export default class PostService {
 			await user?.save();
 
 			if (tags && tags.length >= 1) {
-				await new TagController<typeof this.PostModel>(
+				await new TagService<typeof this.PostModel>(
 					this.PostModel,
 					this.tagModel
 				).createTagIfExists(tags, post.id);
@@ -225,6 +227,53 @@ export default class PostService {
 		} catch (error) {
 			if (error instanceof Error) {
 				res.status(500).json({ message: error.message, error: true }).end();
+			}
+		}
+	}
+
+	async deletePost(req: Request, res: Response) {
+		try {
+			const post = await this.PostModel.findById(req.body.postId)
+				.populate('tags')
+				.populate('author', '_id, username profileImage createdAt');
+
+			if (!post) {
+				return res.status(404).json({ error: true, message: 'Post not found' });
+			}
+			if (post.author) {
+				let postAuthor = await this.userModel.findById(post?.author);
+				if (!postAuthor)
+					return res.status(404).json({ message: 'User not found' });
+				// @ts-ignore
+				const updatedPosts = postAuthor.posts.filter(
+					(postId) => postId.toString() !== post._id.toString()
+				);
+
+				await this.userModel.updateOne(
+					{ _id: postAuthor._id },
+					{ $set: { posts: updatedPosts } }
+				);
+				await postAuthor?.save();
+			}
+			const fileUploadService = new FileUploadService();
+			fileUploadService.deleteImage(post.assetId, res);
+
+			await new TagService<typeof this.PostModel>(
+				this.PostModel,
+				this.tagModel
+			).deleteTag(post.tags, post._id);
+
+			await this.PostModel.deleteOne({ _id: post._id });
+
+			res.status(201).end();
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true }).end();
+			} else {
+				res
+					.status(500)
+					.json({ message: 'An unknown error occurred', error: true })
+					.end();
 			}
 		}
 	}

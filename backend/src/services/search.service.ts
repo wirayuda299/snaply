@@ -16,41 +16,44 @@ export default class SearchService {
 	async search(req: Request, res: Response) {
 		try {
 			const { searchTerm } = req.query;
-			const datas = await Promise.all([
+			const searchQuery = new RegExp(`^${searchTerm}`, 'i');
+			const results = await Promise.all([
 				this.meetupModel.find({
 					$text: {
-						$search: new RegExp(searchTerm as string, 'i') as unknown as string,
+						$search: searchQuery as unknown as string,
 						$caseSensitive: false,
 					},
 				}),
 				this.groupModel.find({
 					$text: {
-						$search: new RegExp(searchTerm as string, 'i') as unknown as string,
+						$search: searchQuery as unknown as string,
 						$caseSensitive: false,
 					},
 				}),
 				this.postModel.find({
 					$text: {
-						$search: new RegExp(searchTerm as string, 'i') as unknown as string,
+						$search: searchQuery as unknown as string,
 						$caseSensitive: false,
 					},
 				}),
 				this.podcastModel.find({
 					$text: {
-						$search: new RegExp(searchTerm as string, 'i') as unknown as string,
+						$search: searchQuery as unknown as string,
 						$caseSensitive: false,
 					},
 				}),
 			]);
 
+			console.log(results);
+
 			res
 				.status(200)
 				.json({
 					data: {
-						meetups: datas[0],
-						groups: datas[1],
-						post: datas[2],
-						podcasts: datas[3],
+						meetups: results[0],
+						groups: results[1],
+						post: results[2],
+						podcasts: results[3],
 					},
 				})
 				.end();

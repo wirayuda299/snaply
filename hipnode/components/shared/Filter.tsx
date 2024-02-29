@@ -61,7 +61,7 @@ export default function Filter({
 
 	if (isLoading)
 		return (
-			<div className='dark:bg-secondary-dark min-h-[100px] w-full animate-pulse rounded-lg bg-white'></div>
+			<div className='dark:bg-secondary-dark min-h-[180px] w-full animate-pulse rounded-lg bg-white'></div>
 		);
 	if (isError) return <p>{error.message}</p>;
 

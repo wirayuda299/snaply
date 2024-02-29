@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 
-import AudioControll from './AudioControll';
 import { cn } from '@/lib/utils';
+const AudioControll = dynamic(() => import('./AudioControll'));
 
 type Props = {
 	audioUrl: string;

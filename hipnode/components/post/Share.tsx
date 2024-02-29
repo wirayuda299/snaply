@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { CheckIcon } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
+import { toast } from 'sonner';
 
 import {
 	Dialog,
@@ -16,7 +17,6 @@ import {
 import { sharePost } from '@/lib/actions';
 
 import { copyText, shareOptionData } from '@/lib/utils';
-import { toast } from 'sonner';
 
 export type PostStatsType = {
 	icon: string;

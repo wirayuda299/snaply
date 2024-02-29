@@ -1,15 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { currentUser } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
-import LikeButton from './like-button';
 import { Post } from '@/types';
+const LikeButton = dynamic(async () => await import('./like-button'));
 
 export default async function PostCard({ post }: { post: Post }) {
 	const user = await currentUser();
+
+	const isLikedByCurrentUser = useMemo(() => {
+		return post.likes.includes(user?.id!);
+	}, [post.likes, user?.id]);
+
 	if (!user) return null;
 
-	const isLikedByCurrentUser = post.likes.includes(user.id);
 	return (
 		<article className='card dark:bg-secondary-dark-2 flex size-min max-w-[250px] grow flex-col items-stretch rounded-2xl bg-white p-2.5 max-md:max-w-full max-sm:max-w-full'>
 			<header className='card-header flex items-stretch justify-between gap-2.5'>

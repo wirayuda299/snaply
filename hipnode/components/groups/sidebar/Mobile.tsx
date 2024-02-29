@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
-import useSelectedGroup from '@/hooks/useSelectedGroup';
 import { Group } from '@/types';
+import useSelectedGroup from '@/hooks/useSelectedGroup';
 
 export default function Mobile({ groups }: { groups: Group[] }) {
 	const { selectedGroup, setSelectedGroup } = useSelectedGroup(groups[0]);

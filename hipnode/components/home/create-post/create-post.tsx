@@ -11,8 +11,9 @@ export default async function CreatePost() {
 	async function redirectToCreatePost(data: FormData) {
 		'use server';
 		const title = data.get('title');
-
-		redirect(`/create?title=${title?.toString()}&type=post`);
+		if (title !== '') {
+			redirect(`/create?title=${title?.toString()}&type=post`);
+		}
 	}
 
 	return (

@@ -17,6 +17,7 @@ export default function Categories({
 
 	function handleClick(category: string) {
 		const current = params.get('category');
+
 		if (current !== category) {
 			const url = formUrlQuery(params.toString(), 'category', category);
 			router.push(url!);

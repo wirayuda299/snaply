@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { meetupType } from '../models/meetup.model';
 import Tag from '../services/tag.service';
 import { TagModel } from '../models/tag.model';
+import { meetupType } from '../models/meetup.model';
 import { userModelType } from '../models/user.model';
 
 export default class MeetupService {

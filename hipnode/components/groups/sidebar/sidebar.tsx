@@ -27,7 +27,7 @@ export default function Sidebar({ groups }: { groups: Group[] }) {
 					</button>
 				)}
 				{selectedGroup ? (
-					<div>{selectedGroup.name}</div>
+					<p>{selectedGroup.name}</p>
 				) : (
 					<>
 						<h2 className='py-3 text-lg font-semibold'>All Groups</h2>

@@ -74,6 +74,7 @@ export default function CommentInput({
 				required
 				autoComplete='off'
 				name='comment'
+				title='Add comment'
 				placeholder='Add comment'
 				className={cn(
 					'rounded-full bg-transparent border dark:border-secondary focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none',

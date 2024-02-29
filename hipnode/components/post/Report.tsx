@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
+import dynamic from 'next/dynamic';
 import {
 	Dialog,
 	DialogClose,
@@ -15,10 +16,10 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 
-import ReportItem from './ReportItem';
-import ReportConfirmation from './ReportConfirmation';
 import { reportPost } from '@/lib/actions';
 import { reportTags } from '@/constants';
+const ReportConfirmation = dynamic(() => import('./ReportConfirmation'));
+const ReportItem = dynamic(() => import('./ReportItem'));
 
 interface ReportProps {
 	user: string;

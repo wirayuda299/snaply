@@ -6,10 +6,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { FormEvent, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 import { authSchemaType, authSchema } from '@/lib/validations';
-import AuthFormFields from './FormFields';
 import { createUser } from '@/lib/actions';
+const AuthFormFields = dynamic(() => import('./FormFields'));
 
 export default function AuthForm({ type }: { type: 'signin' | 'signup' }) {
 	const { user } = useUser();

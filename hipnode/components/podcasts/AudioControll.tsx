@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Pause, Play } from 'lucide-react';
 
 import { Button } from '../ui/button';
-import { Pause, Play } from 'lucide-react';
 
 export default function AudioControll({
 	isPlaying,

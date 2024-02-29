@@ -29,4 +29,15 @@ export default class FileUploadService {
 			}
 		}
 	}
+
+	async deleteImage(imageId: string, res: Response) {
+		try {
+			cloudinary.v2.config(cloudinaryConfig);
+			await cloudinary.v2.uploader.destroy(imageId);
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message, error: true });
+			}
+		}
+	}
 }

@@ -25,16 +25,16 @@ export default function SearchForm() {
 			setDisabled(true);
 			const res = await search(data.get('search') as string);
 			if (
-				searchRes &&
-				(!searchRes.post ||
-					!searchRes?.meetups ||
-					!searchRes.podcasts ||
-					!searchRes.groups)
+				!searchRes?.post ||
+				!searchRes?.meetups ||
+				!searchRes?.podcasts ||
+				!searchRes?.groups
 			)
 				return toast.error(
 					"Sorry, we couldn't find any results matching your search. Please try a different query"
 				);
 			setresponseKeys(Object.keys(res));
+
 			setSearchRes(res);
 		} catch (error) {
 			if (error instanceof Error) {

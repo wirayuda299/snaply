@@ -13,7 +13,7 @@ export default function TextEditor({
 
 	return (
 		<Editor
-			key={theme}
+			key={theme || 'light'}
 			apiKey={process.env.EDITOR_API_KEY}
 			initialValue=''
 			onEditorChange={(content) => field.onChange(content)}

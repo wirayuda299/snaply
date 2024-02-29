@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { joinGroup, leaveGroup } from '@/lib/actions/group.action';
+import { joinGroup, leaveGroup } from '@/lib/actions';
 import { Button } from '../ui/button';
 
 import {
@@ -29,9 +29,7 @@ export default function ActionButton({
 }) {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-	const handleToggle = () => {
-		setIsOpen((prev) => !prev);
-	};
+	const handleToggle = () => setIsOpen((prev) => !prev);
 
 	const handleGroupAction = async () => {
 		try {

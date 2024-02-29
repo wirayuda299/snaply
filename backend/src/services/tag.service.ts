@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import type { Model, Types } from 'mongoose';
 import { Response } from 'express';
 
 import { TagModel } from '../models/tag.model';
@@ -36,6 +36,28 @@ export default class Tag<T extends Model<any>> {
 			}
 		} catch (error) {
 			return res.status(500).json({ error });
+		}
+	}
+
+	async deleteTag(tags: Types.ObjectId[], id: Types.ObjectId) {
+		try {
+			tags.forEach(async (tag) => {
+				// @ts-ignore
+				let foundTag = await this.tagModel.findById(tag._id);
+				if (foundTag) {
+					if (foundTag.postIds.length === 1) {
+						await this.tagModel.deleteOne({ name: foundTag.name });
+					} else {
+						let postIds = foundTag.postIds.filter(
+							(postId) => postId.toString() !== id.toString()
+						);
+						foundTag.postIds = postIds;
+						await foundTag.save();
+					}
+				}
+			});
+		} catch (error) {
+			throw error;
 		}
 	}
 }

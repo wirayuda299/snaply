@@ -1,7 +1,7 @@
-import { notificationModelType } from '../models/notification.model';
-
 import { Request, Response } from 'express';
+
 import { userModelType } from '../models/user.model';
+import { notificationModelType } from '../models/notification.model';
 
 export default class NotificationService {
 	constructor(

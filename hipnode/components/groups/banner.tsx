@@ -1,7 +1,8 @@
 import Image from 'next/image';
-
 import { currentUser } from '@clerk/nextjs';
-import ActionButton from './action-button';
+import dynamic from 'next/dynamic';
+
+const ActionButton = dynamic(async () => await import('./action-button'));
 
 type Member = {
 	_id: string;

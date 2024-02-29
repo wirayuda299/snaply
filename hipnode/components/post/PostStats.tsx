@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 
-import Report from './Report';
-import SharePost from './Share';
+const SharePost = dynamic(() => import('./Share'));
+const Report = dynamic(() => import('./Report'));
 
 export type PostStatsType = {
 	icon: string;

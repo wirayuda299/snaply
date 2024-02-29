@@ -36,6 +36,7 @@ export default function TagInput<T extends FieldValues>({
 					<FormControl>
 						<>
 							<Input
+								autoComplete='off'
 								placeholder='Add a tag...'
 								className='dark:bg-secondary-dark-2 min-h-[50px] rounded-lg border-none bg-white px-5 py-3 text-base focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0'
 								onKeyDown={(e) => handleEnter(e, 'tags', 'tags' as Path<T>)}

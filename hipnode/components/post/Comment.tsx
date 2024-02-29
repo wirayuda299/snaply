@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
-import type { Comment as PostComment } from '@/types/index';
+import type { Comment as PostComment } from '@/types';
 import { toast } from 'sonner';
 import { useAuth } from '@clerk/nextjs';
 
@@ -21,11 +21,14 @@ const Comment = ({
 	_id,
 	postAuthor,
 }: PostComment) => {
+	const { userId } = useAuth();
+
 	const [showReplyInput, setShowReplyInput] = useState<boolean>(false);
 	const [replies, setReplies] = useState<PostComment[]>([]);
 
-	const { userId } = useAuth();
-	const isLikedByCurrentUser = likes?.includes(userId as string);
+	const isLikedByCurrentUser = useMemo(() => {
+		return likes?.includes(userId as string);
+	}, [likes, userId]);
 
 	const handleLike = async () => {
 		try {
@@ -60,7 +63,7 @@ const Comment = ({
 
 	return (
 		<div>
-			<div className={cn('flex rounded-2xl', parentId ? 'ml-[60px]' : '')}>
+			<div className={cn('flex rounded-2xl', parentId && 'ml-[60px]')}>
 				<Avatar className='mr-4 size-11 rounded-full'>
 					<AvatarImage
 						src={author.profileImage ?? '/avatar.png'}

@@ -28,6 +28,7 @@ export default function PostTitle({
 
 	return (
 		<Link
+			prefetch
 			onClick={() => (type === 'post' ? incremenetView() : undefined)}
 			href={path}
 			className='dark:text-white-700 line-clamp-2 block text-balance text-base font-semibold first-letter:uppercase md:text-base'

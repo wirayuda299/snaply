@@ -67,8 +67,10 @@ export async function getPostById(id: string) {
 	}
 }
 
-export async function deletePost(id: string) {
+export async function deletePost(id: string, path: string) {
 	try {
+		await fetchConfig('/post/delete', [], 'POST', { postId: id });
+		revalidatePath(path);
 		revalidatePath('/');
 	} catch (error) {
 		throw error;

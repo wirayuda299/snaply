@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import { currentUser } from '@clerk/nextjs';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
-import NavLink from './NavLink';
-import ModeToggle from './theme-switch';
 import { getAllNotifications } from '@/lib/actions';
-import Notification from './Notification';
-import SearchForm from './SearchForm';
+
+const SearchForm = dynamic(() => import('./SearchForm'));
+const Notification = dynamic(() => import('./Notification'));
+const ModeToggle = dynamic(() => import('./theme-switch'));
+const NavLink = dynamic(() => import('./NavLink'));
 
 export default async function Navbar() {
 	const user = await currentUser();

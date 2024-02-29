@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { Parser } from '../index';
-import { Podcast } from '@/types/podcast.type';
+import { Podcast } from '@/types';
 import { getCreatedDate } from '@/lib/utils';
 
 export default function PodcastCard({ podcast }: { podcast: Podcast }) {

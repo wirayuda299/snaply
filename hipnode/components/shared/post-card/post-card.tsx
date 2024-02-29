@@ -1,13 +1,16 @@
 import Image from 'next/image';
-
-import Tag from '../tag';
-import { cn } from '@/lib/utils';
-import LikeButton from './like-button';
-import PostTitle from './title';
-import Parser from '../parser';
-import { Meetup, Post } from '@/types';
 import { currentUser } from '@clerk/nextjs/server';
-import CardFooter from './card-footer';
+import dynamic from 'next/dynamic';
+
+import { Meetup, Post } from '@/types';
+import { cn } from '@/lib/utils';
+import DeleteButton from './delete-button';
+
+const Tag = dynamic(() => import('../tag'));
+const Parser = dynamic(() => import('../parser'));
+const PostTitle = dynamic(() => import('./title'));
+const LikeButton = dynamic(() => import('./like-button'));
+const CardFooter = dynamic(() => import('./card-footer'));
 
 type PostCardTypes =
 	| { type: 'post'; post: Post }
@@ -61,7 +64,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 							{type === 'meetup' && <Parser content={post.body} />}
 						</header>
 
-						<div>
+						<div className='flex items-center '>
 							{type === 'post' ? (
 								<LikeButton
 									post={post}
@@ -75,6 +78,9 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 									</span>
 									<span className='text-blue-600'>{date.getDate()}</span>
 								</p>
+							)}
+							{post.author._id === user.id && (
+								<DeleteButton path='/' postId={post._id} />
 							)}
 						</div>
 					</div>

@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-
 import {
 	PostCard,
 	MeetupCard,
@@ -8,6 +6,7 @@ import {
 	PopularTagsCard,
 	SharedPodcastCard,
 } from '@/components/index';
+
 import {
 	getAllTags,
 	getAllPosts,
@@ -37,48 +36,28 @@ export default async function Home({ searchParams }: Props) {
 					titleStyles='hidden sm:block'
 				/>
 
-				<Suspense
-					fallback={
-						<div className='dark:bg-secondary-dark-2 min-h-[300px] min-w-[250px] bg-white'></div>
-					}
-				>
-					{allTags?.length >= 1 && (
-						<PopularTagsCard items={allTags} styles='hidden md:block' />
-					)}
-				</Suspense>
+				{allTags?.length >= 1 && (
+					<PopularTagsCard items={allTags} styles='hidden md:block' />
+				)}
 			</div>
 			<section className='flex size-full grow flex-col gap-5'>
 				<HomeCreatePost />
-				<Suspense
-					fallback={
-						<div className='dark:bg-secondary-dark min-h-[200px] w-full rounded-lg bg-white'></div>
-					}
-				>
-					{posts?.map((post) => (
-						<PostCard type='post' key={post.title} post={post} />
-					))}
-				</Suspense>
-				<Suspense
-					fallback={
-						<div className='dark:bg-secondary-dark-2 min-h-[300px] min-w-[250px] bg-white'></div>
-					}
-				>
-					{allTags.length >= 1 && (
-						<PopularTagsCard
-							items={allTags}
-							styles='block md:hidden'
-							innerStyles='justify-start !items-start'
-						/>
-					)}
-				</Suspense>
+
+				{posts?.map((post) => (
+					<PostCard type='post' key={post.title} post={post} />
+				))}
+
+				{allTags.length >= 1 && (
+					<PopularTagsCard
+						items={allTags}
+						styles='block md:hidden'
+						innerStyles='justify-start !items-start'
+					/>
+				)}
 			</section>
 			<section className='top-0 min-w-80 space-y-5 max-lg:min-w-full lg:sticky lg:h-screen'>
-				<Suspense fallback={<p>Loading meetups...</p>}>
-					{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
-				</Suspense>
-				<Suspense fallback={<p>Loading podcasts</p>}>
-					{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
-				</Suspense>
+				{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
+				{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
 			</section>
 		</section>
 	);

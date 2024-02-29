@@ -14,7 +14,7 @@ type SearchResultType = {
 	meetups: Meetup[];
 };
 
-const tabs = ['posts', 'meetups', 'podcasts', 'groups'];
+const tabs = ['post', 'meetups', 'podcasts', 'groups'];
 
 const icons = {
 	post: '/assets/general/icons/post.svg',
@@ -50,7 +50,7 @@ export default function SearchResult({
 				</div>
 			) : (
 				<>
-					<div className='border-white-700 border-b-white-800 dark:border-b-secondary flex items-center gap-3 border-b pb-3'>
+					<div className='border-white-700 border-b-white-800 dark:border-b-secondary flex w-full items-center gap-3 border-b pb-3'>
 						<h3 className='text-base font-semibold'>Type : </h3>
 						{tabs.map((tab) => (
 							<button

@@ -68,6 +68,7 @@ const postSchema = new Schema(
 	}
 );
 postSchema.index({ title: 'text', body: 'text' });
+
 const postModel = model('Post', postSchema);
 export type postModelType = typeof postModel;
 

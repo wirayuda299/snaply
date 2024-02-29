@@ -6,6 +6,7 @@ export default function RecentMedia({
 	recentMedia: string[];
 }) {
 	if (recentMedia.length < 1) return null;
+
 	return (
 		<section className='dark:bg-secondary-dark-2 w-full rounded-2xl bg-white p-5'>
 			<h3 className='text-secondary dark:text-white-800 text-base font-semibold'>
