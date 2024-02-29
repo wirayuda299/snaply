@@ -5,12 +5,14 @@ type ActionTypes =
 	| 'TOOGLE_OPEN'
 	| 'SET_RESPONSE_KEYS'
 	| 'TOOGLE_DISABLED';
+
 type SearchResultType = {
 	groups: Group[];
 	post: Post[];
 	podcasts: Podcast[];
 	meetups: Meetup[];
 };
+
 type StateTypes = {
 	disabled: boolean;
 	responseKeys: string[];
