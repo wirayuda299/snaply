@@ -3,6 +3,7 @@ import type { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 import { userModelType } from '../models/user.model';
+import { createError } from '../utils/createError';
 
 export default class UserService {
 	constructor(private userModel: userModelType) {}
@@ -10,8 +11,6 @@ export default class UserService {
 	async createUser(req: Request, res: Response) {
 		try {
 			const { email, id, image, password, username } = req.body;
-			console.log(req.body);
-
 			bcrypt.hash(password, 10, async (err, hash) => {
 				if (err) {
 					return res
@@ -33,9 +32,7 @@ export default class UserService {
 					.end();
 			});
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -68,9 +65,7 @@ export default class UserService {
 
 			res.json({ data: user, error: false }).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -96,7 +91,6 @@ export default class UserService {
 				return res
 					.status(404)
 					.json({ message: 'User not found', error: false });
-			console.log(userId, followerId);
 
 			const followersIndex = user.followers.indexOf(followerId);
 			if (followersIndex === -1) {
@@ -111,9 +105,7 @@ export default class UserService {
 			await Promise.all([user.save(), follower.save()]);
 			res.status(200).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 }

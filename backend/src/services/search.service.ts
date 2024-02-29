@@ -4,6 +4,7 @@ import { postModelType } from '../models/post.model';
 import { groupModelType } from '../models/group.model';
 import { podcastModelType } from '../models/podcast.model';
 import { meetupType } from '../models/meetup.model';
+import { createError } from '../utils/createError';
 
 export default class SearchService {
 	constructor(
@@ -44,8 +45,6 @@ export default class SearchService {
 				}),
 			]);
 
-			console.log(results);
-
 			res
 				.status(200)
 				.json({
@@ -58,9 +57,7 @@ export default class SearchService {
 				})
 				.end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 }

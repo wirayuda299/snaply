@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { userModelType } from '../models/user.model';
 import { notificationModelType } from '../models/notification.model';
+import { createError } from '../utils/createError';
 
 export default class NotificationService {
 	constructor(
@@ -29,10 +30,8 @@ export default class NotificationService {
 			});
 
 			return res.status(200).end();
-		} catch (e) {
-			return res
-				.status(500)
-				.json({ message: 'Internal server error', error: true });
+		} catch (error) {
+			createError(error, res);
 		}
 	}
 
@@ -61,12 +60,7 @@ export default class NotificationService {
 			});
 			return res.status(200).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				return res
-					.status(500)
-					.json({ message: error.message, error: true })
-					.end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -82,10 +76,8 @@ export default class NotificationService {
 				});
 
 			return res.status(200).json({ data: allNotif, error: false });
-		} catch (e) {
-			return res
-				.status(500)
-				.json({ message: 'Internal server error', error: true });
+		} catch (error) {
+			createError(error, res);
 		}
 	}
 }

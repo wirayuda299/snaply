@@ -8,8 +8,8 @@ export type Comment = {
   createdAt: Date;
   updatedAt: Date;
   postAuthor: {
-    _id: string
-    username: string
-    profileImage?: string
-  }
+    _id: string;
+    username: string;
+    profileImage?: string;
+  };
 };

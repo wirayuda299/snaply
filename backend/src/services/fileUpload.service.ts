@@ -2,6 +2,7 @@ import cloudinary from 'cloudinary';
 import { Request, Response } from 'express';
 
 import { cloudinaryConfig } from '../config/cloudinary.config';
+import { createError } from '../utils/createError';
 
 export default class FileUploadService {
 	async upload(req: Request, res: Response) {
@@ -24,9 +25,7 @@ export default class FileUploadService {
 					.end();
 			}
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true });
-			}
+			createError(error, res);
 		}
 	}
 
@@ -35,9 +34,7 @@ export default class FileUploadService {
 			cloudinary.v2.config(cloudinaryConfig);
 			await cloudinary.v2.uploader.destroy(imageId);
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true });
-			}
+			createError(error, res);
 		}
 	}
 }

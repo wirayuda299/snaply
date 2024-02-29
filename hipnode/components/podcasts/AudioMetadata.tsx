@@ -40,7 +40,6 @@ export default function AudioMetadata({
 						priority
 						className='z-10 aspect-square size-40 min-w-40 rounded-lg border object-cover'
 					/>
-					{/* bg-[#3F4354] */}
 					<div
 						className={cn(
 							`-ml-44 opacity-0 size-36 rounded-full relative flex transition-all ease duration-500 justify-center items-center  bg-cover bg-no-repeatW`,

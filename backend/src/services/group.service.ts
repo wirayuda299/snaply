@@ -12,6 +12,7 @@ import UserService from '../services/user.service';
 import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { groupModelType } from '../models/group.model';
+import { createError } from '../utils/createError';
 
 export default class GroupService {
 	groupModel;
@@ -117,9 +118,7 @@ export default class GroupService {
 				.json({ message: 'Group has been created', error: false })
 				.end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -151,9 +150,7 @@ export default class GroupService {
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.json({ data: foundGroup, error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -174,9 +171,7 @@ export default class GroupService {
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.status(200).json({ data: foundGroup, error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -205,9 +200,7 @@ export default class GroupService {
 			await group.save();
 			res.status(200).json({ data: group, error: false }).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -231,9 +224,7 @@ export default class GroupService {
 				.populate('admins', 'username');
 			return res.json({ data: groups, error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 }

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { commentModelType } from '../models/comment.model';
 import { postModelType } from '../models/post.model';
+import { createError } from '../utils/createError';
 
 export default class CommentService {
 	private commentModel;
@@ -35,10 +36,7 @@ export default class CommentService {
 
 			return res.json({ message: 'Comment uploaded', error: false });
 		} catch (error) {
-			res
-				.status(500)
-				.json({ message: 'Internal server error', error: true })
-				.end();
+			createError(error, res);
 		}
 	}
 
@@ -52,9 +50,7 @@ export default class CommentService {
 				return res.status(404).json({ message: 'No replies yet', error: true });
 			return res.status(200).json({ data: comments, error: false }).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -80,10 +76,7 @@ export default class CommentService {
 
 			return res.status(200).end();
 		} catch (error) {
-			res
-				.status(500)
-				.json({ message: 'Internal server error', error: true })
-				.end();
+			createError(error, res);
 		}
 	}
 }

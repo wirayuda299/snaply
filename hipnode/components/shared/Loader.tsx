@@ -1,7 +1,16 @@
+import Image from 'next/image';
+
 export default function Loader() {
 	return (
 		<div className='flex min-h-screen w-full items-center justify-center'>
-			<div className='ease size-20 animate-spin rounded-full border-t-2 border-solid transition-all duration-500'></div>
+			<Image
+				className='aspect-auto object-contain'
+				src='/assets/general/icons/logo.svg'
+				width={50}
+				height={50}
+				loading='lazy'
+				alt='Logo'
+			/>
 		</div>
 	);
 }

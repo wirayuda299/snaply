@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
-import { Parser } from '../index';
 import { Podcast } from '@/types';
 import { getCreatedDate } from '@/lib/utils';
+const Parser = dynamic(() => import('../index').then((mod) => mod.Parser));
 
 export default function PodcastCard({ podcast }: { podcast: Podcast }) {
 	return (

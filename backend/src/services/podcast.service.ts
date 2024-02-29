@@ -4,6 +4,7 @@ import Tag from './tag.service';
 import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { podcastModelType } from '../models/podcast.model';
+import { createError } from '../utils/createError';
 
 export default class PodcastServices {
 	constructor(
@@ -56,9 +57,7 @@ export default class PodcastServices {
 				.status(201)
 				.json({ message: 'Podcast has been published', error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -96,13 +95,7 @@ export default class PodcastServices {
 				})
 				.end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.json({ message: error.message, error: true }).end();
-			}
-			res
-				.status(500)
-				.json({ message: 'Internal server error', error: true })
-				.end();
+			createError(error, res);
 		}
 	}
 
@@ -119,13 +112,7 @@ export default class PodcastServices {
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.status(200).json({ data: podcast, error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.json({ message: error.message, error: true }).end();
-			}
-			res
-				.status(500)
-				.json({ message: 'Internal server error', error: true })
-				.end();
+			createError(error, res);
 		}
 	}
 }

@@ -42,7 +42,7 @@ export default function DeleteButton({
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button variant='ghost'>
+				<Button variant='ghost' title='menu'>
 					<svg
 						className='dark:fill-white-700 rotate-90 fill-black'
 						height='20px'

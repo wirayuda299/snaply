@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { postModelType } from '../models/post.model';
 import { reportModelType } from '../models/report.model';
+import { createError } from '../utils/createError';
 
 export default class ReportService {
 	constructor(
@@ -30,11 +31,7 @@ export default class ReportService {
 				.json({ message: 'This post has been reported', error: false })
 				.end();
 		} catch (error) {
-			console.log(error);
-
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 }

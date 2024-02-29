@@ -7,6 +7,7 @@ import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { postModelType } from '../models/post.model';
 import { groupModelType } from './../models/group.model';
+import { createError } from '../utils/createError';
 
 export default class PostService {
 	constructor(
@@ -65,9 +66,7 @@ export default class PostService {
 				.json({ message: 'Post has been created', error: false })
 				.end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -98,9 +97,7 @@ export default class PostService {
 
 			res.json({ data: post, error: false }).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -150,9 +147,7 @@ export default class PostService {
 			});
 			res.status(200).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -181,9 +176,7 @@ export default class PostService {
 			await post.save();
 			res.status(200).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -225,9 +218,7 @@ export default class PostService {
 			});
 			res.status(200).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -267,14 +258,7 @@ export default class PostService {
 
 			res.status(201).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			} else {
-				res
-					.status(500)
-					.json({ message: 'An unknown error occurred', error: true })
-					.end();
-			}
+			createError(error, res);
 		}
 	}
 }

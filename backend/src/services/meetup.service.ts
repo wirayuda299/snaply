@@ -4,6 +4,7 @@ import Tag from '../services/tag.service';
 import { TagModel } from '../models/tag.model';
 import { meetupType } from '../models/meetup.model';
 import { userModelType } from '../models/user.model';
+import { createError } from '../utils/createError';
 
 export default class MeetupService {
 	constructor(
@@ -54,9 +55,7 @@ export default class MeetupService {
 
 			res.status(201).json({ data: meetup, error: false }).end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -71,9 +70,7 @@ export default class MeetupService {
 				.limit(+limit);
 			return res.status(200).json({ data: meetups, error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
@@ -90,9 +87,7 @@ export default class MeetupService {
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.status(200).json({ data: meetup, error: false });
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 }

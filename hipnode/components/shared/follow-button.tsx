@@ -29,8 +29,6 @@ export default function FollowButton({
 		}
 	}, [id, path]);
 
-	console.log(followers);
-
 	return (
 		<Button className='w-full grow' onClick={handleFollowUnFollow}>
 			{isFollowing ? 'UnFollow' : 'Follow'}
