@@ -68,13 +68,13 @@ export default function Filter({
 	return (
 		<aside
 			className={cn(
-				'rounded-lg bg-white dark:bg-secondary-dark-2 p-3 min-w-[218px]',
+				'rounded-lg bg-white  dark:bg-secondary-dark-2 p-3 min-w-[218px]',
 				rootStyles
 			)}
 		>
 			<ul
 				className={cn(
-					'flex gap-5 items-center md:items-start overflow-x-auto no-scrollbar space-x-3 md:flex-col',
+					'flex gap-5 items-center md:items-start overflow-x-auto no-scrollbar space-x-3 md:flex-col ',
 					innerStyles
 				)}
 			>
