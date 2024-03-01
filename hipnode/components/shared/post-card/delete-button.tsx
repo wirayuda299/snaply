@@ -17,24 +17,32 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
-import { deletePost } from '@/lib/actions';
+import { deleteMeetup, deletePost } from '@/lib/actions';
 
 export default function DeleteButton({
 	postId,
 	path,
+	type,
 }: {
 	postId: string;
 	path: string;
+	type: string;
 }) {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	async function handleDeletePost() {
 		try {
-			await deletePost(postId, path);
+			if (type === 'post') {
+				await deletePost(postId, path);
+			} else {
+				await deleteMeetup(postId);
+			}
 			setIsOpen(false);
 		} catch (error) {
 			if (error instanceof Error) {
-				toast.error(error.message);
+				toast(error.message);
+			} else {
+				toast('An unknown error accured');
 			}
 		}
 	}
@@ -66,13 +74,13 @@ export default function DeleteButton({
 			</PopoverTrigger>
 			<PopoverContent className='bg-white-700 dark:bg-primary-dark dark:border-primary-dark w-80 py-1'>
 				<Dialog open={isOpen} onOpenChange={setIsOpen}>
-					<DialogTrigger>Delete post</DialogTrigger>
+					<DialogTrigger>Delete {type}</DialogTrigger>
 					<DialogContent className='bg-white-700 dark:bg-primary-dark dark:border-primary-dark'>
 						<DialogHeader>
 							<DialogTitle>Are you absolutely sure?</DialogTitle>
 							<DialogDescription>
 								This action can&apos;t be undone. This will permanently delete
-								your post.
+								your {type}.
 							</DialogDescription>
 						</DialogHeader>
 						<div className='flex items-center justify-end gap-2'>

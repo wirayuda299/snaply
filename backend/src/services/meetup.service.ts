@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 
 import Tag from '../services/tag.service';
+import FileUploadService from '../services/fileUpload.service';
+import TagService from '../services/tag.service';
+
 import { TagModel } from '../models/tag.model';
 import { meetupType } from '../models/meetup.model';
 import { userModelType } from '../models/user.model';
@@ -86,6 +89,54 @@ export default class MeetupService {
 					.json({ message: 'Meetup not found', error: true });
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.status(200).json({ data: meetup, error: false });
+		} catch (error) {
+			createError(error, res);
+		}
+	}
+
+	async deleteMeetup(req: Request, res: Response) {
+		try {
+			const foundMeetup = await this.meetupModel
+				.findById(req.body.meetupId)
+				.populate('author', '_id, username profileImage createdAt');
+
+			if (!foundMeetup) {
+				return res
+					.status(404)
+					.json({ message: 'Meetup not found', error: true });
+			}
+
+			if (foundMeetup.author) {
+				const author = await this.userModel.findById(foundMeetup.author);
+				if (!author) {
+					return res
+						.status(404)
+						.json({ message: 'User not found', error: true });
+				}
+				const updatedMeetups = author.meetups.filter(
+					(meetup) => meetup !== req.body.meetupId
+				);
+				await this.userModel.updateOne(
+					{ _id: author._id },
+					{
+						$set: {
+							meetups: updatedMeetups,
+						},
+					}
+				);
+				await author.save();
+			}
+
+			const fileUploadService = new FileUploadService();
+			await fileUploadService.deleteAsset(foundMeetup.assetId, res);
+
+			await new TagService<typeof this.meetupModel>(
+				this.meetupModel,
+				this.tagModel
+			).deleteTag(foundMeetup.tags, foundMeetup._id);
+
+			await this.meetupModel.deleteOne({ _id: foundMeetup._id });
+			res.status(201).end();
 		} catch (error) {
 			createError(error, res);
 		}

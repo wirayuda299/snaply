@@ -36,7 +36,7 @@ const meetupSchema = new Schema(
 		},
 		tags: [
 			{
-				type: String,
+				type: Schema.Types.ObjectId,
 				ref: 'Tag',
 			},
 		],

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-import MeetupController from '../controllers/meetup.controller';
-import userModel from '../models/user.model';
 import tagModel from '../models/tag.model';
+import userModel from '../models/user.model';
 import meetupModel from '../models/meetup.model';
 import MeetupService from '../services/meetup.service';
+import MeetupController from '../controllers/meetup.controller';
 
 const router = Router();
 
@@ -14,5 +14,6 @@ const meetup = new MeetupController(service);
 router.get('/', (req, res) => meetup.getMeetupById(req, res));
 router.get('/all', (req, res) => meetup.allMeetups(req, res));
 router.post('/create', (req, res) => meetup.create(req, res));
+router.patch('/delete', (req, res) => meetup.delete(req, res));
 
 export default router;

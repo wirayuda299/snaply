@@ -13,6 +13,7 @@ import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { groupModelType } from '../models/group.model';
 import { createError } from '../utils/createError';
+import FileUploadService from './fileUpload.service';
 
 export default class GroupService {
 	groupModel;
@@ -223,6 +224,50 @@ export default class GroupService {
 				})
 				.populate('admins', 'username');
 			return res.json({ data: groups, error: false });
+		} catch (error) {
+			createError(error, res);
+		}
+	}
+
+	async deleteGroup(req: Request, res: Response) {
+		try {
+			const foundGroup = await this.groupModel.findById(req.body.groupId);
+			if (!foundGroup) {
+				return res
+					.status(404)
+					.json({ message: 'Group not found', error: true });
+			}
+
+			if (foundGroup.admins) {
+				const groupAdmin = await this.userModel.findById(foundGroup.admins[0]);
+				if (!groupAdmin) {
+					return res
+						.status(404)
+						.json({ message: 'Admin not found', error: true });
+				}
+				const updatedGroups = groupAdmin.groups.filter(
+					(group) => group !== foundGroup._id
+				);
+				await this.userModel.updateOne(
+					{ _id: groupAdmin._id },
+					{ $set: { updatedGroups } }
+				);
+				await groupAdmin.save();
+			}
+
+			const fileUploadService = new FileUploadService();
+			await Promise.all([
+				fileUploadService.deleteAsset(foundGroup.bannerAssetId, res),
+				fileUploadService.deleteAsset(foundGroup.logoAssetId, res),
+			]);
+
+			await new Tag<typeof this.groupModel>(
+				this.groupModel,
+				this.tagModel
+			).deleteTag(foundGroup.tags, foundGroup._id);
+
+			await this.groupModel.deleteOne({ _id: foundGroup._id });
+			await res.status(201).end();
 		} catch (error) {
 			createError(error, res);
 		}

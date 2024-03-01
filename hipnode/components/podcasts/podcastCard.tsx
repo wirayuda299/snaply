@@ -1,23 +1,33 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { currentUser } from '@clerk/nextjs';
 
 import { Podcast } from '@/types';
 import { getCreatedDate } from '@/lib/utils';
 const Parser = dynamic(() => import('../index').then((mod) => mod.Parser));
+const DeleteButton = dynamic(() => import('./Delete-Button'));
 
-export default function PodcastCard({ podcast }: { podcast: Podcast }) {
+export default async function PodcastCard({ podcast }: { podcast: Podcast }) {
+	const userSession = await currentUser();
+	if (!userSession) return null;
+
 	return (
 		<article
-			className='dark:bg-secondary-dark-2 h-min max-w-xs rounded-xl bg-white p-5 max-lg:max-w-full'
+			className='dark:bg-secondary-dark-2 h-min max-w-sm rounded-xl bg-white p-5 max-lg:max-w-full'
 			key={podcast._id}
 		>
-			<Link
-				href={`/podcasts/${podcast._id}`}
-				className='text-secondary  dark:text-white-700 block text-xl font-semibold first-letter:uppercase'
-			>
-				{podcast.title}
-			</Link>
+			<div className='flex items-center justify-between gap-4'>
+				<Link
+					href={`/podcasts/${podcast._id}`}
+					className='text-secondary  dark:text-white-700 block text-xl font-semibold first-letter:uppercase'
+				>
+					{podcast.title}
+				</Link>
+				{userSession.id === podcast.author._id && (
+					<DeleteButton id={podcast._id} />
+				)}
+			</div>
 			<Parser content={podcast.body} />
 
 			<div className='mt-5 flex items-center gap-3'>

@@ -48,4 +48,8 @@ export default class Meetup {
 
 		return this.meetup.getMeetup(req, res);
 	}
+
+	delete(req: Request, res: Response) {
+		return this.meetup.deleteMeetup(req, res);
+	}
 }

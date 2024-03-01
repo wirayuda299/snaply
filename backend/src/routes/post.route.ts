@@ -20,6 +20,6 @@ router.post('/increment-view', (req, res) => posts.updateView(req, res));
 router.get('/all', (req, res) => posts.allPosts(req, res));
 router.get('/', (req, res) => posts.getPostById(req, res));
 router.post('/create', (req, res) => posts.create(req, res));
-router.post('/delete', (req, res) => posts.deleteAPost(req, res));
+router.patch('/delete', (req, res) => posts.deleteAPost(req, res));
 
 export default router;

@@ -247,7 +247,7 @@ export default class PostService {
 				await postAuthor?.save();
 			}
 			const fileUploadService = new FileUploadService();
-			fileUploadService.deleteImage(post.assetId, res);
+			await fileUploadService.deleteAsset(post.assetId, res);
 
 			await new TagService<typeof this.PostModel>(
 				this.PostModel,

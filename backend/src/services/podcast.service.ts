@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 
 import Tag from './tag.service';
+import FileUploadService from './fileUpload.service';
+import TagService from '../services/tag.service';
+
 import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { podcastModelType } from '../models/podcast.model';
@@ -111,6 +114,59 @@ export default class PodcastServices {
 					.json({ message: 'Podcast not found', error: true });
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.status(200).json({ data: podcast, error: false });
+		} catch (error) {
+			createError(error, res);
+		}
+	}
+
+	async deletePodcast(req: Request, res: Response) {
+		try {
+			const foundPodcast = await this.podcastModel.findById(req.body.podcastId);
+
+			if (!foundPodcast) {
+				return res
+					.status(404)
+					.json({ message: 'Podcast not found', error: true });
+			}
+
+			if (foundPodcast.author) {
+				const author = await this.userModel.findById(foundPodcast.author);
+				if (!author) {
+					return res
+						.status(404)
+						.json({ message: 'Author not found', error: true });
+				}
+
+				const updatedPodcast = author?.podcasts.filter(
+					(podcast) => podcast !== foundPodcast._id
+				);
+				await this.userModel.updateOne(
+					{
+						_id: author._id,
+					},
+					{
+						$set: {
+							podcasts: updatedPodcast,
+						},
+					}
+				);
+				await author.save();
+			}
+
+			const fileUploadService = new FileUploadService();
+
+			await Promise.all([
+				fileUploadService.deleteAsset(foundPodcast.audioAssetId, res),
+				fileUploadService.deleteAsset(foundPodcast.postImageAssetId, res),
+			]);
+
+			await new TagService<typeof this.podcastModel>(
+				this.podcastModel,
+				this.tagModel
+			).deleteTag(foundPodcast.tags, foundPodcast._id);
+
+			await this.podcastModel.deleteOne({ _id: foundPodcast._id });
+			res.status(201).end();
 		} catch (error) {
 			createError(error, res);
 		}

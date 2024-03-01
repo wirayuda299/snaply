@@ -29,10 +29,10 @@ export default class FileUploadService {
 		}
 	}
 
-	async deleteImage(imageId: string, res: Response) {
+	async deleteAsset(assetId: string, res: Response) {
 		try {
 			cloudinary.v2.config(cloudinaryConfig);
-			await cloudinary.v2.uploader.destroy(imageId);
+			await cloudinary.v2.uploader.destroy(assetId);
 		} catch (error) {
 			createError(error, res);
 		}

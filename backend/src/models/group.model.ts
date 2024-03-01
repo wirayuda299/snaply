@@ -42,7 +42,12 @@ const groupSchema = new Schema(
 				ref: 'User',
 			},
 		],
-		tags: [String],
+		tags: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Tag',
+			},
+		],
 		posts: [
 			{
 				type: Schema.Types.ObjectId,
