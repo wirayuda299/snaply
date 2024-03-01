@@ -53,7 +53,10 @@ import {
 	deleteNotification,
 } from './notification.action';
 import { getAllTags } from './tag.action';
+import { getData } from './all.action';
+
 export {
+	getData,
 	deletePodcast,
 	deleteMeetup,
 	search,

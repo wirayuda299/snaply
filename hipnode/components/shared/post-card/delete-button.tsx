@@ -18,6 +18,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { deleteMeetup, deletePost } from '@/lib/actions';
+import Link from 'next/link';
 
 export default function DeleteButton({
 	postId,
@@ -72,25 +73,33 @@ export default function DeleteButton({
 					</svg>
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className='bg-white-700 dark:bg-primary-dark dark:border-primary-dark w-80 py-1'>
-				<Dialog open={isOpen} onOpenChange={setIsOpen}>
-					<DialogTrigger>Delete {type}</DialogTrigger>
-					<DialogContent className='bg-white-700 dark:bg-primary-dark dark:border-primary-dark'>
-						<DialogHeader>
-							<DialogTitle>Are you absolutely sure?</DialogTitle>
-							<DialogDescription>
-								This action can&apos;t be undone. This will permanently delete
-								your {type}.
-							</DialogDescription>
-						</DialogHeader>
-						<div className='flex items-center justify-end gap-2'>
-							<Button className='!bg-red-600' onClick={handleDeletePost}>
-								Delete
-							</Button>
-							<Button onClick={() => setIsOpen(false)}>Cancel</Button>
-						</div>
-					</DialogContent>
-				</Dialog>
+			<PopoverContent className='bg-white-700 dark:bg-primary-dark dark:border-primary-dark mt-2 w-80 py-1'>
+				<div className='divide-secondary flex flex-col gap-2 divide-y'>
+					<Link
+						href={`/update?type=${type}&postId=${postId}`}
+						className='block'
+					>
+						Update
+					</Link>
+					<Dialog open={isOpen} onOpenChange={setIsOpen}>
+						<DialogTrigger>Delete {type}</DialogTrigger>
+						<DialogContent className='bg-white-700 dark:bg-primary-dark dark:border-primary-dark'>
+							<DialogHeader>
+								<DialogTitle>Are you absolutely sure?</DialogTitle>
+								<DialogDescription>
+									This action can&apos;t be undone. This will permanently delete
+									your {type}.
+								</DialogDescription>
+							</DialogHeader>
+							<div className='flex items-center justify-end gap-2'>
+								<Button className='!bg-red-600' onClick={handleDeletePost}>
+									Delete
+								</Button>
+								<Button onClick={() => setIsOpen(false)}>Cancel</Button>
+							</div>
+						</DialogContent>
+					</Dialog>
+				</div>
 			</PopoverContent>
 		</Popover>
 	);

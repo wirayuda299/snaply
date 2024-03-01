@@ -81,7 +81,8 @@ export default class MeetupService {
 		try {
 			const meetup = await this.meetupModel
 				.findById(req.query.id)
-				.populate('author');
+				.populate('author')
+				.populate('tags');
 
 			if (!meetup)
 				return res

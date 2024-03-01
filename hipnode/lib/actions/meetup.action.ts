@@ -71,7 +71,8 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 export async function getMeetupById(id: string) {
 	try {
 		const res = await fetchConfig(`/meetup?id=${id}`, [], 'GET');
-		return res[0] as Meetup;
+
+		return { meetup: res.data as Meetup };
 	} catch (error) {
 		throw error;
 	}

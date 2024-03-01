@@ -22,7 +22,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 
 	const isLikedByCurrentUser =
 		type === 'post' && post?.likes?.includes(user?.id);
-	const date = new Date(post.createdAt);
+	const date = type === 'meetup' && new Date(post.date);
 
 	return (
 		<div className='max-sm:max-h-auto min-lg:max-h-[250px] dark:border-primary-dark dark:bg-secondary-dark-2 w-full rounded-lg border bg-white p-3 md:p-5'>
@@ -45,7 +45,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 				</picture>
 
 				<div className='flex flex-col justify-evenly gap-5 sm:shrink sm:grow sm:justify-between'>
-					<div className='flex w-full justify-between'>
+					<div className='flex w-full items-start justify-between'>
 						<header>
 							<PostTitle
 								type={type}
@@ -77,7 +77,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 										{date.toLocaleString('en-US', { month: 'short' })}
 									</span>
 									<span className='inline-block text-lg font-bold text-blue-600'>
-										{date.getDate()}
+										{date && date.getDate()}
 									</span>
 								</p>
 							)}

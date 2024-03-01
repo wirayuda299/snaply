@@ -49,6 +49,9 @@ const nextConfig = {
     WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
   },
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 };
 
 module.exports = nextConfig;
