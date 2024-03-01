@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '../ui/button';
-import { DialogHeader } from '../ui/dialog';
 import {
 	Dialog,
 	DialogTrigger,
 	DialogContent,
 	DialogTitle,
+	DialogHeader,
 	DialogDescription,
 } from '@/components/ui/dialog';
 import { deletePodcast } from '@/lib/actions';
