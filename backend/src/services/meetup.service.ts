@@ -142,4 +142,57 @@ export default class MeetupService {
 			createError(error, res);
 		}
 	}
+
+	async updateMeetup(req: Request, res: Response) {
+		try {
+			const {
+				meetupId,
+				address,
+				companyName,
+				date,
+				image,
+				title,
+				tags,
+				body,
+				assetId,
+				category,
+			} = req.body;
+
+			const meetup = await this.meetupModel.findById(meetupId);
+			if (!meetup) {
+				return res
+					.status(404)
+					.json({ message: 'Meetup not found', error: true });
+			}
+
+			if (tags && tags.length >= 1) {
+				await new TagService<typeof this.meetupModel>(
+					this.meetupModel,
+					this.tagModel
+				).createTagIfExists(tags, meetup.id);
+			}
+
+			if (assetId !== meetup.assetId) {
+				const fileUploadService = new FileUploadService();
+				await fileUploadService.deleteAsset(meetup.assetId, res);
+			}
+
+			await this.meetupModel.updateOne(
+				{ _id: meetup._id },
+				{
+					address,
+					body,
+					category,
+					companyName,
+					image,
+					title,
+					assetId,
+					date,
+				}
+			);
+			res.status(201).end();
+		} catch (error) {
+			createError(error, res);
+		}
+	}
 }

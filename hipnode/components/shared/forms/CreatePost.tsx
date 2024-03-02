@@ -2,46 +2,42 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { toast } from 'sonner';
-import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
+import dynamic from 'next/dynamic';
 import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FileAudio2 } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Button } from '@/components/ui/button';
 import {
 	Form,
-	FormControl,
-	FormField,
 	FormItem,
 	FormLabel,
+	FormField,
+	FormControl,
 	FormMessage,
 } from '@/components/ui/form';
+
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
 import {
 	Select,
-	SelectContent,
 	SelectItem,
-	SelectTrigger,
 	SelectValue,
+	SelectContent,
+	SelectTrigger,
 } from '@/components/ui/select';
 import { CreatePostFormType, PostSchema } from '@/lib/validations';
-import { Group } from '@/types';
-import useUploadFile from '@/hooks/useUploadFile';
 
-import { uploadFile } from '@/lib/actions/fileUpload.action';
-import {
-	createMeetup,
-	createPodcast,
-	createPost,
-	getData,
-	updatePost,
-} from '@/lib/actions';
+import { Group } from '@/types';
+import { getData } from '@/lib/actions';
 import { createPostData } from '@/constants';
+
+import useUploadFile from '@/hooks/useUploadFile';
 import useFormReset from '@/hooks/useFormReset';
+import useFormSubmit from '@/hooks/useFormSubmit';
+
 const Loader = dynamic(() => import('../Loader'));
 const TagInput = dynamic(() => import('./TagInput'));
 const GroupSelectContent = dynamic(() => import('./GroupSelectContent'));
@@ -60,8 +56,7 @@ const CreatePost = ({
 	props: Props;
 }) => {
 	const router = useRouter();
-	const [loading, setLoading] = useState<boolean>(false);
-	const { data, isError, isLoading } = useQuery({
+	const { data, isError, isLoading, error } = useQuery({
 		queryKey: [searchParams.postId],
 		queryFn: async () => {
 			return await getData(searchParams.type, searchParams.postId);
@@ -90,136 +85,19 @@ const CreatePost = ({
 	const { handleChange, isChecking, preview, files } = useUploadFile(form);
 
 	useFormReset(isLoading, isError, data, form, searchParams);
-
-	const onSubmit = async (values: CreatePostFormType) => {
-		const {
-			createType,
-			group,
-			post,
-			tags,
-			title,
-			address,
-			companyName,
-			date,
-			category,
-		} = values;
-
-		setLoading(true);
-
-		try {
-			switch (createType) {
-				case 'post':
-					if (params.action === 'update') {
-						if (files) {
-							const image = await uploadFile(files.postImage);
-							await updatePost(
-								searchParams.postId,
-								title,
-								image?.secure_url,
-								image?.public_id,
-								post,
-								category,
-								tags,
-								'/'
-							);
-						} else {
-							await updatePost(
-								searchParams.postId,
-								title,
-								// @ts-ignore
-								data?.post.image,
-								// @ts-ignore
-								data?.post.assetId,
-								post,
-								category,
-								tags,
-								searchParams.type === 'post' ? '/' : '/meetups'
-							);
-						}
-						toast.success('Your post has been updated 🥳');
-						router.push(searchParams.type === 'post' ? '/' : '/meetups');
-					} else {
-						if (files && files.postImage) {
-							const image = await uploadFile(files.postImage);
-
-							await createPost({
-								group: group?.id,
-								assetId: image?.public_id,
-								image: image?.secure_url,
-								tags,
-								title,
-								body: post,
-								category,
-							});
-							toast.success('Your post has been published 🥳');
-							router.push('/');
-						}
-					}
-					break;
-
-				case 'meetup':
-					if (files && files.postImage) {
-						const image = await uploadFile(files.postImage);
-
-						await createMeetup({
-							address,
-							assetId: image?.public_id,
-							image: image?.secure_url,
-							companyName,
-							date,
-							title,
-							tags,
-							body: post,
-							category,
-						});
-						toast.success('Meetup event has been published');
-						router.push('/meetups');
-					}
-					break;
-
-				case 'interviews':
-					// implement your create meetup here
-					break;
-				case 'podcasts':
-					if (files && files.audio) {
-						const [audio, image] = await Promise.all([
-							uploadFile(files.audio),
-							uploadFile(files.postImage),
-						]);
-						await createPodcast(
-							audio.secure_url,
-							audio.public_id,
-							post,
-							tags,
-							image.secure_url,
-							title,
-							image.public_id,
-							category
-						);
-						toast.success('Podcast has been published');
-						router.push('/podcasts');
-					}
-					break;
-				default:
-					throw new Error('Invalid action');
-			}
-		} catch (error) {
-			if (error instanceof Error) {
-				toast.error(error.message);
-			} else {
-				toast.error('Something wrong');
-			}
-		} finally {
-			setLoading(false);
-		}
-	};
+	const { loading, onSubmit } = useFormSubmit(
+		{ params, searchParams },
+		files,
+		data,
+		router
+	);
 
 	const type = form.watch('createType');
 	const group = form.watch('group');
 
 	if (isLoading) return <Loader />;
 
-	if (isError) return <p>Error</p>;
+	if (isError) return <p>{error.message}</p>;
 
 	return (
 		<Form {...form}>

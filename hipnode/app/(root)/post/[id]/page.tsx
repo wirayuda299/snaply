@@ -59,7 +59,7 @@ export default async function PostDetail({ params }: Props) {
 							<h2 className='text-secondary-light text-3xl font-bold md:text-4xl'>
 								{post.title}
 							</h2>
-							<div className='flex flex-wrap gap-3'>
+							<div className='flex flex-wrap gap-3 pt-3'>
 								{post?.tags.map((tag) => (
 									<span className='text-sm text-orange-500' key={tag._id}>
 										#{tag.name}
@@ -118,11 +118,11 @@ export default async function PostDetail({ params }: Props) {
 				</section>
 				{relatedPosts.length >= 1 && (
 					<section className='dark:bg-secondary-dark-2 mb-5 mt-4 rounded-xl bg-white p-5'>
-						<h2 className='text-secondary truncate text-lg font-semibold dark:text-white'>
+						<h2 className='text-secondary border-secondary dark:border-b-secondary-dark mb-5 truncate border-b pb-2 text-lg font-semibold dark:text-white'>
 							More from{' '}
 							<span className='capitalize'>{post.author.username}</span>
 						</h2>
-						<div className='divide-secondary-light space-y-3 divide-y divide-solid'>
+						<div className='divide-secondary-light dark:divide-secondary-dark space-y-5 divide-y divide-solid'>
 							{relatedPosts.map((post) => (
 								<RelatedPostItem post={post} key={post._id} />
 							))}

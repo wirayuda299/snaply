@@ -88,3 +88,33 @@ export async function deleteMeetup(id: string) {
 		throw error;
 	}
 }
+export async function updateMeetup(
+	id: string,
+	address: string,
+	companyName: string,
+	date: string,
+	image: string,
+	title: string,
+	tags: string[],
+	body: string,
+	assetId: string,
+	category: string
+) {
+	try {
+		await fetchConfig('/meetup/update', [], 'POST', {
+			meetupId: id,
+			address,
+			companyName,
+			date,
+			image,
+			title,
+			tags,
+			body,
+			assetId,
+			category,
+		});
+		revalidatePath('/meetups');
+	} catch (error) {
+		throw error;
+	}
+}

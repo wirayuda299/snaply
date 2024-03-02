@@ -52,4 +52,8 @@ export default class Meetup {
 	delete(req: Request, res: Response) {
 		return this.meetup.deleteMeetup(req, res);
 	}
+
+	update(req: Request, res: Response) {
+		return this.meetup.updateMeetup(req, res);
+	}
 }

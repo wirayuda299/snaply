@@ -23,6 +23,7 @@ import {
 	getAllMeetups,
 	getMeetupById,
 	deleteMeetup,
+	updateMeetup,
 } from './meetup.action';
 import { search } from './search.action';
 import {
@@ -56,6 +57,7 @@ import { getAllTags } from './tag.action';
 import { getData } from './all.action';
 
 export {
+	updateMeetup,
 	getData,
 	deletePodcast,
 	deleteMeetup,

@@ -31,7 +31,12 @@ export default class Tag<T extends Model<any>> {
 	async getAllTags(res: Response) {
 		try {
 			if (this.tagModel) {
-				const tags = await this.tagModel.find();
+				const tags = await this.tagModel
+					.find()
+					.sort({
+						postIds: -1,
+					})
+					.limit(5);
 				return res.json({ data: tags, error: false });
 			}
 		} catch (error) {

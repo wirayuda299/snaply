@@ -15,5 +15,6 @@ router.get('/', (req, res) => meetup.getMeetupById(req, res));
 router.get('/all', (req, res) => meetup.allMeetups(req, res));
 router.post('/create', (req, res) => meetup.create(req, res));
 router.patch('/delete', (req, res) => meetup.delete(req, res));
+router.post('/update', (req, res) => meetup.update(req, res));
 
 export default router;
