@@ -2,7 +2,11 @@ import { Router } from 'express';
 
 import tagModel from '../models/tag.model';
 import groupModel from '../models/group.model';
-import { RequestWithQuery } from '../types/group';
+import {
+	RequestBody,
+	RequestBodyTypes,
+	RequestWithQuery,
+} from '../types/group';
 import GroupController from '../controllers/group.controller';
 import userModel from '../models/user.model';
 import GroupService from '../services/group.service';
@@ -25,6 +29,11 @@ router.get('/group-member', (req, res) =>
 	group.getAllGroupsWhereUserIn(req, res)
 );
 router.post('/create', (req, res) => group.create(req, res));
+router.post(
+	'/update',
+	(req: RequestBody<RequestBodyTypes & { groupId: string }>, res) =>
+		group.update(req, res)
+);
 router.patch('/delete', (req, res) => group.delete(req, res));
 
 export default router;

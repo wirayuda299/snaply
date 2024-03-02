@@ -107,13 +107,6 @@ export default class GroupService {
 				this.populateGroupFieldWithUsers(members, 'members', group._id),
 			]);
 
-			if (tags && tags.length >= 1) {
-				await new Tag<typeof this.groupModel>(
-					this.groupModel,
-					this.tagModel
-				).createTagIfExists(tags, group.id);
-			}
-
 			res
 				.status(201)
 				.json({ message: 'Group has been created', error: false })
@@ -267,7 +260,69 @@ export default class GroupService {
 			).deleteTag(foundGroup.tags, foundGroup._id);
 
 			await this.groupModel.deleteOne({ _id: foundGroup._id });
-			await res.status(201).end();
+			res.status(201).end();
+		} catch (error) {
+			createError(error, res);
+		}
+	}
+
+	async updateGroup(
+		req: RequestBody<RequestBodyTypes & { groupId: string }>,
+		res: Response
+	) {
+		try {
+			const {
+				groupId,
+				admins,
+				tags,
+				members,
+				banner,
+				description,
+				logo,
+				name,
+				category,
+				bannerAssetId,
+				logoAssetId,
+			} = req.body;
+			const group = await this.groupModel.findById(groupId);
+
+			if (!group) {
+				return res
+					.status(404)
+					.json({ message: 'Group not found', error: true });
+			}
+
+			if (this.isAdmin(admins, members) !== -1) {
+				return res.status(400).json({
+					message:
+						'The user cannot be both a regular member and an admin simultaneously.',
+					error: true,
+				});
+			}
+
+			const fileUploadService = new FileUploadService();
+
+			if (bannerAssetId !== group.bannerAssetId) {
+				await fileUploadService.deleteAsset(group.bannerAssetId, res);
+			} else if (logoAssetId !== group.logoAssetId) {
+				await fileUploadService.deleteAsset(group.logoAssetId, res);
+			}
+
+			if (tags && tags.length >= 1) {
+				await this.createTagsForGroup(tags, group.id);
+			}
+
+			await this.groupModel.updateOne(
+				{ _id: group._id },
+				{
+					banner,
+					description,
+					logo,
+					name,
+					category,
+				}
+			);
+			res.status(201).end();
 		} catch (error) {
 			createError(error, res);
 		}

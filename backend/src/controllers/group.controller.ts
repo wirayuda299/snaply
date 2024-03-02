@@ -1,7 +1,11 @@
 import { Response, Request } from 'express';
 
 import GroupService from '../services/group.service';
-import { RequestWithQuery } from '../types/group';
+import {
+	RequestBody,
+	RequestBodyTypes,
+	RequestWithQuery,
+} from '../types/group';
 
 export default class Group {
 	constructor(private groupService: GroupService) {}
@@ -39,5 +43,12 @@ export default class Group {
 
 	delete(req: Request, res: Response) {
 		return this.groupService.deleteGroup(req, res);
+	}
+
+	update(
+		req: RequestBody<RequestBodyTypes & { groupId: string }>,
+		res: Response
+	) {
+		return this.groupService.updateGroup(req, res);
 	}
 }
