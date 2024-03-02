@@ -93,4 +93,8 @@ export default class PostController {
 		}
 		return this.postService.deletePost(req, res);
 	}
+
+	update(req: Request, res: Response) {
+		return this.postService.updatePost(req, res);
+	}
 }

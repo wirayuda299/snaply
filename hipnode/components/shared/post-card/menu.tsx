@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,9 +19,8 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { deleteMeetup, deletePost } from '@/lib/actions';
-import Link from 'next/link';
 
-export default function DeleteButton({
+export default function Menu({
 	postId,
 	path,
 	type,
@@ -38,13 +38,14 @@ export default function DeleteButton({
 			} else {
 				await deleteMeetup(postId);
 			}
-			setIsOpen(false);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast(error.message);
 			} else {
 				toast('An unknown error accured');
 			}
+		} finally {
+			setIsOpen(false);
 		}
 	}
 

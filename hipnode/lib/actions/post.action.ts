@@ -76,7 +76,31 @@ export async function deletePost(id: string, path: string) {
 	}
 }
 
-export async function updatePost() {}
+export async function updatePost(
+	postId: string,
+	title: string,
+	image: string,
+	assetId: string,
+	body: string,
+	category: string,
+	tags: string[],
+	path: string
+) {
+	try {
+		await fetchConfig('/post/update', [], 'POST', {
+			postId,
+			title,
+			image,
+			assetId,
+			body,
+			category,
+			tags,
+		});
+		revalidatePath(path);
+	} catch (error) {
+		throw error;
+	}
+}
 
 export async function updateView(id: string) {
 	try {

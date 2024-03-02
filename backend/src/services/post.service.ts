@@ -261,4 +261,41 @@ export default class PostService {
 			createError(error, res);
 		}
 	}
+
+	async updatePost(req: Request, res: Response) {
+		try {
+			const { postId, title, image, assetId, body, category, tags } = req.body;
+
+			const post = await this.PostModel.findById(postId);
+			if (!post) {
+				return res.status(404).json({ message: 'Post not found', error: true });
+			}
+
+			if (tags && tags.length >= 1) {
+				await new TagService<typeof this.PostModel>(
+					this.PostModel,
+					this.tagModel
+				).createTagIfExists(tags, post.id);
+			}
+
+			if (assetId !== post.assetId) {
+				const fileUploadService = new FileUploadService();
+				await fileUploadService.deleteAsset(post.assetId, res);
+			}
+
+			await this.PostModel.updateOne(
+				{ _id: post._id },
+				{
+					title,
+					body,
+					category,
+					image,
+					assetId,
+				}
+			);
+			res.status(201).end();
+		} catch (error) {
+			createError(error, res);
+		}
+	}
 }

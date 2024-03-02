@@ -38,6 +38,7 @@ import {
 	createPodcast,
 	createPost,
 	getData,
+	updatePost,
 } from '@/lib/actions';
 import { createPostData } from '@/constants';
 import useFormReset from '@/hooks/useFormReset';
@@ -108,19 +109,51 @@ const CreatePost = ({
 		try {
 			switch (createType) {
 				case 'post':
-					if (files && files.postImage) {
-						const image = await uploadFile(files.postImage);
-						await createPost({
-							group: group?.id,
-							assetId: image?.public_id,
-							image: image?.secure_url,
-							tags,
-							title,
-							body: post,
-							category,
-						});
-						toast.success('Your post has been published');
-						router.push('/');
+					if (params.action === 'update') {
+						if (files) {
+							const image = await uploadFile(files.postImage);
+							await updatePost(
+								searchParams.postId,
+								title,
+								image?.secure_url,
+								image?.public_id,
+								post,
+								category,
+								tags,
+								'/'
+							);
+						} else {
+							await updatePost(
+								searchParams.postId,
+								title,
+								// @ts-ignore
+								data?.post.image,
+								// @ts-ignore
+								data?.post.assetId,
+								post,
+								category,
+								tags,
+								searchParams.type === 'post' ? '/' : '/meetups'
+							);
+						}
+						toast.success('Your post has been updated 🥳');
+						router.push(searchParams.type === 'post' ? '/' : '/meetups');
+					} else {
+						if (files && files.postImage) {
+							const image = await uploadFile(files.postImage);
+
+							await createPost({
+								group: group?.id,
+								assetId: image?.public_id,
+								image: image?.secure_url,
+								tags,
+								title,
+								body: post,
+								category,
+							});
+							toast.success('Your post has been published 🥳');
+							router.push('/');
+						}
 					}
 					break;
 
@@ -367,6 +400,7 @@ const CreatePost = ({
 						<FormItem>
 							<FormControl>
 								<TextEditor
+									key={searchParams.postId}
 									// @ts-ignore
 									field={field}
 									value={form.getValues('post') ?? ''}
@@ -468,8 +502,19 @@ const CreatePost = ({
 				/>
 
 				<div className='flex items-center gap-4'>
-					<Button disabled={loading} type='submit' variant={'default'}>
-						{loading ? 'Publishing...' : 'Publish'}
+					<Button
+						disabled={loading}
+						aria-disabled={loading}
+						type='submit'
+						variant={'default'}
+					>
+						{loading
+							? params.action === 'create'
+								? 'Publishing...'
+								: 'Updating...'
+							: params.action === 'create'
+								? 'Publish'
+								: 'Update'}
 					</Button>
 					<Link href={'/'} type='button' className='dark:text-white'>
 						Cancel

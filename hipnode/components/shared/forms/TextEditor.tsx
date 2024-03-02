@@ -17,8 +17,8 @@ export default function TextEditor({
 		<Editor
 			key={theme || 'light'}
 			apiKey={process.env.EDITOR_API_KEY}
-			initialValue={value}
-			onEditorChange={(content) => field.onChange(content)}
+			value={value}
+			onEditorChange={(c) => field.onChange(c)}
 			init={{
 				skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
 				content_css: theme === 'dark' ? 'dark' : 'light',
@@ -31,8 +31,11 @@ export default function TextEditor({
 						},
 					});
 				},
+				branding: false,
+				xss_sanitization: true,
 				height: 500,
 				menubar: false,
+
 				plugins: [
 					'advlist',
 					'autolink',

@@ -4,13 +4,13 @@ import dynamic from 'next/dynamic';
 
 import { Meetup, Post } from '@/types';
 import { cn } from '@/lib/utils';
-import DeleteButton from './delete-button';
 
 const Tag = dynamic(() => import('../tag'));
 const Parser = dynamic(() => import('../parser'));
 const PostTitle = dynamic(() => import('./title'));
 const LikeButton = dynamic(() => import('./like-button'));
 const CardFooter = dynamic(() => import('./card-footer'));
+const Menu = dynamic(() => import('./menu'));
 
 type PostCardTypes =
 	| { type: 'post'; post: Post }
@@ -82,7 +82,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 								</p>
 							)}
 							{post.author._id === user.id && (
-								<DeleteButton path='/' postId={post._id} type={type} />
+								<Menu path='/' postId={post._id} type={type} />
 							)}
 						</div>
 					</div>

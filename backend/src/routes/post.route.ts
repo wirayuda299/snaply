@@ -21,5 +21,6 @@ router.get('/all', (req, res) => posts.allPosts(req, res));
 router.get('/', (req, res) => posts.getPostById(req, res));
 router.post('/create', (req, res) => posts.create(req, res));
 router.patch('/delete', (req, res) => posts.deleteAPost(req, res));
+router.post('/update', (req, res) => posts.update(req, res));
 
 export default router;
