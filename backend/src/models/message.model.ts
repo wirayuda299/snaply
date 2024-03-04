@@ -1,27 +1,39 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const messagesSchema = new Schema(
-  {
-    sendBy: {
-      type: String,
-      ref: "User",
-    },
-
-    sendTo: {
-      type: String,
-      ref: "User",
-    },
-    message: String,
-    image: {
-      type: String,
-      required: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
+	{
+		to: {
+			type: String,
+			ref: 'User',
+		},
+		from: {
+			type: String,
+			ref: 'User',
+		},
+		message: String,
+		media: {
+			image: {
+				type: String,
+				required: false,
+			},
+			audio: {
+				type: String,
+				required: false,
+			},
+			video: {
+				type: String,
+				required: false,
+			},
+		},
+	},
+	{
+		timestamps: true,
+	}
 );
 
-const messageModel = model("Message", messagesSchema);
+messagesSchema.index({ message: 'text', to: 'text', from: 'text' });
+
+const messageModel = model('Message', messagesSchema);
+
 export type messageModelType = typeof messageModel;
 export default messageModel;

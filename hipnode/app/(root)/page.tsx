@@ -28,7 +28,7 @@ export default async function Home({ searchParams }: Props) {
 	]);
 
 	return (
-		<section className='flex h-full flex-col gap-3 pb-16 pt-10 lg:flex-row'>
+		<section className='flex h-full flex-col gap-3 pb-20 pt-10 lg:flex-row'>
 			<div className='top-0 flex flex-col gap-5 lg:sticky lg:h-screen'>
 				<HomeFilter
 					innerStyles='md:space-x-0 gap-8 justify-center '

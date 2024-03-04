@@ -81,6 +81,9 @@ export default class PostService {
 							$exists: false,
 						},
 					},
+					options: {
+						sort: { createdAt: -1 },
+					},
 					populate: {
 						path: 'author',
 						select: {

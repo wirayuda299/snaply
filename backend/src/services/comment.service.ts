@@ -46,8 +46,9 @@ export default class CommentService {
 				.find({ parentId: req.params.id })
 				.populate('author', 'username profileImage createdAt updateAt');
 
-			if (comments?.length < 1)
+			if (comments?.length < 1) {
 				return res.status(404).json({ message: 'No replies yet', error: true });
+			}
 			return res.status(200).json({ data: comments, error: false }).end();
 		} catch (error) {
 			createError(error, res);
