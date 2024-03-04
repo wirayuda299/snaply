@@ -285,7 +285,6 @@ export default class GroupService {
 				bannerAssetId,
 				logoAssetId,
 			} = req.body;
-			console.log(req.body);
 
 			const group = await this.groupModel.findById(groupId);
 
