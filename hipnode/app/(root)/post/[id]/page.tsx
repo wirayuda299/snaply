@@ -106,11 +106,13 @@ export default async function PostDetail({ params }: Props) {
 						<h2 className='text-secondary dark:text-secondary-light py-3 text-center text-3xl font-semibold'>
 							{post.author.username}
 						</h2>
-						<FollowButton
-							followers={user.followers}
-							id={post.author._id}
-							path={`/post/${post._id}`}
-						/>
+						{user._id !== post.author._id && (
+							<FollowButton
+								followers={user.followers}
+								id={post.author._id}
+								path={`/post/${post._id}`}
+							/>
+						)}
 						<p className='text-secondary-light pt-3 text-center text-xs'>
 							Joined {getCreatedDate(post.author.createdAt)}
 						</p>
