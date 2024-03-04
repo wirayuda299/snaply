@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import { joinGroup, leaveGroup } from '@/lib/actions';
 import { Button } from '../ui/button';
@@ -15,7 +16,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
-import Link from 'next/link';
 
 export default function ActionButton({
 	groupId,
@@ -32,16 +32,26 @@ export default function ActionButton({
 
 	const handleToggle = () => setIsOpen((prev) => !prev);
 
-	const handleGroupAction = async () => {
+	const handleLeaveGroup = async () => {
 		try {
-			if (isMember) {
-				await leaveGroup(groupId, userId).then(handleToggle);
-			} else {
-				await joinGroup(groupId, userId);
-			}
+			await leaveGroup(groupId, userId).then(handleToggle);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
+			} else {
+				toast.error('Unknown error');
+			}
+		}
+	};
+
+	const handleJoinGroup = async () => {
+		try {
+			await joinGroup(groupId, userId);
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message);
+			} else {
+				toast.error('Unknown error');
 			}
 		}
 	};
@@ -68,7 +78,7 @@ export default function ActionButton({
 							</DialogTitle>
 							<div className='flex items-center gap-5 pt-[30px]'>
 								<Button
-									onClick={handleGroupAction}
+									onClick={handleLeaveGroup}
 									className=' bg-white-700 text-secondary hover:bg-white-800 dark:bg-secondary-dark dark:hover:bg-secondary-dark-2 w-[160px] max-sm:w-full dark:text-white'
 								>
 									Leave Group
@@ -82,15 +92,14 @@ export default function ActionButton({
 				</Dialog>
 			)}
 
-			{!isMember ||
-				(isAdmin && (
-					<Button
-						onClick={handleGroupAction}
-						className='bg-white-700 text-secondary hover:bg-white-800 dark:bg-primary-dark dark:hover:bg-secondary-dark-2 flex h-10 w-20 items-center justify-center gap-2 rounded max-sm:w-full dark:text-white'
-					>
-						Join
-					</Button>
-				))}
+			{!isMember && (
+				<Button
+					onClick={handleJoinGroup}
+					className='bg-white-700 text-secondary hover:bg-white-800 dark:bg-primary-dark dark:hover:bg-secondary-dark-2 flex h-10 w-20 items-center justify-center gap-2 rounded max-sm:w-full dark:text-white'
+				>
+					Join
+				</Button>
+			)}
 			{isAdmin && (
 				<Link
 					href={`/groups/action/update?groupId=${groupId}`}

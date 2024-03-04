@@ -16,11 +16,8 @@ const router = Router();
 const groupService = new GroupService(groupModel, tagModel, userModel);
 const group = new GroupController(groupService);
 
-router.post(
-	'/join',
-	(req: RequestWithQuery<{ groupId: string; userId: string }>, res) =>
-		group.joinOrLeave(req, res)
-);
+router.post('/join', (req, res) => group.join(req, res));
+router.post('/leave', (req, res) => group.leave(req, res));
 router.get('/all', (_, res) => group.allGroups(res));
 router.get('/', (req: RequestWithQuery<{ id: string }>, res) =>
 	group.getGroupById(req, res)

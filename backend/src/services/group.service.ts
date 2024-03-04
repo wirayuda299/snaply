@@ -16,19 +16,11 @@ import { createError } from '../utils/createError';
 import FileUploadService from './fileUpload.service';
 
 export default class GroupService {
-	groupModel;
-	tagModel;
-	userModel;
-
 	constructor(
-		groupModel: groupModelType,
-		tagModel: TagModel,
-		userModel: userModelType
-	) {
-		this.groupModel = groupModel;
-		this.tagModel = tagModel;
-		this.userModel = userModel;
-	}
+		private groupModel: groupModelType,
+		private tagModel: TagModel,
+		private userModel: userModelType
+	) {}
 
 	isAdmin(admins: string[], members: string[]) {
 		return admins.findIndex((admin) => members.includes(admin));
@@ -170,15 +162,36 @@ export default class GroupService {
 		}
 	}
 
-	async joinOrLeaveGroup(
-		req: RequestWithQuery<{
-			groupId: string;
-			userId: string;
-		}>,
-		res: Response
-	) {
+	async joinGroup(req: Request, res: Response) {
 		try {
-			const group = await this.groupModel.findById(req.query.groupId);
+			const { groupId, userId } = req.body;
+			const group = await this.groupModel.findById(groupId);
+			if (!group) {
+				return res
+					.status(404)
+					.json({ message: 'Group not found', error: true })
+					.end();
+			}
+			const memberIndex = group.members.indexOf(userId);
+			if (memberIndex !== -1) {
+				return res
+					.status(400)
+					.json({ message: 'You already member of this group' });
+			} else {
+				group.members.push(userId);
+			}
+			await group.save();
+			res.status(200).end();
+		} catch (error) {
+			createError(error, res);
+		}
+	}
+
+	async leaveGroup(req: Request, res: Response) {
+		try {
+			const { groupId, userId } = req.body;
+
+			const group = await this.groupModel.findById(groupId);
 			if (!group) {
 				return res
 					.status(404)
@@ -186,14 +199,16 @@ export default class GroupService {
 					.end();
 			}
 
-			const memberIndex = group.members.indexOf(req.query.userId);
+			const memberIndex = group.members.indexOf(userId);
 			if (memberIndex !== -1) {
 				group.members.splice(memberIndex, 1);
 			} else {
-				group.members.push(req.query.userId);
+				return res
+					.status(400)
+					.json({ message: 'You are not member of this group' });
 			}
 			await group.save();
-			res.status(200).json({ data: group, error: false }).end();
+			res.status(200).end();
 		} catch (error) {
 			createError(error, res);
 		}

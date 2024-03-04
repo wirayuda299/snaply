@@ -25,16 +25,12 @@ export default class Group {
 		return this.groupService.getAllGroups(res);
 	}
 
-	joinOrLeave(
-		req: RequestWithQuery<{ groupId: string; userId: string }>,
-		res: Response
-	) {
-		if (!req.query.userId || !req.query.groupId) {
-			return res
-				.status(400)
-				.json({ message: 'Group ID and User ID are required' });
-		}
-		return this.groupService.joinOrLeaveGroup(req, res);
+	join(req: Request, res: Response) {
+		return this.groupService.joinGroup(req, res);
+	}
+
+	leave(req: Request, res: Response) {
+		return this.groupService.leaveGroup(req, res);
 	}
 
 	getAllGroupsWhereUserIn(req: Request, res: Response) {

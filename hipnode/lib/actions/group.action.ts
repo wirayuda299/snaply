@@ -66,6 +66,10 @@ export async function getGroupById(id: string) {
 
 export async function joinGroup(groupId: string, userId: string) {
 	try {
+		await fetchConfig(`/group/join`, [], 'POST', {
+			groupId,
+			userId,
+		});
 		revalidatePath(`/groups/${groupId}`);
 	} catch (error) {
 		throw error;
@@ -73,7 +77,15 @@ export async function joinGroup(groupId: string, userId: string) {
 }
 
 export async function leaveGroup(groupId: string, userId: string) {
-	console.log('leave group');
+	try {
+		await fetchConfig(`/group/leave`, [], 'POST', {
+			groupId,
+			userId,
+		});
+		revalidatePath(`/groups/${groupId}`);
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function getAllGroupsWhereUserJoin(admins: string[]) {

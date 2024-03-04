@@ -110,7 +110,7 @@ export default class PostService {
 			if (sort === 'newest') {
 				sortOptions = { createdAt: -1 };
 			} else {
-				sortOptions = { createdAt: 1 };
+				sortOptions = { views: -1 };
 			}
 
 			const [totalPosts, allPosts] = await Promise.all([
@@ -125,9 +125,7 @@ export default class PostService {
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			res.status(200).json({ error: false, data: allPosts, totalPosts }).end();
 		} catch (e) {
-			if (e instanceof Error) {
-				res.status(500).json({ message: e.message, error: true }).end();
-			}
+			createError(e, res);
 		}
 	}
 
@@ -196,9 +194,7 @@ export default class PostService {
 				.json({ data: posts.filter((post) => post._id.toString() !== id) })
 				.end();
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({ message: error.message, error: true }).end();
-			}
+			createError(error, res);
 		}
 	}
 
