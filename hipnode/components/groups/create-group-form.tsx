@@ -23,54 +23,124 @@ import TagInput from '../shared/forms/TagInput';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { uploadFile } from '@/lib/actions/fileUpload.action';
-import { createGroup } from '@/lib/actions';
+import { createGroup, getGroupById, updateGroup } from '@/lib/actions';
 import useUploadFile from '@/hooks/useUploadFile';
 import { createGroupSchema, createGroupSchemaTypes } from '@/lib/validations';
+import useFormReset from '@/hooks/useFormReset';
+import useFetch from '@/hooks/useFetch';
+import Loader from '../shared/Loader';
+import { Group } from '@/types';
 
-export default function CreateGroupForm() {
+export default function CreateGroupForm({
+	groupId,
+	type,
+}: {
+	groupId: string;
+	type: string;
+}) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
 	const { userId } = useAuth();
 
+	const DEFAULT_VALUES = {
+		admins: [userId!],
+		tags: [],
+		cover: '',
+		description: '',
+		members: [],
+		name: '',
+		profileImage: '',
+		category: '',
+	};
+
 	const form = useForm<createGroupSchemaTypes>({
 		resolver: zodResolver(createGroupSchema),
-		defaultValues: {
-			admins: [userId!],
-			tags: [],
-			cover: '',
-			description: '',
-			members: [],
-			name: '',
-			profileImage: '',
-			category: '',
-		},
+		defaultValues: DEFAULT_VALUES,
 	});
-	const { isChecking, handleChange, preview, files } = useUploadFile(form);
 
-	async function onSubmit(data: createGroupSchemaTypes) {
+	const { isChecking, handleChange, preview, files } = useUploadFile(form);
+	const { data, isError, error, isLoading } = useFetch<Promise<Group>>(
+		groupId,
+		async () => await getGroupById(groupId),
+		type === 'update'
+	);
+
+	useFormReset(
+		isLoading,
+		isError,
+		data,
+		form,
+		{
+			tags: (data as unknown as Group)?.tags.map((tag) => tag.name),
+			cover: (data as unknown as Group)?.banner,
+			description: (data as unknown as Group)?.description,
+			members: (data as unknown as Group)?.members.map((member) => member._id),
+			name: (data as unknown as Group)?.name,
+			profileImage: (data as unknown as Group)?.logo,
+			category: (data as unknown as Group)?.category,
+			admins: (data as unknown as Group)?.admins.map((admin) => admin._id),
+		},
+		type
+	);
+
+	if (isLoading) return <Loader />;
+	if (isError) return <p>{error?.message}</p>;
+
+	async function onSubmit(formData: createGroupSchemaTypes) {
 		try {
 			setLoading(true);
+			const filesToUpload = files
+				? [files.cover, files.profileImage].filter(Boolean)
+				: [];
+			const uploadPromises = filesToUpload.map(uploadFile);
+			const uploadResults = await Promise.all(uploadPromises);
 
-			if (files && files.cover && files.profileImage) {
-				const cover = await uploadFile(files?.cover);
-				const profileImage = await uploadFile(files?.profileImage);
+			const banner = uploadResults[0]?.secure_url;
+			const bannerAssetId = uploadResults[0]?.public_id;
+			const logo = uploadResults[1]?.secure_url;
+			const logoAssetId = uploadResults[1]?.public_id;
 
+			const groupData = {
+				banner,
+				bannerAssetId,
+				category: formData.category,
+				description: formData.description,
+				groupId,
+				logo,
+				logoAssetId,
+				name: formData.name,
+				tags: formData.tags,
+				admins: (data as unknown as Group)?.admins.map((admin) => admin._id),
+				members: (data as unknown as Group)?.members.map(
+					(member) => member._id
+				),
+			};
+
+			if (type === 'update') {
+				await updateGroup(groupData);
+				toast.success('Group has been updated 🥳');
+			} else {
 				await createGroup(
-					data.admins,
-					data.tags,
-					cover?.secure_url,
-					cover?.public_id,
-					data.description,
-					profileImage?.secure_url,
-					profileImage?.public_id,
-					data.name,
-					data.category
+					formData.admins,
+					formData.tags,
+					banner,
+					bannerAssetId,
+					formData.description,
+					logo,
+					logoAssetId,
+					formData.name,
+					formData.category
 				);
 				toast.success('Group has been created 🎉');
-				router.push('/groups');
 			}
+			router.push('/groups');
 		} catch (error) {
-			toast.error('Something went wrong while create a group 😢');
+			console.error(error);
+			if (type === 'create') {
+				toast.error('Something went wrong while creating a group 😢');
+			} else {
+				toast.error('Something went wrong while updating a group 😢');
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -118,11 +188,12 @@ export default function CreateGroupForm() {
 						</FormItem>
 					)}
 				/>
-				{preview && preview.cover ? (
+				{(preview || data) &&
+				(preview?.cover || (data as unknown as Group)?.banner) ? (
 					<div className='relative min-h-[250px] w-full'>
 						<Image
 							className='rounded-md object-cover object-center'
-							src={preview.cover}
+							src={preview?.cover || (data as unknown as Group)?.banner || ''}
 							alt='cover'
 							fill
 						/>
@@ -140,7 +211,7 @@ export default function CreateGroupForm() {
 				<div className='flex items-center gap-3'>
 					<div
 						className={cn(
-							'flex w-15 sm:size-16 object-contain items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2',
+							'flex size-15 sm:size-12 object-contain items-center justify-center rounded-full bg-white-700 p-1 dark:bg-secondary-dark-2',
 							isChecking.profileImage && 'animate-pulse cursor-not-allowed'
 						)}
 					>
@@ -148,16 +219,17 @@ export default function CreateGroupForm() {
 							width={30}
 							height={30}
 							src={
-								preview && preview.profileImage
-									? preview.profileImage
+								(preview || data) &&
+								(preview?.profileImage || (data as unknown as Group).logo)
+									? preview?.profileImage || (data as unknown as Group).logo
 									: '/assets/create-post/image.svg'
 							}
 							alt='profile image'
 							className={cn(
-								'aspect-auto size-7 sm:size-12 object-contain object-center ',
-								preview &&
-									preview.profileImage &&
-									'h-full w-full rounded-full aspect-auto object-cover'
+								'aspect-auto size-4 sm:size-7 object-contain object-center ',
+								(preview || data) &&
+									(preview?.profileImage || (data as unknown as Group).logo) &&
+									'h-full w-full rounded-full aspect-auto size-8 object-cover'
 							)}
 							loading='lazy'
 						/>
@@ -268,7 +340,15 @@ export default function CreateGroupForm() {
 						</FormItem>
 					)}
 				/>
-				<Button disabled={loading}>{loading ? 'Creating...' : 'Create'}</Button>
+				<Button disabled={loading}>
+					{loading
+						? type === 'create'
+							? 'Creating...'
+							: 'Updating'
+						: type === 'create'
+							? 'Create'
+							: 'Update'}
+				</Button>
 			</form>
 		</Form>
 	);

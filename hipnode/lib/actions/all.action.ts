@@ -11,26 +11,15 @@ interface MeetupResult {
 	meetup: Meetup;
 }
 
-type DataResult = PostResult | MeetupResult | Podcast;
-
-export async function getData(
-	type: string,
-	postId: string
-): Promise<DataResult | undefined> {
-	let results: DataResult | undefined;
-
+export async function getData(type: string, postId: string) {
 	switch (type) {
 		case 'post':
-			results = (await getPostById(postId)) as PostResult;
-			break;
+			return (await getPostById(postId)) as PostResult;
 		case 'meetup':
-			results = (await getMeetupById(postId)) as MeetupResult;
-			break;
+			return (await getMeetupById(postId)) as MeetupResult;
 		case 'podcast':
-			results = await getPodcastById(postId)!;
-			break;
+			return (await getPodcastById(postId)) as Podcast;
 		default:
 			return undefined;
 	}
-	return results;
 }

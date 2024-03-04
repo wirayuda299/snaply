@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useForm } from 'react-hook-form';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FileAudio2 } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,9 +17,6 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
 import {
 	Select,
 	SelectItem,
@@ -28,15 +24,18 @@ import {
 	SelectContent,
 	SelectTrigger,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { CreatePostFormType, PostSchema } from '@/lib/validations';
 
-import { Group } from '@/types';
+import { Group, Meetup, Podcast, Post } from '@/types';
 import { getData } from '@/lib/actions';
 import { createPostData } from '@/constants';
 
 import useUploadFile from '@/hooks/useUploadFile';
 import useFormReset from '@/hooks/useFormReset';
 import useFormSubmit from '@/hooks/useFormSubmit';
+import useFetch from '@/hooks/useFetch';
 
 const Loader = dynamic(() => import('../Loader'));
 const TagInput = dynamic(() => import('./TagInput'));
@@ -48,6 +47,14 @@ type Props = {
 	searchParams: { type: 'meetup' | 'post'; postId: string; title: string };
 };
 
+interface PostResult {
+	post: Post;
+}
+
+interface MeetupResult {
+	meetup: Meetup;
+}
+
 const CreatePost = ({
 	groups,
 	props: { params, searchParams },
@@ -56,35 +63,57 @@ const CreatePost = ({
 	props: Props;
 }) => {
 	const router = useRouter();
-	const { data, isError, isLoading, error } = useQuery({
-		queryKey: [searchParams.postId],
-		queryFn: async () => {
-			return await getData(searchParams.type, searchParams.postId);
-		},
-		enabled: params.action === 'update',
-	});
+	const { data, isError, isLoading, error } = useFetch(
+		searchParams.postId,
+		() => getData(searchParams.type, searchParams.postId),
+		params.action === 'update'
+	);
+
+	const DEFAULT_VALUES = {
+		title: searchParams.title ?? '',
+		tags: [],
+		createType: searchParams.type ?? 'post',
+		post: '',
+		postImage: '',
+		country: '',
+		address: '',
+		companyName: '',
+		date: '',
+		audio: null,
+		category: '',
+		group: null,
+	};
+
+	const postData = data as unknown as PostResult;
+	const meetupData = data as unknown as MeetupResult;
+	const podcastData = data as unknown as Podcast;
+
+	const RESET_VALUES = {
+		title: postData?.post?.title || meetupData?.meetup?.title || '',
+		tags:
+			(postData?.post?.tags || meetupData?.meetup?.tags)?.map(
+				(tag: { name: string }) => tag.name
+			) || [],
+		createType: searchParams.type.toLowerCase() || 'post',
+		post: postData?.post?.body || meetupData?.meetup?.body || '',
+		postImage: postData?.post?.image || meetupData?.meetup?.image || '',
+		country: '',
+		address: meetupData?.meetup?.address || '',
+		companyName: meetupData?.meetup?.companyName || '',
+		date: meetupData?.meetup?.date || '',
+		audio: podcastData?.audio || null,
+		category: postData?.post?.category || meetupData?.meetup?.category || '',
+		group: postData?.post?.group || '',
+	};
 
 	const form = useForm<CreatePostFormType>({
 		resolver: zodResolver(PostSchema),
-		defaultValues: {
-			title: searchParams.title ?? '',
-			tags: [],
-			createType: searchParams.type ?? 'post',
-			post: '',
-			postImage: '',
-			country: '',
-			address: '',
-			companyName: '',
-			date: '',
-			audio: null,
-			category: '',
-			group: null,
-		},
+		defaultValues: DEFAULT_VALUES,
 	});
 
+	useFormReset(isLoading, isError, data, form, RESET_VALUES, searchParams.type);
 	const { handleChange, isChecking, preview, files } = useUploadFile(form);
 
-	useFormReset(isLoading, isError, data, form, searchParams);
 	const { loading, onSubmit } = useFormSubmit(
 		{ params, searchParams },
 		files,
@@ -97,7 +126,7 @@ const CreatePost = ({
 
 	if (isLoading) return <Loader />;
 
-	if (isError) return <p>{error.message}</p>;
+	if (isError) return <p>{error?.message}</p>;
 
 	return (
 		<Form {...form}>

@@ -16,6 +16,7 @@ import {
 	getGroupById,
 	joinGroup,
 	leaveGroup,
+	updateGroup,
 } from './group.action';
 
 import {
@@ -57,6 +58,7 @@ import { getAllTags } from './tag.action';
 import { getData } from './all.action';
 
 export {
+	updateGroup,
 	updateMeetup,
 	getData,
 	deletePodcast,

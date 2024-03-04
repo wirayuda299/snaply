@@ -15,6 +15,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
+import Link from 'next/link';
 
 export default function ActionButton({
 	groupId,
@@ -91,12 +92,12 @@ export default function ActionButton({
 					</Button>
 				))}
 			{isAdmin && (
-				<Button
-					onClick={handleGroupAction}
+				<Link
+					href={`/groups/action/update?groupId=${groupId}`}
 					className='bg-white-700 text-secondary hover:bg-white-800 dark:bg-primary-dark dark:hover:bg-secondary-dark-2 flex h-10 w-20 items-center justify-center gap-2 rounded max-sm:w-full dark:text-white'
 				>
 					Update
-				</Button>
+				</Link>
 			)}
 		</>
 	);

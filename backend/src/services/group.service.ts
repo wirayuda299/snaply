@@ -134,7 +134,8 @@ export default class GroupService {
 					],
 				})
 				.populate('admins', '_id username profileImage')
-				.populate('members', '_id username profileImage');
+				.populate('members', '_id username profileImage')
+				.populate('tags');
 
 			if (!foundGroup) {
 				return res
@@ -284,6 +285,8 @@ export default class GroupService {
 				bannerAssetId,
 				logoAssetId,
 			} = req.body;
+			console.log(req.body);
+
 			const group = await this.groupModel.findById(groupId);
 
 			if (!group) {
@@ -304,7 +307,9 @@ export default class GroupService {
 
 			if (bannerAssetId !== group.bannerAssetId) {
 				await fileUploadService.deleteAsset(group.bannerAssetId, res);
-			} else if (logoAssetId !== group.logoAssetId) {
+			}
+
+			if (logoAssetId !== group.logoAssetId) {
 				await fileUploadService.deleteAsset(group.logoAssetId, res);
 			}
 
@@ -324,6 +329,8 @@ export default class GroupService {
 			);
 			res.status(201).end();
 		} catch (error) {
+			console.log(error);
+
 			createError(error, res);
 		}
 	}
