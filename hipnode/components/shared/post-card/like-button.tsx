@@ -40,8 +40,12 @@ export default function LikeButton({
 				}
 			}
 		} catch (e) {
+			console.log(e);
+
 			if (e instanceof Error) {
 				toast.error(e.message);
+			} else {
+				toast.error('Unknown error');
 			}
 		}
 	};

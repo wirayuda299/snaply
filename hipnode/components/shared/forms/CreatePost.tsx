@@ -89,21 +89,21 @@ const CreatePost = ({
 	const podcastData = data as unknown as Podcast;
 
 	const RESET_VALUES = {
-		title: postData?.post?.title || meetupData?.meetup?.title || '',
+		title: postData?.post?.title || meetupData?.meetup?.title,
 		tags:
 			(postData?.post?.tags || meetupData?.meetup?.tags)?.map(
 				(tag: { name: string }) => tag.name
 			) || [],
 		createType: searchParams.type.toLowerCase() || 'post',
-		post: postData?.post?.body || meetupData?.meetup?.body || '',
-		postImage: postData?.post?.image || meetupData?.meetup?.image || '',
+		post: postData?.post?.body || meetupData?.meetup?.body,
+		postImage: postData?.post?.image || meetupData?.meetup?.image,
 		country: '',
-		address: meetupData?.meetup?.address || '',
-		companyName: meetupData?.meetup?.companyName || '',
-		date: meetupData?.meetup?.date || '',
+		address: meetupData?.meetup?.address,
+		companyName: meetupData?.meetup?.companyName,
+		date: meetupData?.meetup?.date,
 		audio: podcastData?.audio || null,
-		category: postData?.post?.category || meetupData?.meetup?.category || '',
-		group: postData?.post?.group || '',
+		category: postData?.post?.category || meetupData?.meetup?.category,
+		group: postData?.post?.group,
 	};
 
 	const form = useForm<CreatePostFormType>({
@@ -111,7 +111,15 @@ const CreatePost = ({
 		defaultValues: DEFAULT_VALUES,
 	});
 
-	useFormReset(isLoading, isError, data, form, RESET_VALUES, searchParams.type);
+	useFormReset(
+		isLoading,
+		isError,
+		data,
+		form,
+		RESET_VALUES,
+		searchParams.type,
+		searchParams.postId
+	);
 	const { handleChange, isChecking, preview, files } = useUploadFile(form);
 
 	const { loading, onSubmit } = useFormSubmit(

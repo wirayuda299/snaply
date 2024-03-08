@@ -1,6 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
 
-import { fetchConfig } from '../utils';
+import { ApiRequest } from '@/utils';
+import { Notification } from '@/types';
+import { revalidateTag } from 'next/cache';
 
 type createNotificationProps = {
 	to: string;
@@ -11,11 +13,13 @@ type createNotificationProps = {
 	model: string;
 	comments?: string;
 };
+const apiRequest = new ApiRequest();
 
 export async function createNotification(props: createNotificationProps) {
 	try {
 		const { to, from, message, type, postId, model, comments } = props;
-		await fetchConfig(`/notification/create`, [], 'POST', {
+
+		await apiRequest.post('/notification/create', {
 			to,
 			from,
 			message,
@@ -24,19 +28,22 @@ export async function createNotification(props: createNotificationProps) {
 			model,
 			comments,
 		});
-	} catch (e) {
-		throw e;
+		revalidateTag('notifications');
+	} catch (error) {
+		throw error;
 	}
 }
 
 export async function deleteNotification(type: string, postId: string) {
 	try {
 		const { userId } = auth();
-		await fetchConfig(`/notification/delete`, [], 'POST', {
+
+		await apiRequest.post('/notification/delete', {
 			type,
 			postId,
 			userId,
 		});
+		revalidateTag('notifications');
 	} catch (error) {
 		throw error;
 	}
@@ -45,13 +52,13 @@ export async function deleteNotification(type: string, postId: string) {
 export async function getAllNotifications() {
 	try {
 		const { userId } = auth();
-		const res = await fetchConfig(
-			`/notification/all-notifications?userId=${userId}`,
-			['notifications'],
-			'GET'
-		);
+		const query = `/notification/all-notifications?userId=${userId}`;
 
-		return res;
+		const notifications = await apiRequest.get<Notification[]>(
+			query,
+			'notifications'
+		);
+		return notifications;
 	} catch (error) {
 		throw error;
 	}

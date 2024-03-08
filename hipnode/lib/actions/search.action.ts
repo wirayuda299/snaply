@@ -1,22 +1,27 @@
-import { Group, Meetup, Podcast, Post } from "@/types";
-import { fetchConfig } from "../utils";
+import { Group, Meetup, Podcast, Post } from '@/types';
+import { ApiRequest } from '@/utils';
+
+const apiRequest = new ApiRequest();
+
+type ReturnTypes = {
+	groups: Group[];
+	post: Post[];
+	podcasts: Podcast[];
+	meetups: Meetup[];
+};
 
 export async function search(searchTerm: string) {
-  const res = await fetchConfig(
-    `/search/all?searchTerm=${searchTerm}`,
-    ["search-res"],
-    "GET",
-  );
-  const filteredData = Object.fromEntries(
-    Object.entries(res.data).filter(
-      ([key, value]) => Array.isArray(value) && value.length >= 1,
-    ),
-  );
+	try {
+		const query = `/search/all?searchTerm=${searchTerm}`;
 
-  return filteredData as {
-    groups: Group[];
-    post: Post[];
-    podcasts: Podcast[];
-    meetups: Meetup[];
-  };
+		const res = await apiRequest.get<ReturnTypes>(query);
+
+		return Object.fromEntries(
+			Object.entries(res).filter(
+				([key, value]) => Array.isArray(value) && value.length >= 1
+			)
+		);
+	} catch (error) {
+		throw error;
+	}
 }

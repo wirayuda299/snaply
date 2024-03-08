@@ -1,3 +1,0 @@
-class MessageSerice {
-  constructor() { }
-}

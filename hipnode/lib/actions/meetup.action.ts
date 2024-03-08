@@ -1,9 +1,9 @@
-import { revalidatePath, revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { auth } from '@clerk/nextjs/server';
 
 import { Meetup } from '@/types';
-import { fetchConfig } from '../utils';
+import { ApiRequest } from '@/utils';
+import { revalidatePath } from 'next/cache';
 
 const schema = z.object({
 	address: z.string(),
@@ -17,14 +17,11 @@ const schema = z.object({
 	tags: z.array(z.string()),
 });
 
+const apiRequest = new ApiRequest();
+
 export async function getAllMeetups() {
 	try {
-		const res = await fetchConfig(
-			`/meetup/all?page=1&limit=10`,
-			['meetups'],
-			'GET'
-		);
-		return res.data as Meetup[];
+		return await apiRequest.get<Meetup[]>(`/meetup/all?page=1&limit=10`);
 	} catch (error) {
 		throw error;
 	}
@@ -47,22 +44,25 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 			body,
 			assetId,
 			category,
-		} = props;
+		} = parsed.data;
 
-		await fetchConfig(`/meetup/create`, [], 'POST', {
-			address,
-			companyName,
-			date,
-			image,
-			title,
-			tags,
-			body,
-			author: userId,
-			assetId,
-			category,
-		});
-
-		revalidateTag('meetups');
+		await apiRequest.post(
+			'/meetup/create',
+			{
+				address,
+				companyName,
+				date,
+				image,
+				title,
+				tags,
+				body,
+				assetId,
+				category,
+				author: userId,
+			},
+			'/meetups'
+		);
+		revalidatePath('/meetups');
 	} catch (error) {
 		throw error;
 	}
@@ -70,9 +70,9 @@ export async function createMeetup(props: z.infer<typeof schema>) {
 
 export async function getMeetupById(id: string) {
 	try {
-		const res = await fetchConfig(`/meetup?id=${id}`, [], 'GET');
+		const res = await apiRequest.get<Meetup>(`/meetup?id=${id}`);
 
-		return { meetup: res.data as Meetup };
+		return { meetup: res };
 	} catch (error) {
 		throw error;
 	}
@@ -80,9 +80,9 @@ export async function getMeetupById(id: string) {
 
 export async function deleteMeetup(id: string) {
 	try {
-		await fetchConfig('/meetup/delete', [], 'PATCH', {
-			meetupId: id,
-		});
+		const body = { meetupId: id };
+
+		await apiRequest.post('/meetup/delete', body, '/meetups');
 		revalidatePath('/meetups');
 	} catch (error) {
 		throw error;
@@ -101,7 +101,7 @@ export async function updateMeetup(
 	category: string
 ) {
 	try {
-		await fetchConfig('/meetup/update', [], 'POST', {
+		const requestBody = {
 			meetupId: id,
 			address,
 			companyName,
@@ -112,7 +112,9 @@ export async function updateMeetup(
 			body,
 			assetId,
 			category,
-		});
+		};
+
+		await apiRequest.post('/meetup/update', requestBody, '/meetups');
 		revalidatePath('/meetups');
 	} catch (error) {
 		throw error;

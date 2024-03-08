@@ -25,3 +25,15 @@ export type Group = {
 	updatedAt: Date;
 	posts: Post[];
 };
+
+export type CreateGroupType = {
+	tags: string[];
+	members: string[];
+	banner: string;
+	bannerAssetId: string;
+	description: string;
+	logo: string;
+	logoAssetId: string;
+	name: string;
+	category: string;
+};

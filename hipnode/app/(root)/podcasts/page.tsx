@@ -7,11 +7,13 @@ type Props = {
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 export default async function Podcasts({ searchParams }: Props) {
-	const [{ podcasts }, meetups] = await Promise.all([
+	const [podcasts, meetups] = await Promise.all([
 		getAllPodcasts(),
 		getAllMeetups(),
 	]);
-	const categoriesSet = new Set(podcasts.map((podcast) => podcast.category));
+	const categoriesSet = new Set(
+		podcasts.allPodcasts.map((podcast) => podcast.category)
+	);
 	const category = searchParams.category;
 
 	return (
@@ -24,12 +26,12 @@ export default async function Podcasts({ searchParams }: Props) {
 			</section>
 			<section className='flex w-full grow flex-wrap gap-5'>
 				{category
-					? podcasts
+					? podcasts.allPodcasts
 							.filter((podcast) => podcast.category === category)
 							?.map((podcast) => (
 								<PodcastCard podcast={podcast} key={podcast._id} />
 							))
-					: podcasts?.map((podcast) => (
+					: podcasts.allPodcasts?.map((podcast) => (
 							<PodcastCard podcast={podcast} key={podcast._id} />
 						))}
 			</section>

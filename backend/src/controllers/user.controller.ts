@@ -33,4 +33,8 @@ export default class User {
 	followUser(req: Request, res: Response) {
 		return this.userService.handleFollow(req, res);
 	}
+
+	listAllUsers(req: Request, res: Response) {
+		return this.userService.getAllUsers(req, res);
+	}
 }

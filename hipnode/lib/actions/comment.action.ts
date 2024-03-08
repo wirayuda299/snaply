@@ -1,54 +1,47 @@
-import { currentUser } from "@clerk/nextjs";
-import { revalidatePath, revalidateTag } from "next/cache";
-
-import { Comment } from "@/types";
-import { fetchConfig } from "../utils";
+import { Comment } from '@/types';
+import { ApiRequest } from '@/utils';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 type Props = {
-  author: string;
-  comment: string;
-  postId: string;
-  parentId: string | null;
+	author: string;
+	comment: string;
+	postId: string;
+	parentId: string | null;
 };
+const apiRequest = new ApiRequest();
 
 export async function uploadComment(data: Props) {
-  const { author, comment, parentId, postId } = data;
-  try {
-    await fetchConfig(`/comment/create`, ["comment"], "POST", {
-      author,
-      comment,
-      parentId,
-      postId,
-    });
-    revalidatePath(`/post/${postId}`);
-  } catch (error) {
-    throw error;
-  }
+	const { author, comment, parentId, postId } = data;
+	try {
+		const requestBody = {
+			author,
+			comment,
+			parentId,
+			postId,
+		};
+
+		await apiRequest.post('/comment/create', requestBody, `/post/${postId}`);
+		revalidatePath(`/post/${postId}`);
+	} catch (error) {
+		throw error;
+	}
 }
 
-export async function likeComments(commentId: string) {
-  try {
-    const user = await currentUser();
+export async function likeComments(commentId: string, userId: string) {
+	try {
+		const body = { userId, commentId };
 
-    if (!user) throw new Error("You must sign in to perform this action");
-
-    await fetchConfig(`/comment/like`, ["comment"], "POST", {
-      userId: user.id,
-      commentId,
-    });
-
-    revalidateTag("comment");
-  } catch (error) {
-    throw error;
-  }
+		await apiRequest.post('/comment/like', body, undefined, 'comment');
+		revalidateTag('comment');
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function getCommentsReply(commentId: string) {
-  try {
-    const res = await fetchConfig(`/comment/${commentId}`, [], "GET");
-
-    return res.data as Comment[];
-  } catch (error) {
-    throw error;
-  }
+	try {
+		return await apiRequest.get<Comment[]>(`/comment/${commentId}`);
+	} catch (error) {
+		throw error;
+	}
 }

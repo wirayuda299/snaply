@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 
 import { userModelType } from '../models/user.model';
 import { createError } from '../utils/createError';
+import console from 'console';
 
 export default class UserService {
 	constructor(private userModel: userModelType) {}
@@ -87,12 +88,14 @@ export default class UserService {
 
 			const user = await this.userModel.findById(userId);
 			let follower = await this.userModel.findById(followerId);
+
 			if (!user || !follower)
 				return res
 					.status(404)
 					.json({ message: 'User not found', error: false });
 
 			const followersIndex = user.followers.indexOf(followerId);
+
 			if (followersIndex === -1) {
 				user.followers.push(followerId);
 				follower.followings.push(user._id);
@@ -104,6 +107,21 @@ export default class UserService {
 			}
 			await Promise.all([user.save(), follower.save()]);
 			res.status(200).end();
+		} catch (error) {
+			createError(error, res);
+		}
+	}
+
+	async getAllUsers(req: Request, res: Response) {
+		try {
+			const users = await this.userModel
+				.find({
+					_id: {
+						$ne: req.query.userId,
+					},
+				})
+				.select('_id username profileImage createdAt');
+			return res.json({ data: users, error: false });
 		} catch (error) {
 			createError(error, res);
 		}

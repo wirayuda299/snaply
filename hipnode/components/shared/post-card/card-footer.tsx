@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Meetup, Post } from '@/types';
-import { cn, getCreatedDate } from '@/lib/utils';
+import { getCreatedDate } from '@/utils';
+import { cn } from '@/lib/utils';
 
 type PostCardTypes =
 	| { type: 'meetup'; post: Meetup }

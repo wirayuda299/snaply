@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { getPostById, getRelatedPosts, getUserById } from '@/lib/actions';
-import { getCreatedDate, getPostStats } from '@/lib/utils';
+import { getCreatedDate, getPostStats } from '@/utils';
 import {
 	Parser,
 	Comment,

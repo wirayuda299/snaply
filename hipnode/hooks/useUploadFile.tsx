@@ -8,7 +8,7 @@ import type {
 
 import { toast } from 'sonner';
 
-import { filterImage } from '@/lib/utils';
+import { filterImage } from '@/utils';
 
 export default function useUploadFile<T extends FieldValues>(
 	form: UseFormReturn<T>
@@ -72,8 +72,9 @@ export default function useUploadFile<T extends FieldValues>(
 
 				if (error instanceof Error) {
 					toast.error(error.message);
+				} else {
+					toast.error('Something went wrong while uploading image');
 				}
-				toast.error('Something went wrong while uploading image');
 			} finally {
 				setIsChecking((prev) => ({ ...prev, [field]: false }));
 			}

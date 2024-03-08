@@ -80,7 +80,8 @@ export default function CreateGroupForm({
 			category: (data as unknown as Group)?.category,
 			admins: (data as unknown as Group)?.admins.map((admin) => admin._id),
 		},
-		type
+		type,
+		groupId
 	);
 
 	if (isLoading) return <Loader />;

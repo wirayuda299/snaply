@@ -11,7 +11,7 @@ import {
 import Tab from '@/components/profile/tab';
 import FollowButton from '@/components/shared/follow-button';
 import { getUserById } from '@/lib/actions';
-import { getCreatedDate } from '@/lib/utils';
+import { getCreatedDate } from '@/utils';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 

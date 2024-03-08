@@ -1,8 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
-import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { Podcast } from '@/types/podcast.type';
-import { fetchConfig } from '../utils';
+import { ApiRequest } from '@/utils';
+import { revalidatePath } from 'next/cache';
+
+const apiRequest = new ApiRequest();
 
 export async function createPodcast(
 	audio: string,
@@ -16,7 +18,8 @@ export async function createPodcast(
 ) {
 	try {
 		const { userId } = auth();
-		await fetchConfig(`/podcasts/create`, [], 'POST', {
+
+		const requestBody = {
 			audio,
 			audioAssetId,
 			body,
@@ -26,9 +29,9 @@ export async function createPodcast(
 			author: userId,
 			postImageAssetId,
 			category,
-		});
-
-		revalidateTag('podcasts');
+		};
+		await apiRequest.post('/podcasts/create', requestBody, '/podcasts');
+		revalidatePath('/podcasts');
 	} catch (error) {
 		throw error;
 	}
@@ -40,14 +43,11 @@ export async function getAllPodcasts(
 	pageSize: number = 10
 ) {
 	try {
-		const podcasts = await fetchConfig(
-			`/podcasts/all?sort=${sort}&page=${page}&limit=${pageSize}`,
-			['podcasts'],
-			'GET'
-		);
-		return {
-			podcasts: podcasts.data.allPodcasts as Podcast[],
-		};
+		const query = `/podcasts/all?sort=${sort}&page=${page}&limit=${pageSize}`;
+
+		return await apiRequest.get<{
+			allPodcasts: Podcast[];
+		}>(query);
 	} catch (error) {
 		throw error;
 	}
@@ -55,17 +55,20 @@ export async function getAllPodcasts(
 
 export async function getPodcastById(id: string) {
 	try {
-		const res = await fetchConfig(`/podcasts?id=${id}`, ['podcast'], 'GET');
-		return res.data as Podcast;
+		return await apiRequest.get<Podcast>(`/podcasts?id=${id}`);
 	} catch (error) {
 		throw error;
 	}
 }
 export async function deletePodcast(id: string) {
 	try {
-		await fetchConfig(`/podcasts/delete`, [], 'PATCH', {
-			podcastId: id,
-		});
+		await apiRequest.patch(
+			`/podcasts/delete`,
+			{
+				podcastId: id,
+			},
+			'/podcasts'
+		);
 		revalidatePath('/podcasts');
 	} catch (error) {
 		throw error;

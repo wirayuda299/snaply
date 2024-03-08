@@ -13,6 +13,7 @@ router.post('/create', (req, res) => userController.create(req, res));
 router.get('/', Middleware.validate, (req, res) =>
 	userController.getUserById(req, res)
 );
+router.get('/all-users', (req, res) => userController.listAllUsers(req, res));
 
 router.post('/follow', Middleware.validate, (req, res) =>
 	userController.followUser(req, res)

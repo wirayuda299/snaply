@@ -1,8 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
-import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { Post } from '@/types';
-import { fetchConfig } from '../utils';
+import { ApiRequest } from '@/utils';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 type createPostType = {
 	title: string;
@@ -14,12 +14,14 @@ type createPostType = {
 	tags: string[];
 };
 
+const apiRequest = new ApiRequest();
 export async function createPost(props: createPostType) {
 	try {
 		const { userId } = auth();
 
 		const { title, body, tags, group, image, assetId, category } = props;
-		await fetchConfig('/post/create', [], 'POST', {
+
+		const requestBody = {
 			title,
 			body,
 			tags,
@@ -28,8 +30,9 @@ export async function createPost(props: createPostType) {
 			assetId,
 			category,
 			author: userId,
-		});
+		};
 
+		await apiRequest.post('/post/create', requestBody, '/');
 		revalidatePath('/');
 	} catch (error) {
 		throw error;
@@ -42,17 +45,9 @@ export async function getAllPosts(
 	pageSize: number = 10
 ) {
 	try {
-		const posts = await fetchConfig(
-			`/post/all?sort=${sort}&page=${page}&limit=${pageSize}`,
-			['all-posts'],
-			'GET'
+		return await apiRequest.get<Post[]>(
+			`/post/all?sort=${sort}&page=${page}&limit=${pageSize}`
 		);
-
-		const totalPages = Math.ceil(posts.totalPosts / pageSize);
-		return {
-			posts: posts.data as Post[],
-			totalPages,
-		};
 	} catch (error) {
 		throw error;
 	}
@@ -60,8 +55,9 @@ export async function getAllPosts(
 
 export async function getPostById(id: string) {
 	try {
-		const res = await fetchConfig(`/post?id=${id}`, ['post'], 'GET');
-		return { post: res?.data as Post };
+		const post = await apiRequest.get<Post>(`/post?id=${id}`);
+
+		return { post };
 	} catch (error) {
 		throw error;
 	}
@@ -69,7 +65,7 @@ export async function getPostById(id: string) {
 
 export async function deletePost(id: string, path: string) {
 	try {
-		await fetchConfig('/post/delete', [], 'PATCH', { postId: id });
+		await apiRequest.patch('/post/delete', { postId: id }, path);
 		revalidatePath(path);
 	} catch (error) {
 		throw error;
@@ -87,7 +83,7 @@ export async function updatePost(
 	path: string
 ) {
 	try {
-		await fetchConfig('/post/update', [], 'POST', {
+		const requestBody = {
 			postId,
 			title,
 			image,
@@ -95,7 +91,9 @@ export async function updatePost(
 			body,
 			category,
 			tags,
-		});
+		};
+
+		await apiRequest.post('/post/update', requestBody, path);
 		revalidatePath(path);
 	} catch (error) {
 		throw error;
@@ -104,8 +102,7 @@ export async function updatePost(
 
 export async function updateView(id: string) {
 	try {
-		await fetchConfig(`/post/increment-view`, [], 'POST', { postId: id });
-		revalidatePath('/');
+		await apiRequest.post('/post/increment-view', { postId: id }, '/');
 	} catch (error) {
 		throw error;
 	}
@@ -115,11 +112,15 @@ export async function likePost(id: string) {
 	try {
 		const { userId } = auth();
 
-		await fetchConfig(`/post/like`, [], 'POST', {
-			postId: id,
-			userId,
-		});
-
+		await apiRequest.post(
+			'/post/like',
+			{
+				postId: id,
+				userId,
+			},
+			'/',
+			'all-posts'
+		);
 		revalidateTag('all-posts');
 	} catch (error) {
 		throw error;
@@ -128,12 +129,11 @@ export async function likePost(id: string) {
 
 export async function getRelatedPosts(id: string, authorId: string) {
 	try {
-		const res = await fetchConfig(
-			`/post/related-posts?id=${id}&authorId=${authorId}`,
-			[],
-			'GET'
+		const apiRequest = new ApiRequest();
+
+		return await apiRequest.get<Post[]>(
+			`/post/related-posts?id=${id}&authorId=${authorId}`
 		);
-		return (await res.data) as Post[];
 	} catch (error) {
 		throw error;
 	}
@@ -143,11 +143,15 @@ export async function reportPost(id: string, reasons: string[]) {
 	try {
 		const { userId } = auth();
 
-		await fetchConfig(`/report/report-post`, [], 'POST', {
-			postId: id,
-			reasons,
-			userId,
-		});
+		await apiRequest.post(
+			`/report/report-post`,
+			{
+				postId: id,
+				reasons,
+				userId,
+			},
+			`/post/${id}`
+		);
 		revalidatePath(`/post/${id}`);
 	} catch (error) {
 		throw error;
@@ -156,7 +160,7 @@ export async function reportPost(id: string, reasons: string[]) {
 
 export async function sharePost(id: string, path: string) {
 	try {
-		await fetchConfig(`/post/share`, [], 'POST', { postId: id });
+		await apiRequest.post('/post/share', { postId: id }, path);
 		revalidatePath(path);
 	} catch (error) {
 		throw error;

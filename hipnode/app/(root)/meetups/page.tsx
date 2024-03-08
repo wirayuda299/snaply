@@ -11,14 +11,14 @@ type Props = {
 };
 export default async function Meetups({ searchParams }: Props) {
 	const category = searchParams?.category;
-	const [meetups, { podcasts }] = await Promise.all([
+	const [meetups, podcasts] = await Promise.all([
 		getAllMeetups(),
 		getAllPodcasts('popular', 1, 3),
 	]);
 	const categoriesSet = new Set(meetups.map((meetup) => meetup.category));
 
 	return (
-		<div className='flex flex-col gap-5 pb-20 lg:flex-row'>
+		<div className='flex flex-col gap-5 pb-20 pt-5 lg:flex-row'>
 			<section className='top-0 w-80 max-lg:w-full lg:sticky lg:h-screen'>
 				<Category categories={Array.from(categoriesSet)} title='Categories' />
 			</section>
@@ -41,7 +41,9 @@ export default async function Meetups({ searchParams }: Props) {
 					title='Host a meetup'
 					text='Find other Hipnoders in your area so you can learn, share, and work together.'
 				/>
-				{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
+				{podcasts.allPodcasts.length >= 1 && (
+					<SharedPodcastCard podcasts={podcasts.allPodcasts} />
+				)}
 			</section>
 		</div>
 	);

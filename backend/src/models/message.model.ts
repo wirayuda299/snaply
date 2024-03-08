@@ -1,18 +1,14 @@
 import { Schema, model } from 'mongoose';
 
-const messagesSchema = new Schema(
+const chatSchema = new Schema(
 	{
-		to: {
-			type: String,
-			ref: 'User',
-		},
-		from: {
-			type: String,
-			ref: 'User',
-		},
-		message: String,
+		content: String,
 		media: {
 			image: {
+				type: String,
+				required: false,
+			},
+			imageAssetId: {
 				type: String,
 				required: false,
 			},
@@ -20,10 +16,22 @@ const messagesSchema = new Schema(
 				type: String,
 				required: false,
 			},
+			audioAssetId: {
+				type: String,
+				required: false,
+			},
 			video: {
 				type: String,
 				required: false,
 			},
+			videoAssetId: {
+				type: String,
+				required: false,
+			},
+		},
+		senderId: {
+			type: String,
+			ref: 'User',
 		},
 	},
 	{
@@ -31,7 +39,27 @@ const messagesSchema = new Schema(
 	}
 );
 
-messagesSchema.index({ message: 'text', to: 'text', from: 'text' });
+export const chatModel = model('Chat', chatSchema);
+
+const messagesSchema = new Schema(
+	{
+		members: [
+			{
+				type: String,
+				ref: 'User',
+			},
+		],
+		messages: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Chat',
+			},
+		],
+	},
+	{
+		timestamps: true,
+	}
+);
 
 const messageModel = model('Message', messagesSchema);
 

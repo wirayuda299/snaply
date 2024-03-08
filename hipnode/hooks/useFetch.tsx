@@ -5,13 +5,11 @@ export default function useFetch<T>(
 	cb: () => T,
 	enabled: boolean
 ) {
-	const { data, isError, isLoading, error } = useQuery({
+	const { data, isError, isLoading, error, refetch } = useQuery({
 		queryKey: [queryKey],
-		queryFn: () => {
-			return cb();
-		},
+		queryFn: cb,
 		enabled,
 	});
 
-	return { data, isError, isLoading, error };
+	return { data, isError, isLoading, error, refetch };
 }

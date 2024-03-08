@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-	const [{ posts }, allTags, meetups, { podcasts }] = await Promise.all([
+	const [posts, allTags, meetups, podcasts] = await Promise.all([
 		getAllPosts(searchParams.sort as string),
 		getAllTags(),
 		getAllMeetups(),
@@ -57,7 +57,10 @@ export default async function Home({ searchParams }: Props) {
 			</section>
 			<section className='top-0 min-w-80 space-y-5 max-lg:min-w-full lg:sticky lg:h-screen'>
 				{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
-				{podcasts.length >= 1 && <SharedPodcastCard podcasts={podcasts} />}
+
+				{podcasts?.allPodcasts.length >= 1 && (
+					<SharedPodcastCard podcasts={podcasts.allPodcasts} />
+				)}
 			</section>
 		</section>
 	);

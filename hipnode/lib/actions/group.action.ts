@@ -1,20 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
-import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { Group } from '@/types';
-import { fetchConfig } from '../utils';
+import { ApiRequest } from '@/utils';
+import { revalidatePath } from 'next/cache';
 
-export type CreateGroupType = {
-	tags: string[];
-	members: string[];
-	banner: string;
-	bannerAssetId: string;
-	description: string;
-	logo: string;
-	logoAssetId: string;
-	name: string;
-	category: string;
-};
+const apiRequest = new ApiRequest();
 
 export async function createGroup(
 	admins: string[],
@@ -28,19 +18,24 @@ export async function createGroup(
 	category: string
 ) {
 	try {
-		await fetchConfig(`/group/create`, [], 'POST', {
-			admins,
-			tags,
-			members: [],
-			banner,
-			description,
-			logo,
-			name,
-			bannerAssetId,
-			logoAssetId,
-			category,
-		});
-		revalidateTag('groups');
+		await apiRequest.post(
+			`/group/create`,
+			{
+				admins,
+				tags,
+				members: [],
+				banner,
+				description,
+				logo,
+				name,
+				bannerAssetId,
+				logoAssetId,
+				category,
+			},
+			undefined,
+			'groups'
+		);
+		revalidatePath('/groups');
 	} catch (error) {
 		throw error;
 	}
@@ -48,8 +43,7 @@ export async function createGroup(
 
 export async function getAllGroups() {
 	try {
-		const res = await fetchConfig(`/group/all`, ['groups'], 'GET');
-		return res.data as Group[];
+		return await apiRequest.get<Group[]>('/group/all');
 	} catch (error) {
 		throw error;
 	}
@@ -57,8 +51,7 @@ export async function getAllGroups() {
 
 export async function getGroupById(id: string) {
 	try {
-		const res = await fetchConfig(`/group?id=${id}`, ['group'], 'GET');
-		return res.data as Group;
+		return await apiRequest.get<Group>(`/group?id=${id}`);
 	} catch (error) {
 		throw error;
 	}
@@ -66,10 +59,9 @@ export async function getGroupById(id: string) {
 
 export async function joinGroup(groupId: string, userId: string) {
 	try {
-		await fetchConfig(`/group/join`, [], 'POST', {
-			groupId,
-			userId,
-		});
+		const body = { groupId, userId };
+
+		await apiRequest.post('/group/join', body, `/groups/${groupId}`);
 		revalidatePath(`/groups/${groupId}`);
 	} catch (error) {
 		throw error;
@@ -78,10 +70,9 @@ export async function joinGroup(groupId: string, userId: string) {
 
 export async function leaveGroup(groupId: string, userId: string) {
 	try {
-		await fetchConfig(`/group/leave`, [], 'POST', {
-			groupId,
-			userId,
-		});
+		const body = { groupId, userId };
+
+		await apiRequest.post('/group/leave', body, `/groups/${groupId}`);
 		revalidatePath(`/groups/${groupId}`);
 	} catch (error) {
 		throw error;
@@ -92,13 +83,9 @@ export async function getAllGroupsWhereUserJoin(admins: string[]) {
 	try {
 		const { userId } = auth();
 
-		const res = await fetchConfig(
-			`/group/group-member?admins=${admins}&members=${userId}`,
-			[],
-			'GET'
-		);
+		const query = `/group/group-member?admins=${admins}&members=${userId}`;
 
-		return res.data as Group[];
+		return await apiRequest.get<Group[]>(query);
 	} catch (error) {
 		throw error;
 	}
@@ -130,7 +117,7 @@ export async function updateGroup({
 	logoAssetId: string;
 }) {
 	try {
-		await fetchConfig('/group/update', [groupId], 'POST', {
+		const body = {
 			groupId,
 			tags,
 			...(banner && { banner }),
@@ -142,7 +129,8 @@ export async function updateGroup({
 			...(logoAssetId && { logoAssetId }),
 			admins,
 			members,
-		});
+		};
+		await apiRequest.post('/group/update', body, '/groups');
 		revalidatePath('/groups');
 	} catch (error) {
 		throw error;

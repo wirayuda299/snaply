@@ -95,9 +95,9 @@ export default function useFormSubmit(
 							const image = await uploadFile(files.postImage);
 							await updateMeetup(
 								searchParams.postId,
-								address,
-								companyName,
-								date,
+								address!,
+								companyName!,
+								date!,
 								image?.secure_url,
 								title,
 								tags,
@@ -113,11 +113,11 @@ export default function useFormSubmit(
 							const image = await uploadFile(files.postImage);
 
 							await createMeetup({
-								address,
+								address: address as string,
 								assetId: image?.public_id,
 								image: image?.secure_url,
-								companyName,
-								date,
+								companyName: companyName as string,
+								date: date as string,
 								title,
 								tags,
 								body: post,

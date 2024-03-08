@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { currentUser } from '@clerk/nextjs';
 
 import { Podcast } from '@/types';
-import { getCreatedDate } from '@/lib/utils';
+import { getCreatedDate } from '@/utils';
 const Parser = dynamic(() => import('../index').then((mod) => mod.Parser));
 const DeleteButton = dynamic(() => import('./Delete-Button'));
 

@@ -1,11 +1,12 @@
-import { Tag } from "@/types";
-import { fetchConfig } from "../utils";
+import { Tag } from '@/types';
+import { ApiRequest } from '@/utils';
+
+const apiRequest = new ApiRequest();
 
 export async function getAllTags() {
-  try {
-    const res = await fetchConfig("/tags/all-tags", ["tags"], "GET");
-    return res.data as Tag[];
-  } catch (error) {
-    throw error;
-  }
+	try {
+		return await apiRequest.get<Tag[]>('/tags/all-tags');
+	} catch (error) {
+		throw error;
+	}
 }
