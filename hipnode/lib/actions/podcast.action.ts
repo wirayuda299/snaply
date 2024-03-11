@@ -33,6 +33,8 @@ export async function createPodcast(
 		await apiRequest.post('/podcasts/create', requestBody, '/podcasts');
 		revalidatePath('/podcasts');
 	} catch (error) {
+		console.log(error);
+
 		throw error;
 	}
 }

@@ -43,7 +43,7 @@ export default function Pagination({ totalPages }: PaginationProps) {
 	};
 
 	return (
-		<div className='mt-5 flex items-center justify-center gap-2 sm:gap-5'>
+		<div className='mt-5 flex w-full items-center justify-center gap-2 sm:gap-5'>
 			<Button
 				disabled={+page === 1}
 				onClick={() => handlePagination('start')}

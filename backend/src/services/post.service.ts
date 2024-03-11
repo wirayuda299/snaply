@@ -8,6 +8,7 @@ import { userModelType } from '../models/user.model';
 import { postModelType } from '../models/post.model';
 import { groupModelType } from './../models/group.model';
 import { createError } from '../utils/createError';
+import { client } from '../config/redis.config';
 
 export default class PostService {
 	constructor(
@@ -106,6 +107,8 @@ export default class PostService {
 
 	async getAllPosts(req: Request, res: Response) {
 		try {
+			const random = Math.floor(Math.random() * 378487382);
+			console.time('posts' + random);
 			const { sort = 'popular', page = 1, limit = 10 } = req.query;
 
 			let sortOptions = {};
@@ -115,27 +118,42 @@ export default class PostService {
 			} else {
 				sortOptions = { views: -1 };
 			}
-			const [totalPosts, allPosts] = await Promise.all([
-				this.PostModel.countDocuments(),
-				this.PostModel.find({ group: null })
+
+			const cacheValues = await client.GET('posts');
+
+			const totalPosts = await this.PostModel.countDocuments();
+			const totalPages = Math.ceil(totalPosts / +limit);
+
+			if (cacheValues === null) {
+				const allPosts = await this.PostModel.find({ group: null })
 					.populate('author', 'username profileImage createdAt')
 					.populate('tags')
 					.skip(((page ? +page : 1) - 1) * +limit)
 					.limit(+limit)
-					.sort(sortOptions),
-			]);
-			const totalPages = Math.ceil(totalPosts / +limit);
-			res
-				.status(200)
-				.json({
-					error: false,
+					.sort(sortOptions);
+
+				await client.setEx('posts', 4600, JSON.stringify(allPosts));
+				res
+					.status(200)
+					.json({
+						error: false,
+						data: {
+							totalPages,
+							allPosts,
+						},
+						totalPosts,
+					})
+					.end();
+			} else {
+				return res.json({
 					data: {
+						allPosts: JSON.parse(cacheValues),
 						totalPages,
-						allPosts,
 					},
-					totalPosts,
-				})
-				.end();
+					error: false,
+				});
+			}
+			console.timeEnd('posts' + random);
 		} catch (e) {
 			createError(e, res);
 		}

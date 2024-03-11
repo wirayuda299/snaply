@@ -20,6 +20,7 @@ import tagsRoutes from '../routes/tag.route';
 import reportRoutes from '../routes/report.route';
 import searchRoutes from '../routes/search.route';
 import messageRoutes from '../routes/message.route';
+import { connectRedis } from '../config/redis.config';
 
 export default class Application {
 	private corsAllowUrl = process.env.CLIENT_URL;
@@ -49,6 +50,7 @@ export default class Application {
 	listen() {
 		this.app.listen(this.port, async () => {
 			try {
+				await connectRedis();
 				await this.database.connectToDb().then(() => {
 					console.log(`⚡️[server]: Server is running at port ${this.port} `);
 				});
@@ -86,7 +88,7 @@ export default class Application {
 		this.app.use('/api/message', Middleware.validate, messageRoutes);
 	}
 
-	connectDb() {
+	async connectDb() {
 		return this.database.connectToDb();
 	}
 }

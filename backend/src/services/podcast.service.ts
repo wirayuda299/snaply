@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+// import { Queue } from 'bull';
 
 import Tag from './tag.service';
 import FileUploadService from './fileUpload.service';
@@ -8,6 +9,7 @@ import { TagModel } from '../models/tag.model';
 import { userModelType } from '../models/user.model';
 import { podcastModelType } from '../models/podcast.model';
 import { createError } from '../utils/createError';
+import { podcastQueue } from '../queue/podcast.queue';
 
 export default class PodcastServices {
 	constructor(
@@ -29,7 +31,7 @@ export default class PodcastServices {
 				postImageAssetId,
 				category,
 			} = req.body;
-
+			req.setTimeout(500000);
 			const user = await this.userModel.findById(author);
 
 			if (!user)
@@ -56,10 +58,14 @@ export default class PodcastServices {
 			user.podcasts.push(podcast.id);
 			user.points += 5;
 			await user.save();
+			await podcastQueue.add(podcast._id);
+
 			return res
 				.status(201)
 				.json({ message: 'Podcast has been published', error: false });
 		} catch (error) {
+			console.log(error);
+
 			createError(error, res);
 		}
 	}

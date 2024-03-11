@@ -128,24 +128,19 @@ export default function useFormSubmit(
 						}
 					}
 					break;
-
-				case 'interviews':
-					// implement your create meetup here
-					break;
 				case 'podcasts':
-					if (files && files.audio) {
-						const [audio, image] = await Promise.all([
-							uploadFile(files.audio),
-							uploadFile(files.postImage),
-						]);
+					if (files && files.audio && files.postImage) {
+						const audio = await uploadFile(files.audio);
+						const image = await uploadFile(files.postImage);
+
 						await createPodcast(
-							audio.secure_url,
-							audio.public_id,
+							audio?.secure_url,
+							audio?.public_id,
 							post,
 							tags,
-							image.secure_url,
+							image?.secure_url,
 							title,
-							image.public_id,
+							image?.public_id,
 							category
 						);
 						toast.success('Podcast has been published');
@@ -156,6 +151,8 @@ export default function useFormSubmit(
 					throw new Error('Invalid action');
 			}
 		} catch (error) {
+			console.log(error);
+
 			if (error instanceof Error) {
 				toast.error(error.message);
 			} else {

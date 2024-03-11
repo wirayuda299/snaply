@@ -25,6 +25,8 @@ export default class FileUploadService {
 					.end();
 			}
 		} catch (error) {
+			console.log(error);
+
 			createError(error, res);
 		}
 	}

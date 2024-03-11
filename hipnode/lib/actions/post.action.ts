@@ -38,12 +38,15 @@ export async function getAllPosts(
 	pageSize: number = 10
 ) {
 	try {
+		console.time('posts');
 		return await apiRequest.get<{
 			totalPages: number;
 			allPosts: Post[];
 		}>(`/post/all?sort=${sort}&page=${page}&limit=${pageSize}`);
 	} catch (error) {
 		throw error;
+	} finally {
+		console.timeEnd('posts');
 	}
 }
 
