@@ -1,13 +1,17 @@
 import Image from 'next/image';
-import { MessageCircleMore } from 'lucide-react';
-import Link from 'next/link';
 import { currentUser } from '@clerk/nextjs';
 
-import { Card, PostCard, PodcastCard } from '@/components/index';
+import {
+	PostCard,
+	PodcastCard,
+	MeetupCard,
+	SharedPodcastCard,
+} from '@/components/index';
 import Tab from '@/components/profile/tab';
 import FollowButton from '@/components/shared/follow-button';
-import { getUserById } from '@/lib/actions';
+import { getAllMeetups, getAllPodcasts, getUserById } from '@/lib/actions';
 import { getCreatedDate } from '@/utils';
+import MessageLink from '@/components/profile/MessageLink';
 
 type ProfileProps = {
 	params: {
@@ -19,10 +23,13 @@ type ProfileProps = {
 };
 
 export default async function Profile({ searchParams, params }: ProfileProps) {
-	const [currentSession, user] = await Promise.all([
-		currentUser(),
-		getUserById(params.id),
-	]);
+	const [currentSession, user, { meetups }, { allPodcasts }] =
+		await Promise.all([
+			currentUser(),
+			getUserById(params.id),
+			getAllMeetups(),
+			getAllPodcasts('popular', 1, 3),
+		]);
 	const type = searchParams.type ?? 'posts';
 
 	return (
@@ -49,12 +56,10 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 									followers={user.followers}
 									path={`/profile/${user._id}`}
 								/>
-								<Link
-									href={'/messages'}
-									className='bg-blue-10 dark:bg-secondary-dark-2 group hover:bg-transparent'
-								>
-									<MessageCircleMore className='group-hover:text-primary dark:text-white-700 bg-transparent text-black transition-colors duration-500 ease-in-out' />
-								</Link>
+								<MessageLink
+									receiverId={user._id}
+									userSession={currentSession?.id!}
+								/>
 							</>
 						)}
 					</div>
@@ -91,14 +96,12 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 				</div>
 			</section>
 
-			<section>
-				<Card
-					path='/create?type=interview'
-					title='Start your interview'
-					text="Working on your own internet business? We'd love to interview you!"
-					btnLeftText='Code of Conduct'
-					btnRightText='Submit a Story'
-				/>
+			<section className='top-0 min-w-80 space-y-5 max-lg:min-w-full lg:sticky lg:h-screen'>
+				{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
+
+				{allPodcasts.length >= 1 && (
+					<SharedPodcastCard podcasts={allPodcasts} />
+				)}
 			</section>
 		</div>
 	);

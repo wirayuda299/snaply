@@ -91,6 +91,7 @@ export async function deleteMeetup(id: string) {
 		throw error;
 	}
 }
+
 export async function updateMeetup(
 	id: string,
 	address: string,

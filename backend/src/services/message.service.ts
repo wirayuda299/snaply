@@ -13,8 +13,14 @@ export default class MessageService {
 		try {
 			const { members } = req.body;
 
-			const conversation = new this.messageModel({ members });
-			await conversation.save();
+			let message = await this.messageModel.findOne({
+				members: { $all: members },
+			});
+			if (!message) {
+				const conversation = new this.messageModel({ members });
+				await conversation.save();
+			}
+
 			res.status(201).end();
 		} catch (error) {
 			createError(error, res);
