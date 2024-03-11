@@ -11,7 +11,7 @@ export default function Parser({
 	return (
 		<div
 			className={cn(
-				'prose prose-slate text-secondary-light prose-p:text-xs pt-3',
+				'prose prose-slate text-secondary-light dark:text-white-700 prose-p:text-xs pt-3 prose-ol:text-white-700 prose-ol:dark:text-white-700 prose-ul:text-white-700 prose-ul:dark:text-white-700',
 				styles
 			)}
 		>

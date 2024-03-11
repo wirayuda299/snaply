@@ -35,7 +35,7 @@ export async function createPost(props: createPostType) {
 export async function getAllPosts(
 	sort: string = 'popular',
 	page: number = 1,
-	pageSize: number = 5
+	pageSize: number = 10
 ) {
 	try {
 		return await apiRequest.get<{

@@ -47,14 +47,14 @@ export default function Pagination({ totalPages }: PaginationProps) {
 			<Button
 				disabled={+page === 1}
 				onClick={() => handlePagination('start')}
-				className='text-secondary-red-80 w-12  sm:w-20'
+				className='w-12 text-white  sm:w-20'
 			>
 				Start
 			</Button>
 			<Button
 				disabled={+page === 1}
 				onClick={() => handlePagination('prev')}
-				className='!bg-secondary-red-80 w-12 text-white sm:w-20'
+				className=' w-12 text-white sm:w-20'
 			>
 				Prev
 			</Button>
@@ -67,14 +67,14 @@ export default function Pagination({ totalPages }: PaginationProps) {
 			<Button
 				disabled={+page === totalPages}
 				onClick={() => handlePagination('next')}
-				className='!bg-secondary-red-80 w-12 !text-white sm:w-20'
+				className=' w-12 !text-white sm:w-20'
 			>
 				Next
 			</Button>
 			<Button
 				disabled={+page === totalPages}
 				onClick={() => handlePagination('end')}
-				className='!text-secondary-red-80 w-12  sm:w-20'
+				className='w-12 !text-white  sm:w-20'
 			>
 				End
 			</Button>
