@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Globe, MessageCircleMore } from 'lucide-react';
 import Link from 'next/link';
+import { currentUser } from '@clerk/nextjs';
 
 import {
 	Card,
@@ -12,8 +13,6 @@ import Tab from '@/components/profile/tab';
 import FollowButton from '@/components/shared/follow-button';
 import { getUserById } from '@/lib/actions';
 import { getCreatedDate } from '@/utils';
-import { currentUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 
 type ProfileProps = {
 	params: {
@@ -31,12 +30,8 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 	]);
 	const type = searchParams.type ?? 'posts';
 
-	if (currentSession == null) {
-		return redirect('/sign-in');
-	}
-
 	return (
-		<div className='flex w-full flex-col gap-5 md:p-5 lg:flex-row'>
+		<div className='flex w-full flex-col gap-5 pb-20 md:px-5 lg:flex-row'>
 			<aside className='w-[200px] min-w-[200px] max-lg:min-w-full lg:h-screen'>
 				<header className='from-primary to-primary/80 flex flex-col items-center justify-center rounded-lg bg-gradient-to-b'>
 					<Image

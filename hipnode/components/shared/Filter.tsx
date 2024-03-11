@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 import { getUserById } from '@/lib/actions';
 import { formUrlQuery } from '@/utils';
+import { filterItems } from '@/constants';
 
 type Props = {
 	rootStyles?: string;
@@ -15,38 +16,15 @@ type Props = {
 	titleStyles?: string;
 };
 
-function filterItems(following: number = 0) {
-	return [
-		{
-			label: 'newest',
-			title: 'New and Recent',
-			icon: '/assets/home/icons/new.svg',
-			subText: 'Find the latest update',
-		},
-		{
-			label: 'popular',
-			title: 'Popular of the Day',
-			icon: '/assets/home/icons/popular.svg',
-			subText: 'FShots featured today by curators',
-		},
-		{
-			label: 'following',
-			title: 'Following',
-			icon: '/assets/home/icons/user.svg',
-			subText: following,
-		},
-	] as const;
-}
-
 export default function Filter({
 	rootStyles,
 	innerStyles,
 	titleStyles,
 }: Props) {
-	const params = useSearchParams();
-	const router = useRouter();
 	const user = useAuth();
+	const router = useRouter();
 	const pathname = usePathname();
+	const params = useSearchParams();
 	const {
 		isLoading,
 		data: currentUser,
@@ -56,6 +34,7 @@ export default function Filter({
 		queryKey: [user.userId],
 		queryFn: () => getUserById(user.userId as string),
 		enabled: pathname === '/',
+		throwOnError: false,
 	});
 
 	const handleClick = (label: string) => {

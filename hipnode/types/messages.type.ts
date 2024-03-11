@@ -16,12 +16,19 @@ export type Member = {
 	profileImage?: string;
 };
 
-type Message = {
+export type Message = {
 	_id: string;
 	content: string;
 	createdAt: Date;
 	updatedAt: Date;
-	senderId: string;
+	senderId: {
+		_id: string;
+		username: string;
+		profileImage?: string;
+	};
+	isRead: boolean;
+	messageId: string;
+
 	media?: {
 		audio?: string;
 		audiAssetId?: string;

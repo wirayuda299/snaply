@@ -1,13 +1,13 @@
 import { currentUser } from '@clerk/nextjs';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 import { getAllMessages, getAllUsers } from '@/lib/actions';
-import { MessageDialog } from '@/components/index';
-import MessageList from '@/components/message/message-lists';
-import ChatAuthor from '@/components/message/ChatAuthor';
+import { MessagesSquare } from 'lucide-react';
+const ChatAuthor = dynamic(() => import('@/components/message/ChatAuthor'));
+const MessageList = dynamic(() => import('@/components/message/message-lists'));
 
 type Props = {
-	searchParams: { id: string };
+	searchParams: { id: string; to: string };
 };
 
 export default async function Messages({ searchParams }: Props) {
@@ -20,36 +20,26 @@ export default async function Messages({ searchParams }: Props) {
 	]);
 
 	return (
-		<main className='grid h-screen grid-cols-2 justify-between overflow-hidden'>
-			<aside className='dark:bg-secondary-dark-2 no-scrollbar sticky top-0 col-span-2 h-screen w-full overflow-y-auto bg-white p-5 md:border-r-2 lg:col-span-1'>
-				<header className='dark:bg-secondary-dark-2 border-b-secondary/5 dark:border-b-secondary-dark bg-white-800 flex h-20 items-center gap-3 rounded-lg border-b'>
-					<Image
-						width={50}
-						height={50}
-						alt='user'
-						src={userSession?.imageUrl!}
-						className='rounded-full object-contain object-center'
-					/>
-					<h2 className='text-lg font-semibold capitalize'>
-						{userSession?.username}
-					</h2>
-				</header>
-				<div>
-					<MessageDialog
-						messages={messages}
-						users={allUsers}
-						userSession={userSession.id}
-					/>
-					<ChatAuthor
-						converstations={messages}
-						userSessionId={userSession.id!}
-					/>
-				</div>
-			</aside>
+		<main className='relative flex h-screen grid-cols-2 justify-between !overflow-hidden lg:grid'>
+			<ChatAuthor
+				imageUrl={userSession.imageUrl}
+				username={userSession?.username! ?? 'Error loading username'}
+				allUsers={allUsers}
+				conversationId={searchParams.id}
+				converstations={messages}
+				userSessionId={userSession.id}
+			/>
 			{searchParams.id ? (
-				<MessageList id={searchParams.id} userId={userSession.id} />
+				<MessageList
+					id={searchParams.id}
+					userId={userSession.id}
+					to={searchParams.to}
+				/>
 			) : (
-				<p>Your message will show here</p>
+				<div className='flex min-h-screen w-full flex-col items-center justify-center pt-5 '>
+					<MessagesSquare size={100} />
+					<p className='pt-3'>Your message will show here</p>
+				</div>
 			)}
 		</main>
 	);

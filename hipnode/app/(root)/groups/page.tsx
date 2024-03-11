@@ -21,7 +21,7 @@ export default async function Groups() {
 	return (
 		<>
 			{groups.length >= 1 ? (
-				<div className='flex flex-col gap-3 py-5 lg:flex-row'>
+				<div className='flex flex-col gap-3 pb-20 pt-5 lg:flex-row'>
 					<GroupSidebar groups={groups} />
 					<GroupSidebarMobile groups={groups} />
 					<section className='flex w-full flex-wrap gap-3'>

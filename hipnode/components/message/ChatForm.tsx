@@ -38,10 +38,12 @@ const schema = z.object({
 export default function ChatForm({
 	userId,
 	id,
+	to,
 	refetch,
 }: {
 	userId: string;
 	id: string;
+	to: string;
 	refetch: (
 		options?: RefetchOptions | undefined
 	) => Promise<QueryObserverResult<MessageData[], Error>>;
@@ -62,11 +64,22 @@ export default function ChatForm({
 			if (files && files['media.image']) {
 				const image = await uploadFile(files['media.image']);
 
-				return await sendMessage(id, form.getValues('message'), userId, {
-					image,
+				return await sendMessage({
+					id,
+					message: form.getValues('message'),
+					receiverId: to,
+					messageId: id,
+					media: { image },
+					senderId: userId,
 				});
 			} else {
-				return await sendMessage(id, form.getValues('message'), userId);
+				return await sendMessage({
+					id,
+					message: form.getValues('message'),
+					receiverId: to,
+					messageId: id,
+					senderId: userId,
+				});
 			}
 		},
 		onSuccess: () => {
@@ -93,7 +106,7 @@ export default function ChatForm({
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className=' relative flex grow items-center justify-end gap-2'
+				className=' relative mt-[calc(100vh-200px)] flex items-center justify-end gap-2'
 			>
 				<FormField
 					control={form.control}

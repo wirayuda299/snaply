@@ -1,13 +1,14 @@
 'use client';
 
+import { toast } from 'sonner';
+import { useState } from 'react';
+
+import Image from 'next/image';
 import { Conversation } from '@/types';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
-import Image from 'next/image';
 import { getCreatedDate } from '@/utils';
-import { useState } from 'react';
 import { createConversation } from '@/lib/actions';
-import { toast } from 'sonner';
 
 export default function MessageDialog({
 	messages,
@@ -27,17 +28,18 @@ export default function MessageDialog({
 
 	async function handleCreateConversation(id: string) {
 		try {
-			await createConversation(userSession, id).then(() => {
-				setIsOpen(false);
-			});
+			await createConversation(userSession, id);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
 			} else {
 				toast.error('Unknown error');
 			}
+		} finally {
+			setIsOpen(false);
 		}
 	}
+	if (messages.length >= 1) return null;
 
 	return (
 		<div className='flex h-full items-center justify-center p-5'>
@@ -73,6 +75,7 @@ export default function MessageDialog({
 											className='rounded-full object-contain'
 										/>
 										<button
+											title='create conversation'
 											onClick={() => {
 												handleCreateConversation(user._id);
 											}}

@@ -37,6 +37,7 @@ export default function Notification({
 	return (
 		<div className='relative'>
 			<button
+				title='notifications'
 				onClick={() => setOpen((prev) => !prev)}
 				className='bg-white-800 dark:bg-secondary-dark rounded-md p-2'
 			>

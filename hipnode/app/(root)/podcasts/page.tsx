@@ -17,7 +17,7 @@ export default async function Podcasts({ searchParams }: Props) {
 	const category = searchParams.category;
 
 	return (
-		<div className='flex flex-col gap-5 pb-20 lg:flex-row'>
+		<div className='flex flex-col gap-5 lg:flex-row'>
 			<section className='top-0 w-80 max-md:w-full lg:sticky lg:h-screen'>
 				<Category
 					categories={Array.from(categoriesSet)}

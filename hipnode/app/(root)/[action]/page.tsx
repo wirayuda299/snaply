@@ -12,7 +12,7 @@ export default async function Create(props: Props) {
 	const groups = await getAllGroupsWhereUserJoin([user?.id!]);
 
 	return (
-		<div className='dark:border-secondary-dark-2 mx-auto flex w-full max-w-[900px] justify-center rounded-xl border py-5'>
+		<div className='dark:border-secondary-dark-2 mx-auto flex w-full max-w-[900px] justify-center rounded-xl border pb-20 pt-5'>
 			<CreateForm groups={groups} props={props} />
 		</div>
 	);

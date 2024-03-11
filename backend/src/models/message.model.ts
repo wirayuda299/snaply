@@ -29,9 +29,21 @@ const chatSchema = new Schema(
 				required: false,
 			},
 		},
+		is_read: {
+			type: Boolean,
+			default: false,
+		},
 		senderId: {
 			type: String,
 			ref: 'User',
+		},
+		receiverId: {
+			type: String,
+			ref: 'User',
+		},
+		messageId: {
+			type: String,
+			ref: 'message',
 		},
 	},
 	{
@@ -64,4 +76,5 @@ const messagesSchema = new Schema(
 const messageModel = model('Message', messagesSchema);
 
 export type messageModelType = typeof messageModel;
+export type chatModelType = typeof chatModel;
 export default messageModel;

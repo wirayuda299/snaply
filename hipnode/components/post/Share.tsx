@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, type Dispatch, type SetStateAction } from 'react';
-import Image from 'next/image';
-import { CheckIcon } from 'lucide-react';
-import { useUser } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { useUser } from '@clerk/nextjs';
+import { useState, type Dispatch, type SetStateAction } from 'react';
+import { CheckIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {

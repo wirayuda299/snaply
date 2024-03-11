@@ -3,7 +3,8 @@ import { currentUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
-import { getAllNotifications } from '@/lib/actions';
+import { getAllNotifications, getUnreadChat } from '@/lib/actions';
+import Messages from './Messages';
 
 const SearchForm = dynamic(() => import('./SearchForm'));
 const Notification = dynamic(() => import('./Notification'));
@@ -14,10 +15,13 @@ export default async function Navbar() {
 	const user = await currentUser();
 	if (!user) return null;
 
-	const allNotifications = await getAllNotifications();
+	const [allNotifications, messages] = await Promise.all([
+		getAllNotifications(),
+		getUnreadChat(user.id),
+	]);
 
 	return (
-		<nav className='dark:bg-primary-dark relative flex items-center justify-end bg-white p-3 md:justify-between lg:p-5'>
+		<nav className='dark:bg-primary-dark fixed inset-x-0 top-0 z-10 flex items-center justify-end bg-white p-3 md:justify-between lg:p-5'>
 			<Link
 				href={'/'}
 				className='flex flex-1 items-center gap-2 text-2xl font-semibold md:flex-none'
@@ -35,16 +39,7 @@ export default async function Navbar() {
 			<NavLink />
 			<SearchForm />
 			<div className='flex items-center gap-2'>
-				<button className='bg-white-800 dark:bg-secondary-dark rounded-md p-2'>
-					<Image
-						className='aspect-auto w-3 min-w-4 object-contain grayscale invert-[20%] dark:grayscale-0 dark:invert-0'
-						src='/assets/general/icons/chat.svg'
-						width={20}
-						height={20}
-						loading='lazy'
-						alt='bell icon'
-					/>
-				</button>
+				<Messages messages={messages} userSessionId={user.id} />
 				<Notification notifications={allNotifications} />
 				<div className='flex w-8 items-center gap-3 md:w-auto'>
 					<Image

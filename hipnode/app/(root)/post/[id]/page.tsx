@@ -31,7 +31,7 @@ export default async function PostDetail({ params }: Props) {
 	);
 
 	return (
-		<div className='flex flex-col gap-5 py-5 lg:flex-row'>
+		<div className='flex flex-col gap-5 pb-20 pt-5 lg:flex-row'>
 			<section className='top-0 min-w-[200px] lg:sticky lg:h-screen'>
 				<PostStats
 					stats={postStats}
@@ -43,7 +43,7 @@ export default async function PostDetail({ params }: Props) {
 				<section className='relative h-[400px] w-full'>
 					<Image
 						src={post.image}
-						className='rounded-lg object-cover object-center'
+						className='rounded-lg object-contain object-center md:object-cover'
 						fill
 						fetchPriority='high'
 						alt={post.title}
