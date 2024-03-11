@@ -8,9 +8,9 @@ module.exports = {
     /^[a-z\-0-9]+$/ // Ignore node_modules folder
   ],
   output: {
-    filename: 'index.js', // output file
+    filename: '[name].bundle.js', // Use the chunk name as the filename
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: "commonjs"
+    chunkFilename: '[name].[contenthash].js', // Use content hash to ensure uniqueness
   },
   resolve: {
     extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],

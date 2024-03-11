@@ -145,8 +145,6 @@ export default class PostService {
 					})
 					.end();
 			} else {
-				// @ts-ignore
-				console.log('cache values -> ', cacheValues);
 				return res.json({
 					data: {
 						// @ts-ignore
