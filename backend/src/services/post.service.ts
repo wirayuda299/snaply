@@ -119,12 +119,12 @@ export default class PostService {
 				sortOptions = { views: -1 };
 			}
 
-			const cacheValues = await client.GET('posts');
+			const cacheValues = await client.get('posts');
 
 			const totalPosts = await this.PostModel.countDocuments();
 			const totalPages = Math.ceil(totalPosts / +limit);
 
-			if (cacheValues === null) {
+			if (!cacheValues) {
 				const allPosts = await this.PostModel.find({ group: null })
 					.populate('author', 'username profileImage createdAt')
 					.populate('tags')
@@ -132,7 +132,7 @@ export default class PostService {
 					.limit(+limit)
 					.sort(sortOptions);
 
-				await client.setEx('posts', 4600, JSON.stringify(allPosts));
+				await client.setex('posts', 4600, JSON.stringify(allPosts));
 				res
 					.status(200)
 					.json({
@@ -145,9 +145,12 @@ export default class PostService {
 					})
 					.end();
 			} else {
+				// @ts-ignore
+				console.log('cache values -> ', cacheValues);
 				return res.json({
 					data: {
-						allPosts: JSON.parse(cacheValues),
+						// @ts-ignore
+						allPosts: cacheValues,
 						totalPages,
 					},
 					error: false,

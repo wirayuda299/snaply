@@ -1,13 +1,13 @@
-import { createClient } from 'redis';
+import { Redis } from '@upstash/redis';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const client =
-	process.env.NODE_ENV === 'production'
-		? createClient({
-				url: 'rediss://default:f651f52905834b8e9e2015b1cec7b812@engaged-liger-45328.upstash.io:45328',
-		  })
-		: createClient();
+export const client = new Redis({
+	url: 'https://engaged-liger-45328.upstash.io',
+	token:
+		'AbEQASQgZjhkNjRmMTYtZGI4NS00ODVjLTk5NTctZWU5MzY5NDZkZjNmZjY1MWY1MjkwNTgzNGI4ZTllMjAxNWIxY2VjN2I4MTI=',
+});
 
 // {
 // 	password: 'ldYRgzwcEP4736yi6dmFZbHas81Y6RIC',
@@ -16,20 +16,3 @@ export const client =
 // 		port: 15920,
 // 	},
 // }
-
-export async function connectRedis() {
-	try {
-		await client
-			.on('error', (error) => {
-				console.log(error);
-
-				throw error;
-			})
-			.connect()
-			.then((res) => {
-				console.log('connected to redis -> ', res.ACL_USERS);
-			});
-	} catch (error) {
-		throw error;
-	}
-}
