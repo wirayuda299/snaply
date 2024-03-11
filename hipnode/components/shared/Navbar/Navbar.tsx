@@ -16,7 +16,7 @@ export default async function Navbar() {
 	if (!user) return null;
 
 	const [allNotifications, messages] = await Promise.all([
-		getAllNotifications(),
+		getAllNotifications(user.id),
 		getUnreadChat(user.id),
 	]);
 

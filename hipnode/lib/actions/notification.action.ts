@@ -49,9 +49,8 @@ export async function deleteNotification(type: string, postId: string) {
 	}
 }
 
-export async function getAllNotifications() {
+export async function getAllNotifications(userId: string) {
 	try {
-		const { userId } = auth();
 		const query = `/notification/all-notifications?userId=${userId}`;
 
 		const notifications = await apiRequest.get<Notification[]>(

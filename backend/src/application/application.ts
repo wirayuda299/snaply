@@ -5,7 +5,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { rateLimit } from 'express-rate-limit';
 import Middleware from '../middleware/middleware';
 
 import Database from '../services/db.service';
@@ -67,14 +66,6 @@ export default class Application {
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(helmet());
 		this.app.disable('x-powered-by');
-		this.app.use(
-			rateLimit({
-				windowMs: 15 * 60 * 1000,
-				limit: 100,
-				standardHeaders: 'draft-7',
-				legacyHeaders: false,
-			})
-		);
 	}
 
 	intializeRoutes() {

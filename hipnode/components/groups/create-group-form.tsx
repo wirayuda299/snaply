@@ -7,6 +7,7 @@ import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
 
 import {
 	Form,
@@ -27,7 +28,7 @@ import { createGroup, getGroupById, updateGroup } from '@/lib/actions';
 import useUploadFile from '@/hooks/useUploadFile';
 import { createGroupSchema, createGroupSchemaTypes } from '@/lib/validations';
 import useFormReset from '@/hooks/useFormReset';
-import useFetch from '@/hooks/useFetch';
+
 import Loader from '../shared/Loader';
 import { Group } from '@/types';
 
@@ -59,11 +60,11 @@ export default function CreateGroupForm({
 	});
 
 	const { isChecking, handleChange, preview, files } = useUploadFile(form);
-	const { data, isError, error, isLoading } = useFetch<Promise<Group>>(
-		groupId,
-		async () => await getGroupById(groupId),
-		type === 'update'
-	);
+	const { data, isError, error, isLoading } = useQuery({
+		queryKey: [groupId],
+		queryFn: () => getGroupById(groupId),
+		enabled: type === 'update',
+	});
 
 	useFormReset(
 		isLoading,

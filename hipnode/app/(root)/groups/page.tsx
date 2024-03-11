@@ -10,13 +10,13 @@ import {
 import { getAllMeetups, getAllPodcasts, getAllGroups } from '@/lib/actions';
 
 export default async function Groups() {
-	const [groups, { meetups }, podcasts] = await Promise.all([
+	const [groups, { meetups }, { allPodcasts }] = await Promise.all([
 		getAllGroups(),
 		getAllMeetups(),
 		getAllPodcasts('popular', 1, 3),
 	]);
 
-	const posts = groups.map((group) => group.posts).flat(2);
+	const posts = groups?.map((group) => group.posts).flat(2);
 
 	return (
 		<>
@@ -32,9 +32,9 @@ export default async function Groups() {
 						)}
 					</section>
 					<section className='top-0 min-w-[250px] space-y-5 lg:sticky lg:h-screen'>
-						{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
-						{podcasts.allPodcasts.length >= 1 && (
-							<SharedPodcastCard podcasts={podcasts.allPodcasts} />
+						{meetups?.length >= 1 && <MeetupCard meetups={meetups} />}
+						{allPodcasts.length >= 1 && (
+							<SharedPodcastCard podcasts={allPodcasts} />
 						)}
 					</section>
 				</div>

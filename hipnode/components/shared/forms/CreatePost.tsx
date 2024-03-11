@@ -31,11 +31,11 @@ import { CreatePostFormType, PostSchema } from '@/lib/validations';
 import { Group, Meetup, Podcast, Post } from '@/types';
 import { getData } from '@/lib/actions';
 import { createPostData } from '@/constants';
+import { useQuery } from '@tanstack/react-query';
 
 import useUploadFile from '@/hooks/useUploadFile';
 import useFormReset from '@/hooks/useFormReset';
 import useFormSubmit from '@/hooks/useFormSubmit';
-import useFetch from '@/hooks/useFetch';
 
 const Loader = dynamic(() => import('../Loader'));
 const TagInput = dynamic(() => import('./TagInput'));
@@ -63,11 +63,11 @@ const CreatePost = ({
 	props: Props;
 }) => {
 	const router = useRouter();
-	const { data, isError, isLoading, error } = useFetch(
-		searchParams.postId,
-		() => getData(searchParams.type, searchParams.postId),
-		params.action === 'update'
-	);
+	const { data, isError, isLoading, error } = useQuery({
+		queryKey: [searchParams.postId],
+		queryFn: () => getData(searchParams.type, searchParams.postId),
+		enabled: params.action === 'update',
+	});
 
 	const DEFAULT_VALUES = {
 		title: searchParams.title ?? '',
@@ -302,8 +302,8 @@ const CreatePost = ({
 							}
 							alt='cover'
 							fill
+							loading='lazy'
 							className='rounded-lg object-cover'
-							priority
 						/>
 					</div>
 				)}
