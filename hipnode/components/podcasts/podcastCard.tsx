@@ -28,7 +28,7 @@ export default async function PodcastCard({ podcast }: { podcast: Podcast }) {
 					<DeleteButton id={podcast._id} />
 				)}
 			</div>
-			<Parser content={podcast.body} />
+			<Parser content={podcast.body} styles='line-clamp-2' />
 
 			<div className='mt-5 flex items-center gap-3'>
 				<Image

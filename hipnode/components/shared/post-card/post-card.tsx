@@ -61,7 +61,9 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 								</p>
 							)}
 							{type === 'post' && <Tag tags={post.tags} />}
-							{type === 'meetup' && <Parser content={post.body} />}
+							{type === 'meetup' && (
+								<Parser content={post.body} styles='line-clamp-2' />
+							)}
 						</header>
 
 						<div className='flex '>
