@@ -1,8 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { Post } from '@/types';
 import { ApiRequest } from '@/utils';
-import { revalidatePath, revalidateTag } from 'next/cache';
 
 type createPostType = {
 	title: string;
@@ -21,18 +21,11 @@ export async function createPost(props: createPostType) {
 
 		const { title, body, tags, group, image, assetId, category } = props;
 
-		const requestBody = {
-			title,
-			body,
-			tags,
-			group,
-			image,
-			assetId,
-			category,
-			author: userId,
-		};
-
-		await apiRequest.post('/post/create', requestBody, '/');
+		await apiRequest.post(
+			'/post/create',
+			{ title, body, tags, group, image, assetId, category, author: userId },
+			'/'
+		);
 		revalidatePath('/');
 	} catch (error) {
 		throw error;
@@ -42,12 +35,13 @@ export async function createPost(props: createPostType) {
 export async function getAllPosts(
 	sort: string = 'popular',
 	page: number = 1,
-	pageSize: number = 10
+	pageSize: number = 5
 ) {
 	try {
-		return await apiRequest.get<Post[]>(
-			`/post/all?sort=${sort}&page=${page}&limit=${pageSize}`
-		);
+		return await apiRequest.get<{
+			totalPages: number;
+			allPosts: Post[];
+		}>(`/post/all?sort=${sort}&page=${page}&limit=${pageSize}`);
 	} catch (error) {
 		throw error;
 	}

@@ -1,7 +1,8 @@
 import {
-	Category,
 	Card,
+	Category,
 	PostCard,
+	Pagination,
 	SharedPodcastCard,
 } from '@/components/index';
 import { getAllPodcasts, getAllMeetups } from '@/lib/actions';
@@ -10,11 +11,12 @@ type Props = {
 	searchParams: { category: string };
 };
 export default async function Meetups({ searchParams }: Props) {
-	const category = searchParams?.category;
-	const [meetups, podcasts] = await Promise.all([
+	const [{ meetups, totalPages }, podcasts] = await Promise.all([
 		getAllMeetups(),
 		getAllPodcasts('popular', 1, 3),
 	]);
+
+	const category = searchParams?.category;
 	const categoriesSet = new Set(meetups.map((meetup) => meetup.category));
 
 	return (
@@ -32,6 +34,7 @@ export default async function Meetups({ searchParams }: Props) {
 					: meetups?.map((meetup) => (
 							<PostCard type='meetup' key={meetup._id} post={meetup} />
 						))}
+				<Pagination totalPages={totalPages} />
 			</section>
 			<section className='top-0 w-[300px] space-y-5 max-lg:w-full lg:sticky  lg:h-screen'>
 				<Card

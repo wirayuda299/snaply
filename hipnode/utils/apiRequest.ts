@@ -3,7 +3,7 @@ import { auth } from '@clerk/nextjs';
 export class ApiRequest {
 	private readonly serverEndpoint: string = process.env.SERVER_URL!;
 
-	async getTokenSession() {
+	private async getTokenSession() {
 		try {
 			const { getToken, userId } = auth();
 
@@ -29,11 +29,13 @@ export class ApiRequest {
 		const res = await fetch(this.serverEndpoint + query, {
 			method: 'GET',
 			headers: token.headers,
+			credentials: 'include',
 			...(tag && {
 				next: {
 					tags: [tag],
 				},
 			}),
+			cache: 'no-cache',
 		});
 
 		const data = await res.json();
@@ -54,6 +56,7 @@ export class ApiRequest {
 			const res = await fetch(this.serverEndpoint + url, {
 				method: 'POST',
 				headers: token.headers,
+				credentials: 'include',
 				...(tag && { next: { tags: [tag] } }),
 				body: JSON.stringify(body),
 			});
@@ -83,6 +86,7 @@ export class ApiRequest {
 			const res = await fetch(this.serverEndpoint + url, {
 				method: 'PATCH',
 				headers: token.headers,
+				credentials: 'include',
 				...(tag && { next: { tags: [tag] } }),
 				body: JSON.stringify(body),
 			});

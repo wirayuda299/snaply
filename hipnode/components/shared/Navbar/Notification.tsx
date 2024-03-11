@@ -22,10 +22,11 @@ export default function Notification({
 	notifications: NotificationType[];
 }) {
 	const params = useSearchParams();
-	const type = params.get('notificationType') || 'all';
 	const router = useRouter();
 	const ref = useRef(null);
 	const [open, setOpen] = useState(false);
+
+	const type = params.get('notificationType') || 'all';
 
 	const handleClick = (value: string) => {
 		const url = formUrlQuery(params.toString(), 'notificationType', value);

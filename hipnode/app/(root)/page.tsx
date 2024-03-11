@@ -5,6 +5,7 @@ import {
 	HomeCreatePost,
 	PopularTagsCard,
 	SharedPodcastCard,
+	Pagination,
 } from '@/components/index';
 
 import {
@@ -20,12 +21,13 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-	const [posts, allTags, meetups, podcasts] = await Promise.all([
-		getAllPosts(searchParams.sort as string),
-		getAllTags(),
-		getAllMeetups(),
-		getAllPodcasts('popular', 1, 3),
-	]);
+	const [{ allPosts, totalPages }, allTags, meetups, podcasts] =
+		await Promise.all([
+			getAllPosts(searchParams.sort as string),
+			getAllTags(),
+			getAllMeetups(),
+			getAllPodcasts('popular', 1, 3),
+		]);
 
 	return (
 		<section className='flex h-full flex-col gap-3 pb-20 lg:flex-row'>
@@ -43,7 +45,7 @@ export default async function Home({ searchParams }: Props) {
 			<section className='flex size-full grow flex-col gap-5'>
 				<HomeCreatePost />
 
-				{posts?.map((post) => (
+				{allPosts?.map((post) => (
 					<PostCard type='post' key={post.title} post={post} />
 				))}
 
@@ -54,9 +56,12 @@ export default async function Home({ searchParams }: Props) {
 						innerStyles='justify-start !items-start'
 					/>
 				)}
+				<Pagination totalPages={totalPages} />
 			</section>
 			<section className='top-0 min-w-80 space-y-5 max-lg:min-w-full lg:sticky lg:h-screen'>
-				{meetups.length >= 1 && <MeetupCard meetups={meetups} />}
+				{meetups.meetups.length >= 1 && (
+					<MeetupCard meetups={meetups.meetups} />
+				)}
 
 				{podcasts?.allPodcasts.length >= 1 && (
 					<SharedPodcastCard podcasts={podcasts.allPodcasts} />

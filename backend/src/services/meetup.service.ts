@@ -65,13 +65,26 @@ export default class MeetupService {
 	async getAllMeetups(req: Request, res: Response) {
 		try {
 			const { page = 1, limit = 10 } = req.query;
-			const meetups = await this.meetupModel
-				.find({})
-				.populate('author', '_id username profileImage createdAt')
-				.populate('tags')
-				.skip(((page ? +page : 1) - 1) * +limit)
-				.limit(+limit);
-			return res.status(200).json({ data: meetups, error: false });
+
+			const [totalMeetups, meetups] = await Promise.all([
+				this.meetupModel.countDocuments(),
+				this.meetupModel
+					.find({})
+					.populate('author', '_id username profileImage createdAt')
+					.populate('tags')
+					.skip(((page ? +page : 1) - 1) * +limit)
+					.limit(+limit),
+			]);
+
+			const totalPages = Math.ceil(totalMeetups / +limit);
+
+			return res.status(200).json({
+				data: {
+					totalPages,
+					meetups,
+				},
+				error: false,
+			});
 		} catch (error) {
 			createError(error, res);
 		}

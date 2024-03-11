@@ -1,19 +1,23 @@
 import { getAllMeetups, getAllPodcasts } from '@/lib/actions';
 
-import { Category, Card, MeetupCard, PodcastCard } from '@/components/index';
+import {
+	Category,
+	Card,
+	MeetupCard,
+	PodcastCard,
+	Pagination,
+} from '@/components/index';
 
 type Props = {
 	params: { slug: string };
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 export default async function Podcasts({ searchParams }: Props) {
-	const [podcasts, meetups] = await Promise.all([
+	const [{ allPodcasts, totalPages }, { meetups }] = await Promise.all([
 		getAllPodcasts(),
 		getAllMeetups(),
 	]);
-	const categoriesSet = new Set(
-		podcasts.allPodcasts.map((podcast) => podcast.category)
-	);
+	const categoriesSet = new Set(allPodcasts.map((podcast) => podcast.category));
 	const category = searchParams.category;
 
 	return (
@@ -26,14 +30,15 @@ export default async function Podcasts({ searchParams }: Props) {
 			</section>
 			<section className='flex w-full grow flex-wrap gap-5'>
 				{category
-					? podcasts.allPodcasts
+					? allPodcasts
 							.filter((podcast) => podcast.category === category)
 							?.map((podcast) => (
 								<PodcastCard podcast={podcast} key={podcast._id} />
 							))
-					: podcasts.allPodcasts?.map((podcast) => (
+					: allPodcasts?.map((podcast) => (
 							<PodcastCard podcast={podcast} key={podcast._id} />
 						))}
+				<Pagination totalPages={totalPages} />
 			</section>
 			<section className='space-y-5'>
 				<Card

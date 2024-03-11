@@ -21,7 +21,10 @@ const apiRequest = new ApiRequest();
 
 export async function getAllMeetups() {
 	try {
-		return await apiRequest.get<Meetup[]>(`/meetup/all?page=1&limit=10`);
+		return await apiRequest.get<{
+			totalPages: number;
+			meetups: Meetup[];
+		}>(`/meetup/all?page=1&limit=10`);
 	} catch (error) {
 		throw error;
 	}

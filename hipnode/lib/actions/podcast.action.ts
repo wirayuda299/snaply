@@ -47,6 +47,7 @@ export async function getAllPodcasts(
 
 		return await apiRequest.get<{
 			allPodcasts: Podcast[];
+			totalPages: number;
 		}>(query);
 	} catch (error) {
 		throw error;

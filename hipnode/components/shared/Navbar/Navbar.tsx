@@ -39,7 +39,7 @@ export default async function Navbar() {
 			<NavLink />
 			<SearchForm />
 			<div className='flex items-center gap-2'>
-				<Messages messages={messages} userSessionId={user.id} />
+				<Messages messages={messages} />
 				<Notification notifications={allNotifications} />
 				<div className='flex w-8 items-center gap-3 md:w-auto'>
 					<Image

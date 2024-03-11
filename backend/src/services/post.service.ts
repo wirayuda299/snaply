@@ -115,7 +115,6 @@ export default class PostService {
 			} else {
 				sortOptions = { views: -1 };
 			}
-
 			const [totalPosts, allPosts] = await Promise.all([
 				this.PostModel.countDocuments(),
 				this.PostModel.find({ group: null })
@@ -125,8 +124,18 @@ export default class PostService {
 					.limit(+limit)
 					.sort(sortOptions),
 			]);
-			res.setHeader('Cache-Control', 'public, max-age=3600');
-			res.status(200).json({ error: false, data: allPosts, totalPosts }).end();
+			const totalPages = Math.ceil(totalPosts / +limit);
+			res
+				.status(200)
+				.json({
+					error: false,
+					data: {
+						totalPages,
+						allPosts,
+					},
+					totalPosts,
+				})
+				.end();
 		} catch (e) {
 			createError(e, res);
 		}

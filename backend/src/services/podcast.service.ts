@@ -86,7 +86,7 @@ export default class PodcastServices {
 					.limit(+limit)
 					.sort(sortOptions),
 			]);
-			res.setHeader('Cache-Control', 'public, max-age=3600');
+			const totalPages = Math.ceil(totalPodcasts / +limit);
 			res
 				.status(200)
 				.json({
@@ -94,6 +94,7 @@ export default class PodcastServices {
 					data: {
 						totalPodcasts,
 						allPodcasts,
+						totalPages,
 					},
 				})
 				.end();

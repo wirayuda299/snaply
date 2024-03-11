@@ -4,21 +4,15 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { MessagesSquare } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { getCreatedDate } from '@/utils';
 import { Message } from '@/types/messages.type';
 import { updateIsRead } from '@/lib/actions';
-import { toast } from 'sonner';
 
-export default function Messages({
-	messages,
-	userSessionId,
-}: {
-	messages: Message[];
-	userSessionId: string;
-}) {
+export default function Messages({ messages }: { messages: Message[] }) {
 	const [open, setOpen] = useState<boolean>(false);
 	const ref = useRef(null);
 
@@ -29,6 +23,8 @@ export default function Messages({
 			await updateIsRead(id, senderId);
 		} catch (error) {
 			toast.error('Error');
+		} finally {
+			setOpen(false);
 		}
 	}
 	return (
@@ -47,7 +43,6 @@ export default function Messages({
 					alt='bell icon'
 				/>
 			</button>
-
 			<ul
 				ref={ref}
 				className={cn(
@@ -93,7 +88,14 @@ export default function Messages({
 											<h4 className='text-lg font-semibold capitalize'>
 												{msg.senderId.username}
 											</h4>{' '}
-											<span className='text-xs text-gray-400'>
+											<span
+												className={cn(
+													'text-xs text-gray-400',
+													!msg.isRead
+														? 'text-white-700'
+														: 'text-secondary dark:text-white-700'
+												)}
+											>
 												{getCreatedDate(msg.createdAt)}
 											</span>
 										</div>
