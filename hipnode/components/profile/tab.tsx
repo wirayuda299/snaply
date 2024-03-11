@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { formUrlQuery } from '@/utils';
 
-const tabs = ['posts', 'meetups', 'interviews', 'podcasts'] as const;
+const tabs = ['posts', 'meetups', 'podcasts'] as const;
 
 export default function Tab() {
 	const params = useSearchParams();

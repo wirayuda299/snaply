@@ -1,14 +1,9 @@
 import Image from 'next/image';
-import { Globe, MessageCircleMore } from 'lucide-react';
+import { MessageCircleMore } from 'lucide-react';
 import Link from 'next/link';
 import { currentUser } from '@clerk/nextjs';
 
-import {
-	Card,
-	PostCard,
-	PodcastCard,
-	InterviewPostCard,
-} from '@/components/index';
+import { Card, PostCard, PodcastCard } from '@/components/index';
 import Tab from '@/components/profile/tab';
 import FollowButton from '@/components/shared/follow-button';
 import { getUserById } from '@/lib/actions';
@@ -70,16 +65,6 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 						&#x2022;
 						<span>{user.points} Points</span>
 					</div>
-					<p className='text-secondary dark:text-secondary-light mt-4 text-xs'>
-						Hey there... I&apos;m AR Jakir! I&apos;m here to learn from and
-						support the other members of this community!
-					</p>
-					{user.website && (
-						<div className='mt-5 flex items-center justify-center gap-3'>
-							<Globe size={15} />
-							<h3 className='text-sm font-semibold'>www.jsm.com</h3>
-						</div>
-					)}
 
 					<p className='text-secondary dark:text-secondary-light mt-10 text-base font-semibold'>
 						Joined {getCreatedDate(user.createdAt)}
@@ -98,11 +83,7 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 						user.meetups.map((meetup) => (
 							<PostCard post={meetup} key={meetup._id} type='meetup' />
 						))}
-					{type === 'interviews' &&
-						user?.interviews &&
-						user?.interviews.map((interview) => (
-							<InterviewPostCard {...interview} key={interview._id} />
-						))}
+
 					{type === 'podcasts' &&
 						user?.podcasts.map((podcast) => (
 							<PodcastCard key={podcast._id} podcast={podcast} />
