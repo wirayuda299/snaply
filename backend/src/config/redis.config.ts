@@ -1,8 +1,5 @@
 import { Redis } from '@upstash/redis';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 export const client = new Redis({
 	url: 'https://engaged-liger-45328.upstash.io',
 	token:

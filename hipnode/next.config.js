@@ -48,10 +48,6 @@ const nextConfig = {
     SERVER_URL: process.env.SERVER_URL,
     WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
   },
-  reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true
-  }
 };
 
 module.exports = nextConfig;

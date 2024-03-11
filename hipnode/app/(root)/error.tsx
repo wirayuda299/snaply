@@ -2,6 +2,6 @@
 
 import ErrorUI from '@/components/shared/error';
 
-export default function Error() {
+export default function ErrorPage() {
 	return <ErrorUI />;
 }
