@@ -32,7 +32,7 @@ export default function Messages({ messages }: { messages: Message[] }) {
 			<button
 				title='messages'
 				onClick={() => setOpen((prev) => !prev)}
-				className='bg-white-800 dark:bg-secondary-dark rounded-md p-2'
+				className='bg-white-800 dark:bg-secondary-dark relative rounded-md p-2'
 			>
 				<Image
 					className='aspect-auto w-3 min-w-4 object-contain grayscale invert-[20%] dark:grayscale-0 dark:invert-0'
@@ -42,6 +42,9 @@ export default function Messages({ messages }: { messages: Message[] }) {
 					loading='lazy'
 					alt='bell icon'
 				/>
+				{messages.length >= 1 && (
+					<div className='bg-primary absolute right-1 top-1 size-2 rounded-full'></div>
+				)}
 			</button>
 			<ul
 				ref={ref}

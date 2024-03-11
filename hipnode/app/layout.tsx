@@ -16,7 +16,7 @@ const sourceSansPro = SourceSans3({
 });
 
 export const metadata = {
-	title: 'Snaply - Social Media Web Application',
+	title: 'Snaply - Social Media Platform',
 	description: 'Social Media Web Application',
 };
 

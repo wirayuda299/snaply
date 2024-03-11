@@ -2,7 +2,6 @@ export { default as Pagination } from '@/components/shared/Pagination';
 export { default as InterestItem } from '@/components/InterestItem';
 export { default as HomeCreatePost } from '@/components/home/create-post/create-post';
 export { default as Category } from '@/components/meetups/categories';
-export { default as InterviewPostCard } from '@/components/interviews/post-card';
 export { default as SharedPodcastCard } from '@/components/shared/podcast-card';
 
 // shared

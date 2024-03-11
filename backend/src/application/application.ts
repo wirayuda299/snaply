@@ -5,7 +5,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-
+import { rateLimit } from 'express-rate-limit';
 import Middleware from '../middleware/middleware';
 
 import Database from '../services/db.service';
@@ -60,13 +60,21 @@ export default class Application {
 	}
 
 	intializeMiddleware() {
-		this.app.use(this.setCorsHeaders);
-		this.app.use(express.json());
 		this.app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+		this.app.use(express.json());
+		this.app.use(compression());
+		this.app.use(this.setCorsHeaders);
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(helmet());
-		this.app.use(compression());
 		this.app.disable('x-powered-by');
+		this.app.use(
+			rateLimit({
+				windowMs: 15 * 60 * 1000,
+				limit: 100,
+				standardHeaders: 'draft-7',
+				legacyHeaders: false,
+			})
+		);
 	}
 
 	intializeRoutes() {
