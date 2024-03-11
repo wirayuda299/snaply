@@ -8,6 +8,7 @@ import { TagModel } from '../models/tag.model';
 import { meetupType } from '../models/meetup.model';
 import { userModelType } from '../models/user.model';
 import { createError } from '../utils/createError';
+import { RedisService } from './redis.service';
 
 export default class MeetupService {
 	constructor(
@@ -66,15 +67,19 @@ export default class MeetupService {
 		try {
 			const { page = 1, limit = 10 } = req.query;
 
-			const [totalMeetups, meetups] = await Promise.all([
-				this.meetupModel.countDocuments(),
-				this.meetupModel
-					.find({})
-					.populate('author', '_id username profileImage createdAt')
-					.populate('tags')
-					.skip(((page ? +page : 1) - 1) * +limit)
-					.limit(+limit),
-			]);
+			const meetups = await new RedisService().getOrCacheData(
+				'meetups',
+				async () => {
+					const data = await this.meetupModel
+						.find({})
+						.populate('author', '_id username profileImage createdAt')
+						.populate('tags')
+						.skip(((page ? +page : 1) - 1) * +limit)
+						.limit(+limit);
+					return data;
+				}
+			);
+			const totalMeetups = await this.meetupModel.countDocuments();
 
 			const totalPages = Math.ceil(totalMeetups / +limit);
 
@@ -92,16 +97,21 @@ export default class MeetupService {
 
 	async getMeetup(req: Request, res: Response) {
 		try {
-			const meetup = await this.meetupModel
-				.findById(req.query.id)
-				.populate('author')
-				.populate('tags');
+			const meetup = await new RedisService().getOrCacheData(
+				`meetup:${req.query.id}`,
+				async () => {
+					return await this.meetupModel
+						.findById(req.query.id)
+						.populate('author')
+						.populate('tags');
+				}
+			);
 
 			if (!meetup)
 				return res
 					.status(404)
 					.json({ message: 'Meetup not found', error: true });
-			res.setHeader('Cache-Control', 'public, max-age=3600');
+
 			return res.status(200).json({ data: meetup, error: false });
 		} catch (error) {
 			createError(error, res);

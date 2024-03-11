@@ -1,6 +1,7 @@
 import { Redis } from '@upstash/redis';
 
 export const client = new Redis({
+	cache: 'force-cache',
 	url: 'https://engaged-liger-45328.upstash.io',
 	token:
 		'AbEQASQgZjhkNjRmMTYtZGI4NS00ODVjLTk5NTctZWU5MzY5NDZkZjNmZjY1MWY1MjkwNTgzNGI4ZTllMjAxNWIxY2VjN2I4MTI=',

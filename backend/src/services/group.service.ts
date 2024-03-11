@@ -14,6 +14,7 @@ import { userModelType } from '../models/user.model';
 import { groupModelType } from '../models/group.model';
 import { createError } from '../utils/createError';
 import FileUploadService from './fileUpload.service';
+import { RedisService } from './redis.service';
 
 export default class GroupService {
 	constructor(
@@ -110,31 +111,35 @@ export default class GroupService {
 
 	async getGroup(req: RequestWithQuery<{ id: string }>, res: Response) {
 		try {
-			const foundGroup = await this.groupModel
-				.findById(req.query.id)
-				.populate({
-					path: 'posts',
-					model: 'Post',
-					populate: [
-						{
-							path: 'author',
-							model: 'User',
-							select: 'username _id profileImage',
-						},
-						{ path: 'group', model: 'Group' },
-						{ path: 'tags', model: 'Tag' },
-					],
-				})
-				.populate('admins', '_id username profileImage')
-				.populate('members', '_id username profileImage')
-				.populate('tags');
+			const foundGroup = await new RedisService().getOrCacheData(
+				`group:${req.query.id}`,
+				async () => {
+					return await this.groupModel
+						.findById(req.query.id)
+						.populate({
+							path: 'posts',
+							model: 'Post',
+							populate: [
+								{
+									path: 'author',
+									model: 'User',
+									select: 'username _id profileImage',
+								},
+								{ path: 'group', model: 'Group' },
+								{ path: 'tags', model: 'Tag' },
+							],
+						})
+						.populate('admins', '_id username profileImage')
+						.populate('members', '_id username profileImage')
+						.populate('tags');
+				}
+			);
 
 			if (!foundGroup) {
 				return res
 					.status(404)
 					.json({ message: 'Group not found', error: true });
 			}
-			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.json({ data: foundGroup, error: false });
 		} catch (error) {
 			createError(error, res);
@@ -143,19 +148,23 @@ export default class GroupService {
 
 	async getAllGroups(res: Response) {
 		try {
-			const foundGroup = await this.groupModel
-				.find({})
-				.populate('admins', 'username _id profileImage')
-				.populate('members', 'username _id profileImage')
-				.populate('tags')
-				.populate({
-					path: 'posts',
-					populate: [
-						{ path: 'author', model: 'User' },
-						{ path: 'group', model: 'Group' },
-					],
-				});
-			res.setHeader('Cache-Control', 'public, max-age=3600');
+			const foundGroup = await new RedisService().getOrCacheData(
+				'groups',
+				async () => {
+					return await this.groupModel
+						.find({})
+						.populate('admins', 'username _id profileImage')
+						.populate('members', 'username _id profileImage')
+						.populate('tags')
+						.populate({
+							path: 'posts',
+							populate: [
+								{ path: 'author', model: 'User' },
+								{ path: 'group', model: 'Group' },
+							],
+						});
+				}
+			);
 			return res.status(200).json({ data: foundGroup, error: false });
 		} catch (error) {
 			createError(error, res);

@@ -2,6 +2,7 @@ import type { Model, Types } from 'mongoose';
 import { Response } from 'express';
 
 import { TagModel } from '../models/tag.model';
+import { RedisService } from './redis.service';
 
 export default class Tag<T extends Model<any>> {
 	constructor(private model: T, private tagModel: TagModel) {}
@@ -31,13 +32,20 @@ export default class Tag<T extends Model<any>> {
 	async getAllTags(res: Response) {
 		try {
 			if (this.tagModel) {
-				const tags = await this.tagModel
-					.find()
-					.sort({
-						postIds: -1,
-					})
-					.limit(5);
-				return res.json({ data: tags, error: false });
+				const data = await new RedisService().getOrCacheData(
+					'tags',
+					async () => {
+						const tags = await this.tagModel
+							.find()
+							.sort({
+								postIds: -1,
+							})
+							.limit(5);
+
+						return tags;
+					}
+				);
+				return res.json({ data: data, error: false });
 			}
 		} catch (error) {
 			return res.status(500).json({ error });

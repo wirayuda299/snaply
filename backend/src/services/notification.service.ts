@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { userModelType } from '../models/user.model';
 import { notificationModelType } from '../models/notification.model';
 import { createError } from '../utils/createError';
+import { RedisService } from './redis.service';
 
 export default class NotificationService {
 	constructor(
@@ -68,13 +69,17 @@ export default class NotificationService {
 		try {
 			const { userId } = req.query;
 
-			const allNotif = await this.notificationModel
-				.find({ to: userId })
-				.populate('from', '_id username profileImage')
-				.populate({
-					path: 'postId',
-				});
-
+			const allNotif = await new RedisService().getOrCacheData(
+				'notifications',
+				async () => {
+					return await this.notificationModel
+						.find({ to: userId })
+						.populate('from', '_id username profileImage')
+						.populate({
+							path: 'postId',
+						});
+				}
+			);
 			return res.status(200).json({ data: allNotif, error: false });
 		} catch (error) {
 			createError(error, res);

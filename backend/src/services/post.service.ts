@@ -8,7 +8,8 @@ import { userModelType } from '../models/user.model';
 import { postModelType } from '../models/post.model';
 import { groupModelType } from './../models/group.model';
 import { createError } from '../utils/createError';
-import { client } from '../config/redis.config';
+
+import { RedisService } from './redis.service';
 
 export default class PostService {
 	constructor(
@@ -73,33 +74,39 @@ export default class PostService {
 
 	async getPost(req: Request, res: Response) {
 		try {
-			const post = await this.PostModel.findById(req.query.id)
-				.populate('author', '_id, username profileImage createdAt')
-				.populate({
-					path: 'comments',
-					match: {
-						parentId: {
-							$exists: false,
-						},
-					},
-					options: {
-						sort: { createdAt: -1 },
-					},
-					populate: {
-						path: 'author',
-						select: {
-							_id: 1,
-							username: 1,
-							profileImage: 1,
-						},
-					},
-				})
-				.populate('tags');
+			const data = await new RedisService().getOrCacheData(
+				`post:${req.query.id}`,
+				async () => {
+					const post = await this.PostModel.findById(req.query.id)
+						.populate('author', '_id, username profileImage createdAt')
+						.populate({
+							path: 'comments',
+							match: {
+								parentId: {
+									$exists: false,
+								},
+							},
+							options: {
+								sort: { createdAt: -1 },
+							},
+							populate: {
+								path: 'author',
+								select: {
+									_id: 1,
+									username: 1,
+									profileImage: 1,
+								},
+							},
+						})
+						.populate('tags');
+					return post;
+				}
+			);
 
-			if (!post)
+			if (!data)
 				return res.status(404).json({ message: 'Post not found', error: true });
 
-			res.json({ data: post, error: false }).end();
+			res.json({ data: data, error: false }).end();
 		} catch (error) {
 			createError(error, res);
 		}
@@ -107,8 +114,6 @@ export default class PostService {
 
 	async getAllPosts(req: Request, res: Response) {
 		try {
-			const random = Math.floor(Math.random() * 378487382);
-			console.time('posts' + random);
 			const { sort = 'popular', page = 1, limit = 10 } = req.query;
 
 			let sortOptions = {};
@@ -119,42 +124,27 @@ export default class PostService {
 				sortOptions = { views: -1 };
 			}
 
-			const cacheValues = await client.get('posts');
+			const data = await new RedisService().getOrCacheData(
+				'posts',
+				async () => {
+					return await this.PostModel.find({ group: null })
+						.populate('author', 'username profileImage createdAt')
+						.populate('tags')
+						.skip(((page ? +page : 1) - 1) * +limit)
+						.limit(+limit)
+						.sort(sortOptions);
+				}
+			);
 
 			const totalPosts = await this.PostModel.countDocuments();
 			const totalPages = Math.ceil(totalPosts / +limit);
 
-			if (!cacheValues) {
-				const allPosts = await this.PostModel.find({ group: null })
-					.populate('author', 'username profileImage createdAt')
-					.populate('tags')
-					.skip(((page ? +page : 1) - 1) * +limit)
-					.limit(+limit)
-					.sort(sortOptions);
-
-				await client.setex('posts', 4600, JSON.stringify(allPosts));
-				res
-					.status(200)
-					.json({
-						error: false,
-						data: {
-							totalPages,
-							allPosts,
-						},
-						totalPosts,
-					})
-					.end();
-			} else {
-				return res.json({
-					data: {
-						// @ts-ignore
-						allPosts: cacheValues,
-						totalPages,
-					},
-					error: false,
-				});
-			}
-			console.timeEnd('posts' + random);
+			return res.json({
+				data: {
+					allPosts: data,
+					totalPages,
+				},
+			});
 		} catch (e) {
 			createError(e, res);
 		}
@@ -213,16 +203,23 @@ export default class PostService {
 		const { id, authorId } = req.query;
 
 		try {
-			const posts = await this.PostModel.find({
-				author: authorId,
-				group: null,
-			})
-				.limit(4)
-				.populate('tags');
-			res.setHeader('Cache-Control', 'public, max-age=3600');
+			const data = await new RedisService().getOrCacheData(
+				'related-posts',
+				async () => {
+					const posts = await this.PostModel.find({
+						author: authorId,
+						group: null,
+					})
+						.limit(4)
+						.populate('tags');
+					return posts;
+				}
+			);
+
 			res
 				.status(200)
-				.json({ data: posts.filter((post) => post._id.toString() !== id) })
+				// @ts-ignore
+				.json({ data: data.filter((post) => post._id.toString() !== id) })
 				.end();
 		} catch (error) {
 			createError(error, res);

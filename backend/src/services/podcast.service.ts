@@ -10,6 +10,7 @@ import { userModelType } from '../models/user.model';
 import { podcastModelType } from '../models/podcast.model';
 import { createError } from '../utils/createError';
 import { podcastQueue } from '../queue/podcast.queue';
+import { RedisService } from './redis.service';
 
 export default class PodcastServices {
 	constructor(
@@ -64,8 +65,6 @@ export default class PodcastServices {
 				.status(201)
 				.json({ message: 'Podcast has been published', error: false });
 		} catch (error) {
-			console.log(error);
-
 			createError(error, res);
 		}
 	}
@@ -81,24 +80,28 @@ export default class PodcastServices {
 			} else {
 				sortOptions = { createdAt: 1 };
 			}
+			const allPodcasts = await new RedisService().getOrCacheData(
+				'podcasts',
+				async () => {
+					const podcasts = await this.podcastModel
+						.find()
+						.populate('author', '_id username profileImage')
+						.populate('tags')
+						.skip(((page ? +page : 1) - 1) * +limit)
+						.limit(+limit)
+						.sort(sortOptions);
+					return podcasts;
+				}
+			);
 
-			const [totalPodcasts, allPodcasts] = await Promise.all([
-				this.podcastModel.countDocuments(),
-				this.podcastModel
-					.find()
-					.populate('author', '_id username profileImage region country')
-					.populate('tags')
-					.skip(((page ? +page : 1) - 1) * +limit)
-					.limit(+limit)
-					.sort(sortOptions),
-			]);
+			const totalPodcasts = await this.podcastModel.countDocuments();
+
 			const totalPages = Math.ceil(totalPodcasts / +limit);
 			res
 				.status(200)
 				.json({
 					error: false,
 					data: {
-						totalPodcasts,
 						allPodcasts,
 						totalPages,
 					},
