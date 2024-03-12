@@ -72,6 +72,7 @@ export default class Application {
 		this.app.get('/', (req, res) => {
 			res.json({ message: 'Hello from server' }).end();
 		});
+
 		this.app.use('/api/notification', Middleware.validate, NotificationRoutes);
 		this.app.use('/api/podcasts', Middleware.validate, podcastRoutes);
 		this.app.use('/api', fileUploadRoutes);

@@ -21,7 +21,7 @@ export default async function Navbar() {
 	]);
 
 	return (
-		<nav className='dark:bg-primary-dark fixed inset-x-0 top-0 z-10 flex items-center justify-end bg-white p-3 md:justify-between lg:p-5'>
+		<nav className='dark:bg-primary-dark fixed inset-x-0 top-0 z-50 flex w-full items-center justify-end bg-white p-3 md:justify-between lg:p-5'>
 			<Link
 				href={'/'}
 				className='flex flex-1 items-center gap-2 text-2xl font-semibold md:flex-none'
@@ -48,7 +48,7 @@ export default async function Navbar() {
 						width={35}
 						loading='lazy'
 						height={35}
-						alt=' user'
+						alt='user'
 					/>
 					<p className='dark:text-white-700 hidden text-lg font-semibold capitalize md:block'>
 						{user?.username ?? user?.firstName}

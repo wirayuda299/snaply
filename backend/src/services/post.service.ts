@@ -20,16 +20,17 @@ export default class PostService {
 	) {}
 
 	async createPost(req: Request, res: Response) {
-		try {
-			const { title, body, image, author, tags, group, assetId, category } =
-				req.body;
+		const { title, body, image, author, tags, group, assetId, category } =
+			req.body;
 
+		try {
 			const user = await this.userModel.findById(author);
-			if (!user)
+			if (!user) {
 				return res
 					.status(404)
 					.json({ message: 'User not found', error: true })
 					.end();
+			}
 
 			const post = await this.PostModel.create({
 				title,
@@ -54,11 +55,11 @@ export default class PostService {
 
 			if (group) {
 				const foundGroup = await this.groupModel.findById(group);
-				if (!foundGroup)
+				if (!foundGroup) {
 					return res
 						.status(404)
 						.json({ message: 'Group not found', error: true });
-
+				}
 				foundGroup.posts.push(post.id);
 				await foundGroup.save();
 			}
@@ -68,7 +69,7 @@ export default class PostService {
 				.json({ message: 'Post has been created', error: false })
 				.end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'create-post');
 		}
 	}
 
@@ -103,12 +104,13 @@ export default class PostService {
 				}
 			);
 
-			if (!data)
+			if (!data) {
 				return res.status(404).json({ message: 'Post not found', error: true });
+			}
 
 			res.json({ data: data, error: false }).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-post-by-id');
 		}
 	}
 
@@ -123,7 +125,6 @@ export default class PostService {
 			} else {
 				sortOptions = { views: -1 };
 			}
-
 			const data = await new RedisService().getOrCacheData(
 				'posts',
 				async () => {
@@ -146,14 +147,14 @@ export default class PostService {
 				},
 			});
 		} catch (e) {
-			createError(e, res);
+			createError(e, req, res, 'get-all-posts');
 		}
 	}
 
 	async incremementView(req: Request, res: Response) {
-		try {
-			const { postId } = req.body;
+		const { postId } = req.body;
 
+		try {
 			const post = this.PostModel.findById(postId);
 			if (!post) {
 				return res.status(404).json({ message: 'Post not found', error: true });
@@ -164,14 +165,16 @@ export default class PostService {
 					views: 1,
 				},
 			});
+
 			res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'increment-post');
 		}
 	}
 
 	async likePost(req: Request, res: Response) {
 		const { postId, userId } = req.body;
+
 		try {
 			const [post, user] = await Promise.all([
 				this.PostModel.findById(postId),
@@ -193,9 +196,10 @@ export default class PostService {
 			}
 
 			await post.save();
+
 			res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'like-post');
 		}
 	}
 
@@ -222,7 +226,7 @@ export default class PostService {
 				.json({ data: data.filter((post) => post._id.toString() !== id) })
 				.end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'related-post');
 		}
 	}
 
@@ -240,9 +244,10 @@ export default class PostService {
 					share: 1,
 				},
 			});
+
 			res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'share-post');
 		}
 	}
 
@@ -257,8 +262,10 @@ export default class PostService {
 			}
 			if (post.author) {
 				let postAuthor = await this.userModel.findById(post?.author);
-				if (!postAuthor)
+				if (!postAuthor) {
 					return res.status(404).json({ message: 'User not found' });
+				}
+
 				// @ts-ignore
 				const updatedPosts = postAuthor.posts.filter(
 					(postId) => postId.toString() !== post._id.toString()
@@ -282,14 +289,14 @@ export default class PostService {
 
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'delete-post');
 		}
 	}
 
 	async updatePost(req: Request, res: Response) {
-		try {
-			const { postId, title, image, assetId, body, category, tags } = req.body;
+		const { postId, title, image, assetId, body, category, tags } = req.body;
 
+		try {
 			const post = await this.PostModel.findById(postId);
 			if (!post) {
 				return res.status(404).json({ message: 'Post not found', error: true });
@@ -317,9 +324,10 @@ export default class PostService {
 					assetId,
 				}
 			);
+
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'update-post');
 		}
 	}
 }

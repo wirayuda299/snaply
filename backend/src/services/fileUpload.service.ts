@@ -14,6 +14,7 @@ export default class FileUploadService {
 				const response = await cloudinary.v2.uploader.upload(dataURI, {
 					resource_type: 'auto',
 				});
+
 				res
 					.status(200)
 					.json({
@@ -25,9 +26,7 @@ export default class FileUploadService {
 					.end();
 			}
 		} catch (error) {
-			console.log(error);
-
-			createError(error, res);
+			createError(error, req, res, 'file-upload');
 		}
 	}
 
@@ -36,7 +35,7 @@ export default class FileUploadService {
 			cloudinary.v2.config(cloudinaryConfig);
 			await cloudinary.v2.uploader.destroy(assetId);
 		} catch (error) {
-			createError(error, res);
+			createError(error, {} as Request, res, 'asset-delete');
 		}
 	}
 }

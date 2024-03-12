@@ -67,7 +67,7 @@ export default class SearchService {
 				})
 				.end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'search');
 		}
 	}
 }

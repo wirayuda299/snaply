@@ -65,7 +65,7 @@ export default class PodcastServices {
 				.status(201)
 				.json({ message: 'Podcast has been published', error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'create-podcast');
 		}
 	}
 
@@ -108,7 +108,7 @@ export default class PodcastServices {
 				})
 				.end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-all-podcast');
 		}
 	}
 
@@ -125,7 +125,7 @@ export default class PodcastServices {
 			res.setHeader('Cache-Control', 'public, max-age=3600');
 			return res.status(200).json({ data: podcast, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-podcast');
 		}
 	}
 
@@ -178,7 +178,7 @@ export default class PodcastServices {
 			await this.podcastModel.deleteOne({ _id: foundPodcast._id });
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'delete-podcast');
 		}
 	}
 }

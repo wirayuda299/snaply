@@ -32,7 +32,7 @@ export default class NotificationService {
 
 			return res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'create-notification');
 		}
 	}
 
@@ -61,7 +61,7 @@ export default class NotificationService {
 			});
 			return res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'delete-notification');
 		}
 	}
 
@@ -82,7 +82,7 @@ export default class NotificationService {
 			);
 			return res.status(200).json({ data: allNotif, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-all-notification');
 		}
 	}
 }

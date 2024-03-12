@@ -23,7 +23,7 @@ export default class MessageService {
 
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'create-Conversation');
 		}
 	}
 
@@ -56,7 +56,7 @@ export default class MessageService {
 
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'send-message');
 		}
 	}
 
@@ -71,7 +71,7 @@ export default class MessageService {
 
 			return res.json({ data: conversations, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-all-conversation');
 		}
 	}
 
@@ -86,7 +86,7 @@ export default class MessageService {
 
 			return res.json({ data: messages, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-chat');
 		}
 	}
 
@@ -103,7 +103,7 @@ export default class MessageService {
 
 			res.json({ data: chats, error: false }).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-unread-message');
 		}
 	}
 
@@ -124,7 +124,7 @@ export default class MessageService {
 
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'update-unread-message');
 		}
 	}
 }

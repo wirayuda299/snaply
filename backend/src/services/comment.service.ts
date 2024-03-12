@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { commentModelType } from '../models/comment.model';
 import { postModelType } from '../models/post.model';
 import { createError } from '../utils/createError';
+import Logger from './logger.service';
 
 export default class CommentService {
 	private commentModel;
@@ -36,7 +37,7 @@ export default class CommentService {
 
 			return res.json({ message: 'Comment uploaded', error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'upload-comment');
 		}
 	}
 
@@ -49,16 +50,17 @@ export default class CommentService {
 			if (comments?.length < 1) {
 				return res.status(404).json({ message: 'No replies yet', error: true });
 			}
+
 			return res.status(200).json({ data: comments, error: false }).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-comment-replies');
 		}
 	}
 
 	async likeComment(req: Request, res: Response) {
-		const { userId, commentId } = req.body;
-
 		try {
+			const { userId, commentId } = req.body;
+
 			const comment = await this.commentModel.findById(commentId);
 
 			if (!comment) {
@@ -66,6 +68,7 @@ export default class CommentService {
 					.status(404)
 					.json({ message: 'Comment not found', error: true });
 			}
+
 			const hasLikedIndex = comment.likes.indexOf(userId);
 
 			if (hasLikedIndex !== -1) {
@@ -77,7 +80,7 @@ export default class CommentService {
 
 			return res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'like-comment');
 		}
 	}
 }

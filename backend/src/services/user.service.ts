@@ -33,7 +33,7 @@ export default class UserService {
 					.end();
 			});
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'create-user');
 		}
 	}
 
@@ -66,7 +66,7 @@ export default class UserService {
 
 			res.json({ data: user, error: false }).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-user');
 		}
 	}
 
@@ -108,7 +108,7 @@ export default class UserService {
 			await Promise.all([user.save(), follower.save()]);
 			res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'follow-user');
 		}
 	}
 
@@ -123,7 +123,7 @@ export default class UserService {
 				.select('_id username profileImage createdAt');
 			return res.json({ data: users, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-all-user');
 		}
 	}
 }

@@ -105,7 +105,8 @@ export default class GroupService {
 				.json({ message: 'Group has been created', error: false })
 				.end();
 		} catch (error) {
-			createError(error, res);
+			// @ts-ignore
+			createError(error, req, res, 'create-group');
 		}
 	}
 
@@ -142,7 +143,8 @@ export default class GroupService {
 			}
 			return res.json({ data: foundGroup, error: false });
 		} catch (error) {
-			createError(error, res);
+			// @ts-ignore
+			createError(error, req, res, 'get-group-by-id');
 		}
 	}
 
@@ -167,7 +169,8 @@ export default class GroupService {
 			);
 			return res.status(200).json({ data: foundGroup, error: false });
 		} catch (error) {
-			createError(error, res);
+			// @ts-ignore
+			createError(error, req, res, 'getAllGroups');
 		}
 	}
 
@@ -192,7 +195,7 @@ export default class GroupService {
 			await group.save();
 			res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'join-group');
 		}
 	}
 
@@ -219,7 +222,7 @@ export default class GroupService {
 			await group.save();
 			res.status(200).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'leave -group');
 		}
 	}
 
@@ -243,7 +246,7 @@ export default class GroupService {
 				.populate('admins', 'username');
 			return res.json({ data: groups, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-all-group-where-user-join');
 		}
 	}
 
@@ -287,7 +290,7 @@ export default class GroupService {
 			await this.groupModel.deleteOne({ _id: foundGroup._id });
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'delete-group');
 		}
 	}
 
@@ -352,9 +355,8 @@ export default class GroupService {
 			);
 			res.status(201).end();
 		} catch (error) {
-			console.log(error);
-
-			createError(error, res);
+			// @ts-ignore
+			createError(error, req, res, 'update-group');
 		}
 	}
 }

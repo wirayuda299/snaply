@@ -31,7 +31,7 @@ export default class ReportService {
 				.json({ message: 'This post has been reported', error: false })
 				.end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'report-post');
 		}
 	}
 }

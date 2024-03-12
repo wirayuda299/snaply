@@ -59,7 +59,7 @@ export default class MeetupService {
 
 			res.status(201).json({ data: meetup, error: false }).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'create-meetup');
 		}
 	}
 
@@ -91,7 +91,7 @@ export default class MeetupService {
 				error: false,
 			});
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-all-meetup');
 		}
 	}
 
@@ -114,7 +114,7 @@ export default class MeetupService {
 
 			return res.status(200).json({ data: meetup, error: false });
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'get-meetup');
 		}
 	}
 
@@ -162,7 +162,7 @@ export default class MeetupService {
 			await this.meetupModel.deleteOne({ _id: foundMeetup._id });
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'delete-meetup');
 		}
 	}
 
@@ -215,7 +215,7 @@ export default class MeetupService {
 			);
 			res.status(201).end();
 		} catch (error) {
-			createError(error, res);
+			createError(error, req, res, 'update-meetup');
 		}
 	}
 }
