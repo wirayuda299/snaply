@@ -68,7 +68,7 @@ export default class NotificationService {
 			const { userId } = req.query;
 
 			const allNotif = await this.notificationModel
-				.find({ to: userId })
+				.find({ to: userId, is_read: false })
 				.populate('from', '_id username profileImage')
 				.populate({
 					path: 'postId',

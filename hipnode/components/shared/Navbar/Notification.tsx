@@ -206,7 +206,12 @@ export default function Notification({
 															</span>
 														</h3>
 														{notification.comments && (
-															<div className='bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2'>
+															<div
+																className={cn(
+																	'bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2',
+																	!notification.is_read && 'text-primary'
+																)}
+															>
 																<p>{notification.comments}</p>
 															</div>
 														)}
