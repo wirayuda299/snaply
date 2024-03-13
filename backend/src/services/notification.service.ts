@@ -5,6 +5,8 @@ import { notificationModelType } from '../models/notification.model';
 import { createError } from '../utils/createError';
 import { RedisService } from './redis.service';
 
+const redis = new RedisService();
+
 export default class NotificationService {
 	constructor(
 		private notificationModel: notificationModelType,
@@ -29,7 +31,7 @@ export default class NotificationService {
 				modelPath: model,
 				comments,
 			});
-
+			await redis.clearCacheSingle('notifications');
 			return res.status(200).end();
 		} catch (error) {
 			createError(error, req, res, 'create-notification');
@@ -59,6 +61,7 @@ export default class NotificationService {
 				from: userId,
 				notificationType: type,
 			});
+			await redis.clearCacheSingle('notifications');
 			return res.status(200).end();
 		} catch (error) {
 			createError(error, req, res, 'delete-notification');
@@ -69,7 +72,7 @@ export default class NotificationService {
 		try {
 			const { userId } = req.query;
 
-			const allNotif = await new RedisService().getOrCacheData(
+			const allNotif = await redis.getOrCacheData(
 				'notifications',
 				async () => {
 					return await this.notificationModel
@@ -78,9 +81,13 @@ export default class NotificationService {
 						.populate({
 							path: 'postId',
 						});
-				}
+				},
+				res
 			);
-			return res.status(200).json({ data: allNotif, error: false });
+			return res.status(200).json({
+				data: allNotif,
+				error: false,
+			});
 		} catch (error) {
 			createError(error, req, res, 'get-all-notification');
 		}

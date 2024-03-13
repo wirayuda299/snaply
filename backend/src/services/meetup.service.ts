@@ -10,6 +10,8 @@ import { userModelType } from '../models/user.model';
 import { createError } from '../utils/createError';
 import { RedisService } from './redis.service';
 
+const redis = new RedisService();
+
 export default class MeetupService {
 	constructor(
 		private meetupModel: meetupType,
@@ -56,7 +58,7 @@ export default class MeetupService {
 			user.meetups.push(meetup.id);
 			user.points += 5;
 			await user.save();
-
+			await redis.clearCache('meetups');
 			res.status(201).json({ data: meetup, error: false }).end();
 		} catch (error) {
 			createError(error, req, res, 'create-meetup');
@@ -67,8 +69,10 @@ export default class MeetupService {
 		try {
 			const { page = 1, limit = 10 } = req.query;
 
+			const pageKey = `meetups:${page}:limit`;
+
 			const meetups = await new RedisService().getOrCacheData(
-				'meetups',
+				pageKey,
 				async () => {
 					const data = await this.meetupModel
 						.find({})
@@ -77,7 +81,8 @@ export default class MeetupService {
 						.skip(((page ? +page : 1) - 1) * +limit)
 						.limit(+limit);
 					return data;
-				}
+				},
+				res
 			);
 			const totalMeetups = await this.meetupModel.countDocuments();
 
@@ -104,7 +109,8 @@ export default class MeetupService {
 						.findById(req.query.id)
 						.populate('author')
 						.populate('tags');
-				}
+				},
+				res
 			);
 
 			if (!meetup)
@@ -160,6 +166,7 @@ export default class MeetupService {
 			).deleteTag(foundMeetup.tags, foundMeetup._id);
 
 			await this.meetupModel.deleteOne({ _id: foundMeetup._id });
+			await redis.clearCache('meetups');
 			res.status(201).end();
 		} catch (error) {
 			createError(error, req, res, 'delete-meetup');
@@ -213,6 +220,7 @@ export default class MeetupService {
 					date,
 				}
 			);
+			await redis.clearCache('meetups');
 			res.status(201).end();
 		} catch (error) {
 			createError(error, req, res, 'update-meetup');

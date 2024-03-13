@@ -8,12 +8,20 @@ import type { Request, Response } from 'express';
 
 const logDir = 'log';
 
-const { combine, timestamp, json, printf, prettyPrint, label, errors } =
-	winston.format;
+const {
+	combine,
+	timestamp,
+	json,
+	printf,
+	prettyPrint,
+	label,
+	errors,
+	metadata,
+} = winston.format;
 const timestampFormat = 'MMM-DD-YYYY HH:mm:ss';
 
 const customFormat = printf(({ timestamp, level, message, ...meta }) => {
-	return `${timestamp} \n ${level}: ${message}  \n ${JSON.stringify(meta)}`;
+	return `${timestamp} ${level}: ${message} ${JSON.stringify(meta, null, 2)}`;
 });
 
 export default class Logger {
@@ -29,6 +37,7 @@ export default class Logger {
 				json(),
 				label({ label: pathname }),
 				errors(),
+				metadata(),
 				customFormat,
 				prettyPrint()
 			),

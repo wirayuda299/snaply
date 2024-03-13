@@ -15,24 +15,24 @@ export default async function PostCard({ post }: { post: Post }) {
 
 	return (
 		<article className='card dark:bg-secondary-dark-2 flex size-min max-w-[250px] grow flex-col items-stretch rounded-2xl bg-white p-2.5 max-md:max-w-full max-sm:max-w-full'>
-			<header className='card-header flex items-stretch justify-between gap-2.5'>
+			<header className='card-header flex items-stretch justify-between gap-2.5 py-1'>
 				<Image
-					width={34}
-					height={34}
+					width={40}
+					height={40}
 					loading='lazy'
 					src={'/avatar.png'}
-					className=' size-[34px] max-w-full shrink-0 overflow-hidden rounded-full object-cover object-center'
+					className=' size-12 max-w-full shrink-0 overflow-hidden rounded-full object-cover object-center'
 					alt='Profile Picture'
 				/>
 				<Link
-					href={`/post/${post._id}`}
-					className='card-info flex grow basis-[0%] flex-col items-stretch'
+					href={`/groups/${post.group?._id}`}
+					className=' flex grow basis-[0%] flex-col items-stretch'
 				>
-					<h2 className='card-title text-secondary text-xs font-semibold leading-5 dark:text-white'>
+					<h2 className=' text-secondary text-xm font-semibold leading-relaxed dark:text-white'>
 						{post?.group?.name}
 					</h2>
-					<p className='card-author text-secondary text-xs leading-4 dark:text-white'>
-						{post?.group?.admins[0].username}
+					<p className='card-author text-secondary dark:text-secondary-light text-xs capitalize leading-4'>
+						{post?.author.username}
 					</p>
 				</Link>
 			</header>

@@ -1,23 +1,45 @@
 import { client } from '../config/redis.config';
+import { Response } from 'express';
 
 export class RedisService<T> {
-	private readonly cacheExpirationTime = 3600; // Cache expiration time in seconds
+	private readonly cacheExpirationTime = 3600;
 
-	async getOrCacheData(key: string, cb: () => Promise<T>): Promise<T> {
+	async getOrCacheData(key: string, cb: () => Promise<T>, res: Response) {
 		try {
 			const cacheValue = await client.get(key);
+
 			if (cacheValue) {
-				// @ts-ignore
 				return cacheValue as T;
 			} else {
-				// If the value is not in the cache, fetch it, cache it, and return it
 				const data = await cb();
 				await client.setex(key, this.cacheExpirationTime, data);
 				return data;
 			}
 		} catch (error) {
-			console.error(`Error fetching or caching data for key ${key}:`, error);
-			throw error; // Rethrow the error after logging
+			console.log('Redis error', error);
+
+			throw error;
+		}
+	}
+
+	async addData<T>(key: string, value: T) {
+		try {
+			await client.append(key, JSON.stringify(value));
+		} catch (error) {
+			throw error;
+		}
+	}
+	async clearCache(keyPrefix: string) {
+		const keys = await client.keys(`${keyPrefix}:*`);
+		if (keys.length) {
+			await client.del(...keys);
+		}
+	}
+
+	async clearCacheSingle(keyPrefix: string) {
+		const keys = await client.keys(keyPrefix);
+		if (keys.length) {
+			await client.del(...keys);
 		}
 	}
 }

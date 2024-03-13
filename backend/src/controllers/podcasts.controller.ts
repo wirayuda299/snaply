@@ -51,6 +51,10 @@ export default class InterviewController {
 	}
 
 	delete(req: Request, res: Response) {
+		if (!req.body.podcastId) {
+			return res.status(400).json({ message: 'id not provided', error: true });
+		}
+
 		return this.podcastService.deletePodcast(req, res);
 	}
 }

@@ -43,7 +43,8 @@ export default class Tag<T extends Model<any>> {
 							.limit(5);
 
 						return tags;
-					}
+					},
+					res
 				);
 				return res.json({ data: data, error: false });
 			}

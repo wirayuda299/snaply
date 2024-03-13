@@ -7,7 +7,6 @@ import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
 
 import {
 	Form,
@@ -24,20 +23,21 @@ import TagInput from '../shared/forms/TagInput';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { uploadFile } from '@/lib/actions/fileUpload.action';
-import { createGroup, getGroupById, updateGroup } from '@/lib/actions';
+import { createGroup, updateGroup } from '@/lib/actions';
 import useUploadFile from '@/hooks/useUploadFile';
 import { createGroupSchema, createGroupSchemaTypes } from '@/lib/validations';
 import useFormReset from '@/hooks/useFormReset';
 
-import Loader from '../shared/Loader';
-import { Group } from '@/types';
+import { Group, Tag } from '@/types';
 
 export default function CreateGroupForm({
 	groupId,
 	type,
+	group,
 }: {
 	groupId: string;
 	type: string;
+	group: Group | null;
 }) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
@@ -60,33 +60,25 @@ export default function CreateGroupForm({
 	});
 
 	const { isChecking, handleChange, preview, files } = useUploadFile(form);
-	const { data, isError, error, isLoading } = useQuery({
-		queryKey: [groupId],
-		queryFn: () => getGroupById(groupId),
-		enabled: type === 'update',
-	});
 
 	useFormReset(
-		isLoading,
-		isError,
-		data,
+		group !== null,
+		group !== null,
+		group,
 		form,
 		{
-			tags: (data as unknown as Group)?.tags.map((tag) => tag.name),
-			cover: (data as unknown as Group)?.banner,
-			description: (data as unknown as Group)?.description,
-			members: (data as unknown as Group)?.members.map((member) => member._id),
-			name: (data as unknown as Group)?.name,
-			profileImage: (data as unknown as Group)?.logo,
-			category: (data as unknown as Group)?.category,
-			admins: (data as unknown as Group)?.admins.map((admin) => admin._id),
+			tags: group?.tags.map((tag) => tag.name),
+			cover: group?.banner,
+			description: group?.description,
+			members: group?.members.map((member) => member._id),
+			name: group?.name,
+			profileImage: group?.logo,
+			category: group?.category,
+			admins: group?.admins.map((admin) => admin._id),
 		},
 		type,
 		groupId
 	);
-
-	if (isLoading) return <Loader />;
-	if (isError) return <p>{error?.message}</p>;
 
 	async function onSubmit(formData: createGroupSchemaTypes) {
 		try {
@@ -111,14 +103,15 @@ export default function CreateGroupForm({
 				logo,
 				logoAssetId,
 				name: formData.name,
-				tags: formData.tags,
-				admins: (data as unknown as Group)?.admins.map((admin) => admin._id),
-				members: (data as unknown as Group)?.members.map(
+				tags: formData.tags as unknown as Tag[],
+				admins: group?.admins.map((admin) => admin._id) as unknown as string[],
+				members: group?.members.map(
 					(member) => member._id
-				),
+				) as unknown as string[],
 			};
 
 			if (type === 'update') {
+				// @ts-ignore
 				await updateGroup(groupData);
 				toast.success('Group has been updated 🥳');
 			} else {
@@ -133,7 +126,7 @@ export default function CreateGroupForm({
 					formData.name,
 					formData.category
 				);
-				toast.success('Group has been created 🎉');
+				toast.success('Group has been created 🥳');
 			}
 			router.push('/groups');
 		} catch (error) {
@@ -190,12 +183,11 @@ export default function CreateGroupForm({
 						</FormItem>
 					)}
 				/>
-				{(preview || data) &&
-				(preview?.cover || (data as unknown as Group)?.banner) ? (
+				{(preview || group) && (preview?.cover || group?.banner) ? (
 					<div className='relative min-h-[250px] w-full'>
 						<Image
 							className='rounded-md object-cover object-center'
-							src={preview?.cover || (data as unknown as Group)?.banner || ''}
+							src={preview?.cover || group?.banner || ''}
 							alt='cover'
 							fill
 						/>
@@ -221,16 +213,15 @@ export default function CreateGroupForm({
 							width={30}
 							height={30}
 							src={
-								(preview || data) &&
-								(preview?.profileImage || (data as unknown as Group).logo)
-									? preview?.profileImage || (data as unknown as Group).logo
-									: '/assets/create-post/image.svg'
+								preview?.profileImage ||
+								group?.logo ||
+								'/assets/create-post/image.svg'
 							}
 							alt='profile image'
 							className={cn(
 								'aspect-auto size-4 sm:size-7 object-contain object-center ',
-								(preview || data) &&
-									(preview?.profileImage || (data as unknown as Group).logo) &&
+								(preview || group) &&
+									(preview?.profileImage || group?.logo) &&
 									'h-full w-full rounded-full aspect-auto size-8 object-cover'
 							)}
 							loading='lazy'

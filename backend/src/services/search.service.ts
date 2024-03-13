@@ -49,7 +49,8 @@ export default class SearchService {
 							},
 						}),
 					]);
-				}
+				},
+				res
 			);
 			res
 				.status(200)

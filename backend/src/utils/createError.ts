@@ -10,9 +10,7 @@ export function createError(
 	res: Response,
 	pathname: string
 ) {
-	const formattedError = logger.formatHTTPLoggerResponse(req, res, {
-		error,
-	});
+	const formattedError = logger.formatHTTPLoggerResponse(req, res, { error });
 	logger
 		.createLogger(pathname)
 		.error('Error Message', formattedError, { error });

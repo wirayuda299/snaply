@@ -35,7 +35,6 @@ export class ApiRequest {
 					tags: [tag],
 				},
 			}),
-			cache: 'no-cache',
 		});
 
 		const data = await res.json();

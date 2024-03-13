@@ -25,8 +25,8 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 	const date = type === 'meetup' && new Date(post.date);
 
 	return (
-		<div className='max-sm:max-h-auto min-lg:max-h-[250px] dark:border-primary-dark dark:bg-secondary-dark-2 w-full rounded-lg border bg-white p-3 md:p-5'>
-			<div className='flex flex-col gap-5 sm:flex-row sm:gap-4'>
+		<div className='max-sm:max-h-auto min-lg:max-h-[250px] dark:border-primary-dark dark:bg-secondary-dark-2 w-full rounded-lg border bg-white p-3 md:p-5 xl:flex'>
+			<div className='flex w-full flex-col gap-5 sm:flex-row sm:gap-4'>
 				<picture
 					className={cn(
 						'relative aspect-square min-h-[120px] w-full h-36 sm:w-36 md:h-44 md:w-40 lg:w-48 lg:h-48',
@@ -44,8 +44,8 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 					/>
 				</picture>
 
-				<div className='flex flex-col justify-evenly gap-5 sm:shrink sm:grow sm:justify-between'>
-					<div className='flex w-full items-start justify-between'>
+				<div className='flex w-full flex-col justify-evenly gap-5 sm:shrink sm:grow sm:justify-between'>
+					<div className='flex w-full flex-wrap items-start justify-between'>
 						<header>
 							<PostTitle
 								type={type}

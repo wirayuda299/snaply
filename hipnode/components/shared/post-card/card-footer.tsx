@@ -12,6 +12,8 @@ type PostCardTypes =
 	| { type: 'post'; post: Post };
 
 export default function CardFooter({ post, type }: PostCardTypes) {
+	console.log(post);
+
 	return (
 		<footer className='flex flex-wrap items-center justify-between'>
 			<div className='flex items-center gap-3'>
@@ -41,14 +43,22 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 						)}
 						{type === 'meetup' && post?.companyName}
 					</h4>
-					{type === 'post' && (
+					{type === 'post' ? (
 						<p className='text-secondary dark:text-white-700 truncate text-[10px] sm:text-xs'>
 							{getCreatedDate(post?.createdAt)}
+						</p>
+					) : (
+						<p className='flex items-center gap-2 text-xs '>
+							{' '}
+							Created by
+							<span className='font-semibold capitalize'>
+								{post.author.username}
+							</span>
 						</p>
 					)}
 				</div>
 			</div>
-			<div className='hidden sm:block'>
+			<div className='hidden xl:block'>
 				{type === 'post' && (
 					<div className=' mt-auto flex flex-wrap gap-5'>
 						<p className='text-secondary dark:text-white-700 text-xs font-semibold'>

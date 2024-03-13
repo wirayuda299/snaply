@@ -14,7 +14,7 @@ export default async function PodcastCard({ podcast }: { podcast: Podcast }) {
 
 	return (
 		<article
-			className='dark:bg-secondary-dark-2 h-min max-w-sm rounded-xl bg-white p-5 max-lg:max-w-full'
+			className='dark:bg-secondary-dark-2 h-min min-w-[250px] max-w-md rounded-xl bg-white p-5 max-md:min-w-full'
 			key={podcast._id}
 		>
 			<div className='flex items-center justify-between gap-4'>

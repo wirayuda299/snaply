@@ -12,6 +12,8 @@ import { createError } from '../utils/createError';
 import { podcastQueue } from '../queue/podcast.queue';
 import { RedisService } from './redis.service';
 
+const redis = new RedisService();
+
 export default class PodcastServices {
 	constructor(
 		private podcastModel: podcastModelType,
@@ -58,8 +60,12 @@ export default class PodcastServices {
 
 			user.podcasts.push(podcast.id);
 			user.points += 5;
-			await user.save();
-			await podcastQueue.add(podcast._id);
+
+			await Promise.all([
+				user.save(),
+				podcastQueue.add(podcast._id),
+				await redis.clearCache('podcasts'),
+			]);
 
 			return res
 				.status(201)
@@ -80,8 +86,9 @@ export default class PodcastServices {
 			} else {
 				sortOptions = { createdAt: 1 };
 			}
+			const pageKey = `podcasts:${sort}:${page}:${limit}`;
 			const allPodcasts = await new RedisService().getOrCacheData(
-				'podcasts',
+				pageKey,
 				async () => {
 					const podcasts = await this.podcastModel
 						.find()
@@ -91,7 +98,8 @@ export default class PodcastServices {
 						.limit(+limit)
 						.sort(sortOptions);
 					return podcasts;
-				}
+				},
+				res
 			);
 
 			const totalPodcasts = await this.podcastModel.countDocuments();
@@ -114,16 +122,21 @@ export default class PodcastServices {
 
 	async getPodcastById(req: Request, res: Response) {
 		try {
-			const podcast = await this.podcastModel
-				.findById(req.query.id)
-				.populate('author');
-
-			if (!podcast)
+			const data = await new RedisService().getOrCacheData(
+				`podcast:${req.query.id}`,
+				async () => {
+					return await this.podcastModel
+						.findById(req.query.id)
+						.populate('author');
+				},
+				res
+			);
+			if (!data)
 				return res
 					.status(404)
 					.json({ message: 'Podcast not found', error: true });
-			res.setHeader('Cache-Control', 'public, max-age=3600');
-			return res.status(200).json({ data: podcast, error: false });
+
+			return res.status(200).json({ data, error: false });
 		} catch (error) {
 			createError(error, req, res, 'get-podcast');
 		}
@@ -138,6 +151,7 @@ export default class PodcastServices {
 					.status(404)
 					.json({ message: 'Podcast not found', error: true });
 			}
+			await redis.clearCache('podcasts');
 
 			if (foundPodcast.author) {
 				const author = await this.userModel.findById(foundPodcast.author);
@@ -150,32 +164,25 @@ export default class PodcastServices {
 				const updatedPodcast = author?.podcasts.filter(
 					(podcast) => podcast !== foundPodcast._id
 				);
-				await this.userModel.updateOne(
-					{
-						_id: author._id,
-					},
-					{
-						$set: {
-							podcasts: updatedPodcast,
-						},
-					}
-				);
-				await author.save();
+
+				const fileUploadService = new FileUploadService();
+
+				await Promise.all([
+					this.userModel.updateOne(
+						{ _id: author._id },
+						{ $set: { podcasts: updatedPodcast } }
+					),
+					author.save(),
+					fileUploadService.deleteAsset(foundPodcast.audioAssetId, res),
+					fileUploadService.deleteAsset(foundPodcast.postImageAssetId, res),
+					new TagService<typeof this.podcastModel>(
+						this.podcastModel,
+						this.tagModel
+					).deleteTag(foundPodcast.tags, foundPodcast._id),
+					this.podcastModel.deleteOne({ _id: foundPodcast._id }),
+				]);
 			}
 
-			const fileUploadService = new FileUploadService();
-
-			await Promise.all([
-				fileUploadService.deleteAsset(foundPodcast.audioAssetId, res),
-				fileUploadService.deleteAsset(foundPodcast.postImageAssetId, res),
-			]);
-
-			await new TagService<typeof this.podcastModel>(
-				this.podcastModel,
-				this.tagModel
-			).deleteTag(foundPodcast.tags, foundPodcast._id);
-
-			await this.podcastModel.deleteOne({ _id: foundPodcast._id });
 			res.status(201).end();
 		} catch (error) {
 			createError(error, req, res, 'delete-podcast');

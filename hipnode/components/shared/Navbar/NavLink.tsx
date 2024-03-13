@@ -17,7 +17,9 @@ export default function NavLink() {
 			{navLinks.map((navLink) => (
 				<li
 					key={navLink.label}
-					className={isActive(navLink.path) ? 'bg-primary rounded-md p-2' : ''}
+					className={
+						isActive(navLink.path) ? 'bg-primary h-max rounded-md p-2' : ''
+					}
 				>
 					<Link href={navLink.path}>
 						<Image

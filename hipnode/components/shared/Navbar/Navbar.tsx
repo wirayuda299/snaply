@@ -20,8 +20,10 @@ export default async function Navbar() {
 		getUnreadChat(user.id),
 	]);
 
+	console.log('notifications -> ', allNotifications);
+
 	return (
-		<nav className='dark:bg-primary-dark fixed inset-x-0 top-0 z-50 flex w-full items-center justify-end bg-white p-3 md:justify-between lg:p-5'>
+		<nav className='dark:bg-primary-dark !fixed inset-x-0 top-0 z-50 flex items-center  justify-end bg-white p-3 md:justify-between lg:p-5'>
 			<Link
 				href={'/'}
 				className='flex flex-1 items-center gap-2 text-2xl font-semibold md:flex-none'
@@ -40,7 +42,7 @@ export default async function Navbar() {
 			<SearchForm />
 			<div className='flex items-center gap-2'>
 				<Messages messages={messages} />
-				<Notification notifications={allNotifications} />
+				<Notification notifications={allNotifications ?? []} />
 				<div className='flex w-8 items-center gap-3 md:w-auto'>
 					<Image
 						className='aspect-auto min-w-4 rounded-lg border-2 object-contain'

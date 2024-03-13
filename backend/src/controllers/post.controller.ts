@@ -43,6 +43,7 @@ export default class PostController {
 
 	updateView(req: Request, res: Response) {
 		const { postId } = req.body;
+
 		if (!postId) {
 			return res.status(400).json({ message: 'Post Id is required' });
 		}
@@ -52,6 +53,7 @@ export default class PostController {
 
 	like(req: Request, res: Response) {
 		const { postId, userId } = req.body;
+
 		if (!postId || !userId) {
 			return res
 				.status(400)
@@ -95,6 +97,14 @@ export default class PostController {
 	}
 
 	update(req: Request, res: Response) {
+		const { postId } = req.body;
+
+		if (!postId) {
+			return res
+				.status(400)
+				.json({ message: 'Post Id is required', error: true });
+		}
+
 		return this.postService.updatePost(req, res);
 	}
 }

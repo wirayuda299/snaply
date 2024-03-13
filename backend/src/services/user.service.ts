@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 
 import { userModelType } from '../models/user.model';
 import { createError } from '../utils/createError';
-import console from 'console';
 
 export default class UserService {
 	constructor(private userModel: userModelType) {}

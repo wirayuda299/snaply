@@ -31,10 +31,20 @@ export default class User {
 	}
 
 	followUser(req: Request, res: Response) {
+		const { userId, followerId } = req.body;
+		if (!userId || !followerId) {
+			return res
+				.status(400)
+				.json({ message: 'User ID and Follower ID is required', error: true });
+		}
 		return this.userService.handleFollow(req, res);
 	}
 
 	listAllUsers(req: Request, res: Response) {
+		if (!req.query.userId) {
+			return res.status(400).end();
+		}
+
 		return this.userService.getAllUsers(req, res);
 	}
 }

@@ -24,7 +24,7 @@ export { default as PostCard } from '@/components/shared/post-card/post-card';
 export { default as CommentInput } from '@/components/post/CommentInput';
 
 // groups
-export { default as GroupSidebarMobile } from '@/components/groups/sidebar/Mobile';
+
 export { default as GroupPostCard } from '@/components/groups/post-card/post-card';
 export { default as GroupAbout } from '@/components/groups/about';
 export { default as ActiveMember } from '@/components/groups/active-members';

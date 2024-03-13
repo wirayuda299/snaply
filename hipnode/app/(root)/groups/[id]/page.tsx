@@ -9,6 +9,7 @@ import {
 	PostCard,
 } from '@/components/index';
 import { getGroupById } from '@/lib/actions';
+import { notFound } from 'next/navigation';
 
 type Props = {
 	params: {
@@ -18,6 +19,7 @@ type Props = {
 
 export default async function GroupDetail({ params }: Props) {
 	const group = await getGroupById(params.id);
+	if (!group) return notFound();
 
 	return (
 		<div className='size-full min-h-full pb-20 pt-5'>
@@ -58,7 +60,7 @@ export default async function GroupDetail({ params }: Props) {
 						btnRightText='Create group.'
 					/>
 					<ActiveMember />
-					<RecentMedia recentMedia={group.posts.map((post) => post.image)} />
+					<RecentMedia recentMedia={group?.posts.map((post) => post.image)} />
 				</aside>
 			</div>
 		</div>

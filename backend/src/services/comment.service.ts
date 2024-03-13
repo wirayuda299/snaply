@@ -3,7 +3,9 @@ import { Request, Response } from 'express';
 import { commentModelType } from '../models/comment.model';
 import { postModelType } from '../models/post.model';
 import { createError } from '../utils/createError';
-import Logger from './logger.service';
+import { RedisService } from './redis.service';
+
+const redis = new RedisService();
 
 export default class CommentService {
 	private commentModel;
@@ -34,6 +36,7 @@ export default class CommentService {
 			});
 			post.comments.push(c.id);
 			await post.save();
+			await redis.clearCacheSingle(`post:${postId}`);
 
 			return res.json({ message: 'Comment uploaded', error: false });
 		} catch (error) {
@@ -77,7 +80,7 @@ export default class CommentService {
 				comment.likes.push(userId);
 			}
 			await comment.save();
-
+			await redis.clearCache(`post`);
 			return res.status(200).end();
 		} catch (error) {
 			createError(error, req, res, 'like-comment');

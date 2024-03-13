@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		<html lang='en'>
 			<ClerkProvider>
 				<body
-					className={`${sourceSansPro.className} bg-white-800 dark:bg-primary-dark`}
+					className={`${sourceSansPro.className} bg-white-800 dark:bg-primary-dark w-full`}
 				>
 					<ReactQueryProvider>
 						<ThemeProvider

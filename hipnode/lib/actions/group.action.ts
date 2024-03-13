@@ -51,6 +51,8 @@ export async function getAllGroups() {
 
 export async function getGroupById(id: string) {
 	try {
+		if (!id) return;
+
 		return await apiRequest.get<Group>(`/group?id=${id}`);
 	} catch (error) {
 		throw error;

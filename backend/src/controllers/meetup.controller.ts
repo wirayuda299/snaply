@@ -50,10 +50,20 @@ export default class Meetup {
 	}
 
 	delete(req: Request, res: Response) {
+		if (req.body.meetupId) {
+			return res
+				.status(400)
+				.json({ message: 'Meetup Id is required', error: true });
+		}
 		return this.meetup.deleteMeetup(req, res);
 	}
 
 	update(req: Request, res: Response) {
+		if (req.body.meetupId) {
+			return res
+				.status(400)
+				.json({ message: 'Meetup Id is required', error: true });
+		}
 		return this.meetup.updateMeetup(req, res);
 	}
 }

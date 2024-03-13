@@ -14,23 +14,27 @@ import {
 	getAllMeetups,
 	getAllPodcasts,
 } from '@/lib/actions';
+import { Suspense } from 'react';
 
 type Props = {
 	params: { slug: string };
-	searchParams: { [key: string]: string | string[] | undefined };
+	searchParams: {
+		sort: 'popular' | 'newest';
+		page: number | undefined;
+	};
 };
 
 export default async function Home({ searchParams }: Props) {
 	const [{ allPosts, totalPages }, allTags, meetups, podcasts] =
 		await Promise.all([
-			getAllPosts(searchParams.sort as string),
+			getAllPosts(searchParams.sort as string, searchParams.page),
 			getAllTags(),
 			getAllMeetups(),
 			getAllPodcasts('popular', 1, 3),
 		]);
 
 	return (
-		<section className='flex h-full flex-col gap-3 pb-20 lg:flex-row'>
+		<section className='flex size-full flex-col gap-3 pb-20 lg:flex-row'>
 			<div className='top-0 flex flex-col gap-5 lg:sticky lg:h-screen'>
 				<HomeFilter
 					innerStyles='md:space-x-0 gap-8 justify-center '
@@ -44,10 +48,15 @@ export default async function Home({ searchParams }: Props) {
 			</div>
 			<section className='flex size-full grow flex-col gap-5'>
 				<HomeCreatePost />
-
-				{allPosts?.map((post) => (
-					<PostCard type='post' key={post.title} post={post} />
-				))}
+				<Suspense
+					fallback={
+						<div className='dark:bg-secondary-dark min-h-[200px] w-full animate-pulse rounded-lg bg-white'></div>
+					}
+				>
+					{allPosts?.map((post) => (
+						<PostCard type='post' key={post.title} post={post} />
+					))}
+				</Suspense>
 
 				{allTags.length >= 1 && (
 					<PopularTagsCard

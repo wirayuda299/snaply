@@ -38,22 +38,18 @@ export async function getAllPosts(
 	pageSize: number = 10
 ) {
 	try {
-		console.time('posts');
 		return await apiRequest.get<{
 			totalPages: number;
 			allPosts: Post[];
 		}>(`/post/all?sort=${sort}&page=${page}&limit=${pageSize}`);
 	} catch (error) {
 		throw error;
-	} finally {
-		console.timeEnd('posts');
 	}
 }
 
 export async function getPostById(id: string) {
 	try {
 		const post = await apiRequest.get<Post>(`/post?id=${id}`);
-
 		return { post };
 	} catch (error) {
 		throw error;

@@ -5,7 +5,6 @@ import {
 	GroupSidebar,
 	GroupPostCard,
 	SharedPodcastCard,
-	GroupSidebarMobile,
 } from '@/components/index';
 import { getAllMeetups, getAllPodcasts, getAllGroups } from '@/lib/actions';
 
@@ -15,18 +14,20 @@ export default async function Groups() {
 		getAllMeetups(),
 		getAllPodcasts('popular', 1, 3),
 	]);
+	console.log('groups -> ', JSON.parse(JSON.stringify(groups)));
 
-	const posts = groups?.map((group) => group.posts).flat(2);
+	const posts = [];
 
 	return (
 		<>
-			{groups.length >= 1 ? (
+			{groups?.length >= 1 ? (
 				<div className='flex flex-col gap-3 pb-20 pt-5 lg:flex-row'>
 					<GroupSidebar groups={groups} />
-					<GroupSidebarMobile groups={groups} />
 					<section className='flex w-full flex-wrap gap-3'>
-						{posts.length >= 1 ? (
-							posts.map((post) => <GroupPostCard key={post?._id} post={post} />)
+						{posts?.length >= 1 ? (
+							posts?.map((post) => (
+								<GroupPostCard key={post?._id} post={post} />
+							))
 						) : (
 							<p>No post made by community yet</p>
 						)}

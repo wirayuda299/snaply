@@ -16,6 +16,8 @@ import { createError } from '../utils/createError';
 import FileUploadService from './fileUpload.service';
 import { RedisService } from './redis.service';
 
+const redis = new RedisService();
+
 export default class GroupService {
 	constructor(
 		private groupModel: groupModelType,
@@ -99,7 +101,7 @@ export default class GroupService {
 				this.populateGroupFieldWithUsers(admins, 'admins', group._id),
 				this.populateGroupFieldWithUsers(members, 'members', group._id),
 			]);
-
+			await redis.clearCache('groups');
 			res
 				.status(201)
 				.json({ message: 'Group has been created', error: false })
@@ -112,7 +114,7 @@ export default class GroupService {
 
 	async getGroup(req: RequestWithQuery<{ id: string }>, res: Response) {
 		try {
-			const foundGroup = await new RedisService().getOrCacheData(
+			const foundGroup = await redis.getOrCacheData(
 				`group:${req.query.id}`,
 				async () => {
 					return await this.groupModel
@@ -133,7 +135,8 @@ export default class GroupService {
 						.populate('admins', '_id username profileImage')
 						.populate('members', '_id username profileImage')
 						.populate('tags');
-				}
+				},
+				res
 			);
 
 			if (!foundGroup) {
@@ -165,7 +168,8 @@ export default class GroupService {
 								{ path: 'group', model: 'Group' },
 							],
 						});
-				}
+				},
+				res
 			);
 			return res.status(200).json({ data: foundGroup, error: false });
 		} catch (error) {
@@ -288,6 +292,7 @@ export default class GroupService {
 			).deleteTag(foundGroup.tags, foundGroup._id);
 
 			await this.groupModel.deleteOne({ _id: foundGroup._id });
+			await redis.clearCache('groups');
 			res.status(201).end();
 		} catch (error) {
 			createError(error, req, res, 'delete-group');
@@ -353,6 +358,7 @@ export default class GroupService {
 					category,
 				}
 			);
+			await redis.clearCache('groups');
 			res.status(201).end();
 		} catch (error) {
 			// @ts-ignore

@@ -11,6 +11,8 @@ import { createError } from '../utils/createError';
 
 import { RedisService } from './redis.service';
 
+const redis = new RedisService();
+
 export default class PostService {
 	constructor(
 		private PostModel: postModelType,
@@ -63,7 +65,7 @@ export default class PostService {
 				foundGroup.posts.push(post.id);
 				await foundGroup.save();
 			}
-
+			await redis.clearCache('posts');
 			res
 				.status(201)
 				.json({ message: 'Post has been created', error: false })
@@ -75,7 +77,7 @@ export default class PostService {
 
 	async getPost(req: Request, res: Response) {
 		try {
-			const data = await new RedisService().getOrCacheData(
+			const data = await redis.getOrCacheData(
 				`post:${req.query.id}`,
 				async () => {
 					const post = await this.PostModel.findById(req.query.id)
@@ -101,7 +103,8 @@ export default class PostService {
 						})
 						.populate('tags');
 					return post;
-				}
+				},
+				res
 			);
 
 			if (!data) {
@@ -125,20 +128,23 @@ export default class PostService {
 			} else {
 				sortOptions = { views: -1 };
 			}
-			const data = await new RedisService().getOrCacheData(
-				'posts',
+
+			const pageKey = `posts:${sort}:${page}:${limit}`;
+			const data = await redis.getOrCacheData(
+				pageKey,
 				async () => {
 					return await this.PostModel.find({ group: null })
 						.populate('author', 'username profileImage createdAt')
 						.populate('tags')
-						.skip(((page ? +page : 1) - 1) * +limit)
-						.limit(+limit)
+						.skip((parseInt(page as string) - 1) * parseInt(limit as string))
+						.limit(parseInt(limit as string))
 						.sort(sortOptions);
-				}
+				},
+				res
 			);
 
-			const totalPosts = await this.PostModel.countDocuments();
-			const totalPages = Math.ceil(totalPosts / +limit);
+			const totalPosts = await this.PostModel.countDocuments({ group: null });
+			const totalPages = Math.ceil(totalPosts / parseInt(limit as string));
 
 			return res.json({
 				data: {
@@ -176,6 +182,8 @@ export default class PostService {
 		const { postId, userId } = req.body;
 
 		try {
+			await redis.clearCache('posts');
+
 			const [post, user] = await Promise.all([
 				this.PostModel.findById(postId),
 				this.userModel.findById(userId),
@@ -207,7 +215,7 @@ export default class PostService {
 		const { id, authorId } = req.query;
 
 		try {
-			const data = await new RedisService().getOrCacheData(
+			const data = await redis.getOrCacheData(
 				'related-posts',
 				async () => {
 					const posts = await this.PostModel.find({
@@ -217,7 +225,8 @@ export default class PostService {
 						.limit(4)
 						.populate('tags');
 					return posts;
-				}
+				},
+				res
 			);
 
 			res
@@ -286,6 +295,7 @@ export default class PostService {
 			).deleteTag(post.tags, post._id);
 
 			await this.PostModel.deleteOne({ _id: post._id });
+			await redis.clearCache('posts');
 
 			res.status(201).end();
 		} catch (error) {
@@ -324,7 +334,7 @@ export default class PostService {
 					assetId,
 				}
 			);
-
+			await redis.clearCache('posts');
 			res.status(201).end();
 		} catch (error) {
 			createError(error, req, res, 'update-post');
