@@ -14,9 +14,8 @@ export default async function Groups() {
 		getAllMeetups(),
 		getAllPodcasts('popular', 1, 3),
 	]);
-	console.log('groups -> ', JSON.parse(JSON.stringify(groups)));
 
-	const posts = [];
+	const posts = groups?.map((group) => group.posts).flat(2);
 
 	return (
 		<>
