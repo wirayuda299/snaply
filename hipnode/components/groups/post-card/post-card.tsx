@@ -28,7 +28,7 @@ export default async function PostCard({ post }: { post: Post }) {
 					href={`/groups/${post.group?._id}`}
 					className=' flex grow basis-[0%] flex-col items-stretch'
 				>
-					<h2 className=' text-secondary text-xm font-semibold leading-relaxed dark:text-white'>
+					<h2 className=' text-xm text-secondary font-semibold leading-relaxed dark:text-white'>
 						{post?.group?.name}
 					</h2>
 					<p className='card-author text-secondary dark:text-secondary-light text-xs capitalize leading-4'>

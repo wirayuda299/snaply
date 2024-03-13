@@ -28,7 +28,7 @@ const ReportItem = ({
     <li
       key={id}
       onClick={handleClick}
-      className={`border-secondary bg-white-700 dark:bg-secondary-dark cursor-pointer rounded-2xl border px-5 py-2.5 ${
+      className={`cursor-pointer rounded-2xl border border-secondary bg-white-700 px-5 py-2.5 dark:bg-secondary-dark ${
         selectedReportItem.includes(title)
           ? "border-primary dark:border-primary"
           : "border-transparent"

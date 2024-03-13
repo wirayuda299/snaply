@@ -27,13 +27,13 @@ export default function PopularTags({
           <li key={item._id}>
             <h3
               className={
-                "text-secondary dark:text-white-700 w-full truncate text-sm font-semibold max-lg:w-full"
+                "w-full truncate text-sm font-semibold text-secondary dark:text-white-700 max-lg:w-full"
               }
             >
               #{item.name}
             </h3>
             {item.postIds.length >= 1 && (
-              <p className="text-secondary dark:text-secondary-light text-xs font-normal">
+              <p className="text-xs font-normal text-secondary dark:text-secondary-light">
                 {item.postIds.length} posts using this tag
               </p>
             )}

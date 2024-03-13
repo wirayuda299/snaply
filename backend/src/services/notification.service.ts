@@ -3,9 +3,6 @@ import { Request, Response } from 'express';
 import { userModelType } from '../models/user.model';
 import { notificationModelType } from '../models/notification.model';
 import { createError } from '../utils/createError';
-import { RedisService } from './redis.service';
-
-const redis = new RedisService();
 
 export default class NotificationService {
 	constructor(
@@ -31,7 +28,6 @@ export default class NotificationService {
 				modelPath: model,
 				comments,
 			});
-			await redis.clearCacheSingle('notifications');
 			return res.status(200).end();
 		} catch (error) {
 			createError(error, req, res, 'create-notification');
@@ -61,7 +57,6 @@ export default class NotificationService {
 				from: userId,
 				notificationType: type,
 			});
-			await redis.clearCacheSingle('notifications');
 			return res.status(200).end();
 		} catch (error) {
 			createError(error, req, res, 'delete-notification');
@@ -72,24 +67,34 @@ export default class NotificationService {
 		try {
 			const { userId } = req.query;
 
-			const allNotif = await redis.getOrCacheData(
-				'notifications',
-				async () => {
-					return await this.notificationModel
-						.find({ to: userId })
-						.populate('from', '_id username profileImage')
-						.populate({
-							path: 'postId',
-						});
-				},
-				res
-			);
+			const allNotif = await this.notificationModel
+				.find({ to: userId })
+				.populate('from', '_id username profileImage')
+				.populate({
+					path: 'postId',
+				});
+
 			return res.status(200).json({
 				data: allNotif,
 				error: false,
 			});
 		} catch (error) {
 			createError(error, req, res, 'get-all-notification');
+		}
+	}
+
+	async markAllAsRead(req: Request, res: Response) {
+		try {
+			const { notifications } = req.body;
+			notifications.forEach(async (notification: string) => {
+				await this.notificationModel.findByIdAndUpdate(notification, {
+					is_read: true,
+				});
+			});
+
+			res.status(201).end();
+		} catch (error) {
+			createError(error, req, res, 'mark-read-notification');
 		}
 	}
 }

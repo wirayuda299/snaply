@@ -74,7 +74,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 									isLikedByCurrentUser={isLikedByCurrentUser}
 								/>
 							) : (
-								<p className='text-secondary dark:bg-secondary-dark dark:text-secondary-light bg-white-800 hidden h-20 w-12  flex-col items-center gap-1 truncate rounded-md p-1 text-lg font-semibold md:flex'>
+								<p className='bg-white-800 text-secondary dark:bg-secondary-dark dark:text-secondary-light hidden h-20 w-12  flex-col items-center gap-1 truncate rounded-md p-1 text-lg font-semibold md:flex'>
 									<span className='inline-block text-lg font-semibold uppercase'>
 										{date.toLocaleString('en-US', { month: 'short' })}
 									</span>

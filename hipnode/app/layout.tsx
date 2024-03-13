@@ -1,8 +1,10 @@
+import './globals.css';
+
 import { Source_Sans_3 as SourceSans3 } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
+import NextTopLoader from 'nextjs-toploader';
 
-import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/providers/theme-provider';
 import ReactQueryProvider from '@/providers/react-query-provider';
@@ -36,6 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 						>
 							{children}
 							<Toaster />
+							<NextTopLoader />
 						</ThemeProvider>
 					</ReactQueryProvider>
 				</body>

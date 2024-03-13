@@ -29,9 +29,9 @@ const ReportConfirmation = ({
           Submit
         </Button>
       </DialogTrigger>
-      <DialogContent className="dark:bg-secondary-dark-2 flex flex-col gap-7 rounded-2xl bg-white p-7 max-sm:max-w-[477px]">
+      <DialogContent className="flex flex-col gap-7 rounded-2xl bg-white p-7 dark:bg-secondary-dark-2 max-sm:max-w-[477px]">
         <DialogHeader>
-          <DialogTitle className="text-secondary dark:text-white-800 text-center text-base">
+          <DialogTitle className="text-center text-base text-secondary dark:text-white-800">
             Post reported successfully. <br />
             <br />
             Thank you!

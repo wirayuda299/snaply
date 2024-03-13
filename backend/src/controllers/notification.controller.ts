@@ -21,4 +21,8 @@ export default class NotificationController {
 	getAllNotifications(req: Request, res: Response) {
 		return this.notificationService.getAllNotification(req, res);
 	}
+
+	markAllAsRead(req: Request, res: Response) {
+		return this.notificationService.markAllAsRead(req, res);
+	}
 }

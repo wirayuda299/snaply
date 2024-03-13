@@ -42,7 +42,7 @@ export default function AudioControll({
         <input
           type="range"
           onChange={handleChange}
-          className="!bg-primary !accent-primary w-full bg-none"
+          className="w-full !bg-primary bg-none !accent-primary"
           max={ref.current?.duration}
           value={currentTime}
         />
@@ -54,7 +54,7 @@ export default function AudioControll({
             {isPlaying ? <Pause /> : <Play />}
             <span>{isPlaying ? "Pause" : "Play Now"}</span>
           </Button>{" "}
-          <button className="bg-white-700 dark:border-secondary-dark-2 dark:bg-secondary-dark rounded-full border p-2">
+          <button className="rounded-full border bg-white-700 p-2 dark:border-secondary-dark-2 dark:bg-secondary-dark">
             <Image
               className="min-w-5 invert dark:invert-0"
               src={"/assets/podcasts/icons/share.svg"}

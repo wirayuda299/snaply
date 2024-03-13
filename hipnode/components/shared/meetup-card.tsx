@@ -6,8 +6,8 @@ import { Meetup } from "@/types";
 
 export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
   return (
-    <div className="dark:bg-secondary-dark-2 w-full rounded-lg bg-white p-3 ">
-      <header className="text-secondary dark:text-white-700 flex items-center gap-3">
+    <div className="w-full rounded-lg bg-white p-3 dark:bg-secondary-dark-2 ">
+      <header className="flex items-center gap-3 text-secondary dark:text-white-700">
         <h2 className="text-base font-semibold">Meetups</h2>
         <Image
           className="invert dark:invert-0"
@@ -24,7 +24,7 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
             className="mt-4 flex gap-4"
             key={c._id}
           >
-            <div className="text-secondary bg-white-700 dark:bg-secondary-dark dark:text-white-700 flex h-max w-11 flex-col items-center p-2 dark:rounded-md">
+            <div className="flex h-max w-11 flex-col items-center bg-white-700 p-2 text-secondary dark:rounded-md dark:bg-secondary-dark dark:text-white-700">
               <h3 className="text-xl font-bold uppercase">
                 {new Date(c.createdAt).toLocaleString("en-US", {
                   month: "short",
@@ -35,7 +35,7 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
               </p>
             </div>
             <div>
-              <h3 className="text-secondary dark:text-white-700 line-clamp-1 truncate text-sm font-semibold capitalize md:text-base">
+              <h3 className="line-clamp-1 truncate text-sm font-semibold capitalize text-secondary dark:text-white-700 md:text-base">
                 {c.title}
               </h3>
 
@@ -47,7 +47,7 @@ export default function MeetupCard({ meetups }: { meetups: Meetup[] }) {
                   height={15}
                   alt=""
                 />
-                <p className="dark:text-white-700 truncate pt-2 text-xs">
+                <p className="truncate pt-2 text-xs dark:text-white-700">
                   {c.companyName} - {c.address}
                 </p>
               </div>

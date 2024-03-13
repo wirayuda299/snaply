@@ -1,105 +1,105 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from "@clerk/nextjs";
 
 export class ApiRequest {
-	private readonly serverEndpoint: string = process.env.SERVER_URL!;
+  private readonly serverEndpoint: string = process.env.SERVER_URL!;
 
-	private async getTokenSession() {
-		try {
-			const { getToken, userId } = auth();
+  private async getTokenSession() {
+    try {
+      const { getToken, userId } = auth();
 
-			const token = await getToken();
-			if (token === null) {
-				throw new Error('Unauthorized');
-			}
-			return {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-type': 'application/json',
-				},
-				userId,
-			};
-		} catch (error) {
-			throw error;
-		}
-	}
+      const token = await getToken();
+      if (token === null) {
+        throw new Error("Unauthorized");
+      }
+      return {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+        userId,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 
-	async get<T>(query: string, tag?: string) {
-		const token = await this.getTokenSession();
+  async get<T>(query: string, tag?: string) {
+    const token = await this.getTokenSession();
 
-		const res = await fetch(this.serverEndpoint + query, {
-			method: 'GET',
-			headers: token.headers,
-			credentials: 'include',
-			...(tag && {
-				next: {
-					tags: [tag],
-				},
-			}),
-		});
+    const res = await fetch(this.serverEndpoint + query, {
+      method: "GET",
+      headers: token.headers,
+      credentials: "include",
+      ...(tag && {
+        next: {
+          tags: [tag],
+        },
+      }),
+    });
 
-		const data = await res.json();
+    const data = await res.json();
 
-		if (data.error) throw new Error(data.message);
-		return data.data as T;
-	}
+    if (data.error) throw new Error(data.message);
+    return data.data as T;
+  }
 
-	async post<T, U, K extends Record<string, U>>(
-		url: string,
-		body: K,
-		path?: string,
-		tag?: string
-	) {
-		try {
-			const token = await this.getTokenSession();
+  async post<T, U, K extends Record<string, U>>(
+    url: string,
+    body: K,
+    path?: string,
+    tag?: string,
+  ) {
+    try {
+      const token = await this.getTokenSession();
 
-			const res = await fetch(this.serverEndpoint + url, {
-				method: 'POST',
-				headers: token.headers,
-				credentials: 'include',
-				...(tag && { next: { tags: [tag] } }),
-				body: JSON.stringify(body),
-			});
+      const res = await fetch(this.serverEndpoint + url, {
+        method: "POST",
+        headers: token.headers,
+        credentials: "include",
+        ...(tag && { next: { tags: [tag] } }),
+        body: JSON.stringify(body),
+      });
 
-			if (!res.headers.get('content-type')?.includes('application/json')) {
-				return;
-			}
+      if (!res.headers.get("content-type")?.includes("application/json")) {
+        return;
+      }
 
-			const data = await res.json();
-			if (data.error) throw new Error(data.message);
+      const data = await res.json();
+      if (data.error) throw new Error(data.message);
 
-			return data.data as T;
-		} catch (error) {
-			throw error;
-		}
-	}
+      return data.data as T;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-	async patch<T, U, K extends Record<string, U>>(
-		url: string,
-		body: K,
-		path?: string,
-		tag?: string
-	) {
-		try {
-			const token = await this.getTokenSession();
+  async patch<T, U, K extends Record<string, U>>(
+    url: string,
+    body: K,
+    path?: string,
+    tag?: string,
+  ) {
+    try {
+      const token = await this.getTokenSession();
 
-			const res = await fetch(this.serverEndpoint + url, {
-				method: 'PATCH',
-				headers: token.headers,
-				credentials: 'include',
-				...(tag && { next: { tags: [tag] } }),
-				body: JSON.stringify(body),
-			});
+      const res = await fetch(this.serverEndpoint + url, {
+        method: "PATCH",
+        headers: token.headers,
+        credentials: "include",
+        ...(tag && { next: { tags: [tag] } }),
+        body: JSON.stringify(body),
+      });
 
-			if (!res.headers.get('content-type')?.includes('application/json')) {
-				return;
-			}
+      if (!res.headers.get("content-type")?.includes("application/json")) {
+        return;
+      }
 
-			const data = await res.json();
+      const data = await res.json();
 
-			if (data.error) throw new Error(data.message);
-			return data.data as T;
-		} catch (error) {
-			throw error;
-		}
-	}
+      if (data.error) throw new Error(data.message);
+      return data.data as T;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

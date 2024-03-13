@@ -12,8 +12,6 @@ type PostCardTypes =
 	| { type: 'post'; post: Post };
 
 export default function CardFooter({ post, type }: PostCardTypes) {
-	console.log(post);
-
 	return (
 		<footer className='flex flex-wrap items-center justify-between'>
 			<div className='flex items-center gap-3'>

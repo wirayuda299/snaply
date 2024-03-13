@@ -1,118 +1,120 @@
-'use server';
+"use server";
 
 import {
-	likeComments,
-	uploadComment,
-	getCommentsReply,
-} from './comment.action';
+  likeComments,
+  uploadComment,
+  getCommentsReply,
+} from "./comment.action";
 
-import { uploadFile } from './fileUpload.action';
-
-import {
-	joinGroup,
-	leaveGroup,
-	updateGroup,
-	createGroup,
-	getGroupById,
-	getAllGroups,
-	getAllGroupsWhereUserJoin,
-} from './group.action';
+import { uploadFile } from "./fileUpload.action";
 
 import {
-	createMeetup,
-	deleteMeetup,
-	updateMeetup,
-	getAllMeetups,
-	getMeetupById,
-} from './meetup.action';
-import { search } from './search.action';
-import {
-	createPodcast,
-	getAllPodcasts,
-	getPodcastById,
-	deletePodcast,
-} from './podcast.action';
+  joinGroup,
+  leaveGroup,
+  updateGroup,
+  createGroup,
+  getGroupById,
+  getAllGroups,
+  getAllGroupsWhereUserJoin,
+} from "./group.action";
 
 import {
-	likePost,
-	sharePost,
-	createPost,
-	deletePost,
-	reportPost,
-	updatePost,
-	updateView,
-	getAllPosts,
-	getPostById,
-	getRelatedPosts,
-} from './post.action';
+  createMeetup,
+  deleteMeetup,
+  updateMeetup,
+  getAllMeetups,
+  getMeetupById,
+} from "./meetup.action";
+import { search } from "./search.action";
+import {
+  createPodcast,
+  getAllPodcasts,
+  getPodcastById,
+  deletePodcast,
+} from "./podcast.action";
 
 import {
-	createUser,
-	getUserById,
-	getAllUsers,
-	handleFollow,
-} from './user.action';
+  likePost,
+  sharePost,
+  createPost,
+  deletePost,
+  reportPost,
+  updatePost,
+  updateView,
+  getAllPosts,
+  getPostById,
+  getRelatedPosts,
+} from "./post.action";
 
 import {
-	createNotification,
-	deleteNotification,
-	getAllNotifications,
-} from './notification.action';
-import { getAllTags } from './tag.action';
-import { getData } from './all.action';
+  createUser,
+  getUserById,
+  getAllUsers,
+  handleFollow,
+} from "./user.action";
+
 import {
-	sendMessage,
-	updateIsRead,
-	getUnreadChat,
-	getAllMessages,
-	createConversation,
-	getAllMessagesBetweenUser,
-} from './message.action';
+  createNotification,
+  deleteNotification,
+  getAllNotifications,
+  markAllAsRead,
+} from "./notification.action";
+import { getAllTags } from "./tag.action";
+import { getData } from "./all.action";
+import {
+  sendMessage,
+  updateIsRead,
+  getUnreadChat,
+  getAllMessages,
+  createConversation,
+  getAllMessagesBetweenUser,
+} from "./message.action";
 export {
-	search,
-	getData,
-	likePost,
-	sharePost,
-	joinGroup,
-	getAllTags,
-	uploadFile,
-	leaveGroup,
-	createPost,
-	deletePost,
-	reportPost,
-	updatePost,
-	updateView,
-	createUser,
-	sendMessage,
-	getAllPosts,
-	createGroup,
-	updateGroup,
-	getUserById,
-	getAllUsers,
-	getPostById,
-	getAllGroups,
-	likeComments,
-	updateIsRead,
-	handleFollow,
-	getGroupById,
-	updateMeetup,
-	deleteMeetup,
-	createMeetup,
-	createPodcast,
-	getUnreadChat,
-	uploadComment,
-	getAllMeetups,
-	getMeetupById,
-	deletePodcast,
-	getAllMessages,
-	getAllPodcasts,
-	getPodcastById,
-	getRelatedPosts,
-	getCommentsReply,
-	createConversation,
-	deleteNotification,
-	createNotification,
-	getAllNotifications,
-	getAllMessagesBetweenUser,
-	getAllGroupsWhereUserJoin,
+  search,
+  getData,
+  likePost,
+  sharePost,
+  joinGroup,
+  getAllTags,
+  uploadFile,
+  leaveGroup,
+  createPost,
+  deletePost,
+  reportPost,
+  updatePost,
+  updateView,
+  createUser,
+  sendMessage,
+  getAllPosts,
+  createGroup,
+  updateGroup,
+  getUserById,
+  getAllUsers,
+  getPostById,
+  getAllGroups,
+  likeComments,
+  updateIsRead,
+  handleFollow,
+  getGroupById,
+  updateMeetup,
+  deleteMeetup,
+  createMeetup,
+  createPodcast,
+  getUnreadChat,
+  uploadComment,
+  getAllMeetups,
+  markAllAsRead,
+  getMeetupById,
+  deletePodcast,
+  getAllMessages,
+  getAllPodcasts,
+  getPodcastById,
+  getRelatedPosts,
+  getCommentsReply,
+  createConversation,
+  deleteNotification,
+  createNotification,
+  getAllNotifications,
+  getAllMessagesBetweenUser,
+  getAllGroupsWhereUserJoin,
 };

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import ErrorUI from '@/components/shared/error';
+import ErrorUI from "@/components/shared/error";
 
 export default function GlobalError() {
-	return <ErrorUI />;
+  return <ErrorUI />;
 }

@@ -35,7 +35,7 @@ export default function SideContent({
       )}
     >
       <div className="w-full max-w-[442px]">
-        <h2 className="text-secondary dark:text-white-800 text-lg font-semibold md:text-3xl md:font-bold">
+        <h2 className="text-lg font-semibold text-secondary dark:text-white-800 md:text-3xl md:font-bold">
           {title}
         </h2>
         <div className="flex size-full flex-col items-start gap-5 pt-10">
@@ -50,7 +50,7 @@ export default function SideContent({
           {position === "right" && (
             <Link
               href={path!}
-              className="bg-primary text-white-700 mt-5 block w-min rounded px-10 py-3"
+              className="mt-5 block w-min rounded bg-primary px-10 py-3 text-white-700"
             >
               Next
             </Link>
