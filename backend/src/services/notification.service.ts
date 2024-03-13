@@ -87,9 +87,14 @@ export default class NotificationService {
 		try {
 			const { notifications } = req.body;
 			notifications.forEach(async (notification: string) => {
-				await this.notificationModel.findByIdAndUpdate(notification, {
-					is_read: true,
-				});
+				const notificationData = await this.notificationModel.findById(
+					notification
+				);
+				if (notificationData) {
+					await this.notificationModel.findByIdAndUpdate(notificationData._id, {
+						is_read: true,
+					});
+				}
 			});
 
 			res.status(201).end();

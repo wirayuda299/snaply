@@ -12,11 +12,8 @@ import { tabValues } from '@/constants';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { cn } from '@/lib/utils';
 import { markAllAsRead } from '@/lib/actions';
-
-const notificationType = {
-	comment: '/assets/notification/comment.svg',
-	like: '/assets/notification/like.svg',
-};
+import NotificationItem from './Item';
+import { BellOff } from 'lucide-react';
 
 export default function Notification({
 	notifications,
@@ -84,8 +81,8 @@ export default function Notification({
 								{notifications.length} Notifications
 							</h3>
 							<Button
-								disabled={disabled}
-								aria-disabled={disabled}
+								disabled={disabled || !isNotRead}
+								aria-disabled={disabled || !isNotRead}
 								title='mark as read'
 								onClick={handleMarkAsRead}
 								variant={'ghost'}
@@ -123,106 +120,28 @@ export default function Notification({
 						<ul className='max-h-[300px] w-full space-y-5 overflow-y-auto overflow-x-hidden pt-5 '>
 							{type === 'all'
 								? notifications.map((notification) => (
-										<li key={notification._id}>
-											<div className='flex gap-3'>
-												<div className='relative h-[50px] w-[60px]'>
-													<Image
-														src={
-															notification.from.profileImage ?? '/avatar.png'
-														}
-														width={45}
-														height={45}
-														alt='user'
-														className='aspect-auto min-w-[40px] rounded-full object-contain'
-													/>
-													<Image
-														src={
-															// @ts-ignore
-															notificationType[notification.notificationType!]
-														}
-														width={20}
-														height={20}
-														alt='notification'
-														className='absolute -bottom-1 right-2 aspect-auto rounded-full object-contain'
-													/>
-												</div>
-
-												<div className={'w-full'}>
-													<h3 className='inline-flex items-center gap-3 text-lg font-semibold capitalize'>
-														{notification.from.username}
-														<p className='inline-block truncate  text-sm font-light'>
-															{notification.message}
-														</p>
-													</h3>
-													{notification.comments && (
-														<div className='bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2'>
-															<p
-																className={cn(
-																	!notification.is_read && 'text-primary'
-																)}
-															>
-																{notification.comments}
-															</p>
-														</div>
-													)}
-												</div>
-											</div>
-										</li>
+										<NotificationItem
+											notification={notification}
+											key={notification._id}
+										/>
 									))
 								: notifications
 										.filter(
 											(notification) => notification.notificationType === type
 										)
 										.map((notification) => (
-											<li key={notification._id}>
-												<div className='flex gap-3'>
-													<div className='relative h-[50px] w-[60px]'>
-														<Image
-															src={
-																notification.from.profileImage ?? '/avatar.png'
-															}
-															width={45}
-															height={45}
-															alt='user'
-															className='aspect-auto rounded-full object-contain'
-														/>
-														<Image
-															src={
-																// @ts-ignore
-																notificationType[notification.notificationType!]
-															}
-															width={20}
-															height={20}
-															alt='notification'
-															className='absolute -bottom-1 right-2 aspect-auto rounded-full object-contain'
-														/>
-													</div>
-
-													<div className={'w-full'}>
-														<h3 className='flex items-center gap-3 truncate text-lg font-bold'>
-															{notification.from.username}
-															<span className='truncate text-sm font-light'>
-																{notification.message}
-															</span>
-														</h3>
-														{notification.comments && (
-															<div
-																className={cn(
-																	'bg-white-700 dark:bg-secondary-dark w-full rounded-md p-2',
-																	!notification.is_read && 'text-primary'
-																)}
-															>
-																<p>{notification.comments}</p>
-															</div>
-														)}
-													</div>
-												</div>
-											</li>
+											<NotificationItem
+												notification={notification}
+												key={notification._id}
+											/>
 										))}
 						</ul>
 					</>
 				) : (
-					<p className='text-center'>No notification yet</p>
+					<div className='flex min-h-96 flex-col items-center justify-center pt-5'>
+						<BellOff />
+						<p className='pt-3'>No notification yet</p>
+					</div>
 				)}
 			</ul>
 		</div>
