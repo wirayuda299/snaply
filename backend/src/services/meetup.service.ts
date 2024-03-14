@@ -69,9 +69,9 @@ export default class MeetupService {
 		try {
 			const { page = 1, limit = 10 } = req.query;
 
-			const pageKey = `meetups:${page}:limit`;
+			const pageKey = `meetups:${page}:limit=${limit}`;
 
-			const meetups = await new RedisService().getOrCacheData(
+			const meetups = await redis.getOrCacheData(
 				pageKey,
 				async () => {
 					const data = await this.meetupModel
@@ -102,21 +102,16 @@ export default class MeetupService {
 
 	async getMeetup(req: Request, res: Response) {
 		try {
-			const meetup = await new RedisService().getOrCacheData(
-				`meetup:${req.query.id}`,
-				async () => {
-					return await this.meetupModel
-						.findById(req.query.id)
-						.populate('author', '_id username profileImage createdAt')
-						.populate('tags');
-				},
-				res
-			);
+			const meetup = await this.meetupModel
+				.findById(req.query.id)
+				.populate('author', '_id username profileImage createdAt')
+				.populate('tags');
 
-			if (!meetup)
+			if (!meetup) {
 				return res
 					.status(404)
 					.json({ message: 'Meetup not found', error: true });
+			}
 
 			return res.status(200).json({ data: meetup, error: false });
 		} catch (error) {
