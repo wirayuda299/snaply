@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { BellOff } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { formUrlQuery } from '@/utils';
@@ -13,7 +14,6 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import { cn } from '@/lib/utils';
 import { markAllAsRead } from '@/lib/actions';
 import NotificationItem from './Item';
-import { BellOff } from 'lucide-react';
 
 export default function Notification({
 	notifications,

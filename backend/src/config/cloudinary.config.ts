@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
-import { ConfigOptions } from "cloudinary";
+import type { ConfigOptions } from 'cloudinary';
 
 export const cloudinaryConfig: ConfigOptions = {
 	api_key: process.env.CLOUDINARY_API_KEY,

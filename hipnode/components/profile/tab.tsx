@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState, useTransition } from 'react';
+import { useCallback, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
@@ -11,9 +11,8 @@ const tabs = ['posts', 'meetups', 'podcasts', 'groups'] as const;
 export default function Tab() {
 	const params = useSearchParams();
 	const router = useRouter();
-	const [selectedTab, setSelectedTab] = useState<string>(
-		params.get('type') || 'posts'
-	);
+	const selectedTab = params.get('type') || 'posts';
+
 	const [pending, startTransition] = useTransition();
 
 	const handleClick = useCallback(
@@ -21,7 +20,6 @@ export default function Tab() {
 			const url = formUrlQuery(params.toString(), 'type', type) as string;
 			startTransition(() => {
 				router.push(url, { scroll: false });
-				setSelectedTab(type);
 			});
 		},
 		[selectedTab]

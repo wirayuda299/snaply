@@ -34,7 +34,7 @@ export default async function Profile({ searchParams, params }: ProfileProps) {
 
 	return (
 		<div className='flex w-full flex-col gap-5 pb-20 md:px-5 lg:flex-row'>
-			<aside className='w-[200px] min-w-[200px] bg-white max-lg:min-w-full lg:h-screen'>
+			<aside className='dar w-[200px] min-w-[200px] bg-white max-lg:min-w-full lg:h-screen'>
 				<header className='from-primary to-primary/80 flex flex-col items-center justify-center rounded-lg bg-gradient-to-b'>
 					<Image
 						className='size-28 translate-y-10 rounded-full'

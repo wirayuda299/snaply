@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 						>
 							{children}
 							<Toaster />
-							<NextTopLoader />
+							<NextTopLoader showSpinner={false} color='#2FA8F2' />
 						</ThemeProvider>
 					</ReactQueryProvider>
 				</body>

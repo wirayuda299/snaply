@@ -25,7 +25,7 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 	const date = type === 'meetup' && new Date(post.date);
 
 	return (
-		<div className='max-sm:max-h-auto min-lg:max-h-[250px] dark:border-primary-dark dark:bg-secondary-dark-2 w-full rounded-lg border bg-white p-3 md:p-5 xl:flex'>
+		<div className='max-sm:max-h-auto min-lg:max-h-[250px] dark:border-primary-dark dark:bg-secondary-dark w-full rounded-lg border bg-white p-3 md:p-5 xl:flex'>
 			<div className='flex w-full flex-col gap-5 sm:flex-row sm:gap-4'>
 				<picture
 					className={cn(

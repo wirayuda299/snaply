@@ -1,0 +1,69 @@
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: TypeError: terminated
+          at Fetch.onAborted (node:internal/deps/undici/undici:10916:53)
+          at Fetch.emit (node:events:518:28)
+          at Fetch.emit (node:domain:488:12)
+          at Fetch.terminate (node:internal/deps/undici/undici:10102:14)
+          at Object.onError (node:internal/deps/undici/undici:11034:38)
+          at _Request.onError (node:internal/deps/undici/undici:7200:31)
+          at errorRequest (node:internal/deps/undici/undici:9765:17)
+          at TLSSocket.onSocketClose (node:internal/deps/undici/undici:8927:9)
+          at TLSSocket.emit (node:events:530:35)
+          at TLSSocket.emit (node:domain:488:12) {
+        [cause]: Error: read ECONNRESET
+            at TLSWrap.onStreamRead (node:internal/stream_base_commons:217:20) {
+          errno: -4077,
+          code: 'ECONNRESET',
+          syscall: 'read'
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?page=1&limit=10',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTAzNTE3NjQsImlhdCI6MTcxMDM1MTcwNCwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTAzNTE2OTQsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.ldGxYnYaUl3lif6_Fruh0kSpSg05Pr-XV9gCBTmSMIX6S45VLNJ5Jl9FTlhCgrbdH_-RPBX6DtsW3438jc0l_HzzQd1G0ZywVNd-_WziXT5BYgtYHXT_4cAJhv5gpBynzcSh1Eb0lx50DVRVoOG82CZdWFGK9u8XOyrlR8tFgkRdrBW9cSqQ-AvL0TSjnqbh3QmD4CBT3Ff7jOea4wwZQdW_i14USCCvdZ1sSX9nWJ9eSHSG_fUmbcIDcs3oGiYupOzeEKPoEXuHzZIrqxNBY6jqprdbh__CeEkZwMLxhLSypFJ6hk2ygfO5MEYQgzvJaRilNJId9mbz5ofS05adMw',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { page: '1', limit: '10' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 01:45:42',
+    label: 'get-all-meetup'
+  }
+}
