@@ -23,7 +23,7 @@ export default async function MeetupDetail(props: Props) {
 				<section className='relative h-[400px] w-full'>
 					<Image
 						src={meetup.image}
-						className='rounded-lg object-contain object-center md:object-cover'
+						className='rounded-lg object-contain object-center'
 						fill
 						fetchPriority='high'
 						alt={meetup.title}

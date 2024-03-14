@@ -101,14 +101,6 @@ export default function ModeToggle({ id }: { id: string }) {
 							)}
 						></button>
 					</div>
-					{/* <Switch
-						defaultChecked={checked}
-						className='bg-white-700 before:bg-white-700/10 dark:bg-secondary-dark relative border before:absolute before:size-5 before:rounded-full before:bg-[url("/assets/general/icons/sun-light.svg")] before:bg-fixed before:bg-center before:bg-no-repeat before:content-[""] dark:before:bg-[url("/assets/general/icons/sun-dark.svg")]'
-						onClick={() => {
-							setTheme(theme === 'light' ? 'dark' : 'light');
-							setChecked(theme === 'dark');
-						}}
-					/> */}
 				</div>
 			</DropdownMenuContent>
 		</DropdownMenu>
