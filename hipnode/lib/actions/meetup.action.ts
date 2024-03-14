@@ -34,6 +34,8 @@ export async function getRelatedMeetups(author: string, id: string) {
 			`/meetup/related-meetups?author=${author}&id=${id}`
 		);
 	} catch (error) {
+		console.log('related meetup error -> ', error);
+
 		throw error;
 	}
 }
@@ -82,6 +84,8 @@ export async function getMeetupById(id: string) {
 
 		return { meetup: res };
 	} catch (error) {
+		console.log('Get meetup by id error -> ', error);
+
 		throw error;
 	}
 }

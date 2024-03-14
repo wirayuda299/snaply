@@ -20,7 +20,7 @@ export default async function MeetupDetail(props: Props) {
 	]);
 
 	return (
-		<div className=' flex  flex-col justify-between gap-5 pb-20 pt-5 lg:flex-row'>
+		<div className='flex flex-col justify-between gap-5 pb-20 pt-5 lg:flex-row'>
 			<section className='w-full'>
 				<section className='relative h-[400px] w-full'>
 					<Image

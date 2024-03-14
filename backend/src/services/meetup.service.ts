@@ -230,6 +230,7 @@ export default class MeetupService {
 	async getRelatedMeetups(req: Request, res: Response) {
 		try {
 			const { author, id } = req.query;
+
 			const meetups = await this.meetupModel
 				.find({ author, _id: { $ne: id } })
 				.populate('tags');
