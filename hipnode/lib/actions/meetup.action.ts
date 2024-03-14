@@ -18,12 +18,12 @@ const schema = z.object({
 
 const apiRequest = new ApiRequest();
 
-export async function getAllMeetups() {
+export async function getAllMeetups(page: number = 1, limit: number = 10) {
 	try {
 		return await apiRequest.get<{
 			totalPages: number;
 			meetups: Meetup[];
-		}>(`/meetup/all?page=1&limit=10`);
+		}>(`/meetup/all?page=${page}&limit=${limit}`);
 	} catch (error) {
 		throw error;
 	}

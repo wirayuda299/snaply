@@ -11,7 +11,7 @@ import { getAllMeetups, getAllPodcasts, getAllGroups } from '@/lib/actions';
 export default async function Groups() {
 	const [groups, { meetups }, { allPodcasts }] = await Promise.all([
 		getAllGroups(),
-		getAllMeetups(),
+		getAllMeetups(1, 3),
 		getAllPodcasts('popular', 1, 3),
 	]);
 

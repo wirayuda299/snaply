@@ -7,7 +7,6 @@ import { useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 
 import {
 	DropdownMenu,
@@ -16,26 +15,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-
-const options = (id: string) => {
-	return [
-		{
-			icon: '/assets/general/icons/user.svg',
-			label: 'profile',
-			path: `/profile/${id}`,
-		},
-		{
-			icon: '/assets/general/icons/settings.svg',
-			label: 'settings',
-			path: `/settings`,
-		},
-		{
-			icon: '/assets/general/icons/logout.svg',
-			label: 'log out',
-			path: undefined,
-		},
-	] as const;
-};
+import { options } from '@/constants';
 
 export default function ModeToggle({ id }: { id: string }) {
 	const { setTheme, theme } = useTheme();
@@ -43,7 +23,7 @@ export default function ModeToggle({ id }: { id: string }) {
 	const router = useRouter();
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger
 				asChild
 				className='focus-visible:ring-0 focus-visible:ring-offset-0'
@@ -108,13 +88,27 @@ export default function ModeToggle({ id }: { id: string }) {
 				<hr className='mt-2 block' />
 				<div className='flex items-center gap-3 py-3'>
 					<h3 className='text-base font-semibold'>Interface</h3>
-					<Switch
-						defaultChecked={false}
-						className='bg-white-700 dark:bg-secondary-dark border'
-						onClick={(e) => {
+					<div
+						onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+						className={cn(
+							'bg-white-700 dark:bg-secondary relative flex h-5 w-full cursor-pointer items-center justify-center rounded-full before:content-[""] before:absolute before:size-5 before:left-0 before:flex before:items-center dark:before:bg-[url("/assets/general/icons/sun-dark.svg")] before:bg-no-repeat before:bg-cover before:bg-center before:bg-white-700/5 before:rounded-full after:content-[""] after:absolute after:right-0 after:size-5 after:bg-cover after:bg-no-repeat after:bg-[url("/assets/general/icons/moon-dark.svg")] after:bg-white-700/5 after:grayscale dark:after:hidden '
+						)}
+					>
+						<button
+							className={cn(
+								'bg-white-700  flex items-center rounded-full before:absolute before:top-0 before:size-5 before:bg-[url("/assets/general/icons/sun-light.svg")] dark:before:bg-[url("/assets/general/icons/moon-dark.svg")] before:bg-cover before:bg-center before:content-[""] transition-transform ease duration-500',
+								theme === 'dark' ? ' before:right-0 ' : 'before:left-0'
+							)}
+						></button>
+					</div>
+					{/* <Switch
+						defaultChecked={checked}
+						className='bg-white-700 before:bg-white-700/10 dark:bg-secondary-dark relative border before:absolute before:size-5 before:rounded-full before:bg-[url("/assets/general/icons/sun-light.svg")] before:bg-fixed before:bg-center before:bg-no-repeat before:content-[""] dark:before:bg-[url("/assets/general/icons/sun-dark.svg")]'
+						onClick={() => {
 							setTheme(theme === 'light' ? 'dark' : 'light');
+							setChecked(theme === 'dark');
 						}}
-					/>
+					/> */}
 				</div>
 			</DropdownMenuContent>
 		</DropdownMenu>

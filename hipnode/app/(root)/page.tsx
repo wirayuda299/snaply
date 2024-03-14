@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: Props) {
 		await Promise.all([
 			getAllPosts(searchParams.sort as string, searchParams.page),
 			getAllTags(),
-			getAllMeetups(),
+			getAllMeetups(1, 3),
 			getAllPodcasts('popular', 1, 3),
 		]);
 
