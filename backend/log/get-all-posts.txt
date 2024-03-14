@@ -1,0 +1,266 @@
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: TypeError: fetch failed
+          at node:internal/deps/undici/undici:12344:11
+          at processTicksAndRejections (node:internal/process/task_queues:95:5)
+          at async De.request (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:2471)
+          at async X.exec (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:4469)
+          at async RedisService.getOrCacheData (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\redis.service.ts:9:23)
+          at async PostService.getAllPosts (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\post.service.ts:133:17) {
+        cause: ConnectTimeoutError: Connect Timeout Error
+            at onConnectTimeout (node:internal/deps/undici/undici:7492:28)
+            at node:internal/deps/undici/undici:7448:50
+            at Immediate._onImmediate (node:internal/deps/undici/undici:7478:37)
+            at processImmediate (node:internal/timers:478:21) {
+          code: 'UND_ERR_CONNECT_TIMEOUT'
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?sort=popular&page=1&limit=10',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTA0MjEyNTAsImlhdCI6MTcxMDQyMTE5MCwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTA0MjExODAsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.UUunBTZR4_T6yvFw9_7v7qxPlFaMrDyz773JzUcfxiOzrcT_OfLkG4x3KW0uuuLLe2MgJyrISKe50uPOb_XOqLygOZ0oeYKorRqXB85g5FfTjeKTQ8gM_p-Au8Grwx_fmQxZvnQlZCN9Y62F2PfV2PT_a1PuPG4c_4bOJzvsBUw8ypw4oeqWXhkLnzzkNEoL8LFkcFl6WUlMT2Tlpgq_2Pqw96U6rToAjx9-PoZ4GNDA1LuVelBVVs_IrtacpbtoFpViB_y2WYLl0gAAfKhoIhVptJwzCl3Exl9hpLKKvkgYwknOYf88ZkuoVMlWDz4TcWrAwG9aEgEA88c62aYZ7g',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { sort: 'popular', page: '1', limit: '10' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 21:01:29',
+    label: 'get-all-posts'
+  }
+}
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: TypeError: fetch failed
+          at node:internal/deps/undici/undici:12344:11
+          at processTicksAndRejections (node:internal/process/task_queues:95:5)
+          at async De.request (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:2471)
+          at async X.exec (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:4469)
+          at async RedisService.getOrCacheData (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\redis.service.ts:9:23)
+          at async PostService.getAllPosts (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\post.service.ts:133:17) {
+        cause: ConnectTimeoutError: Connect Timeout Error
+            at onConnectTimeout (node:internal/deps/undici/undici:7492:28)
+            at node:internal/deps/undici/undici:7448:50
+            at Immediate._onImmediate (node:internal/deps/undici/undici:7478:37)
+            at processImmediate (node:internal/timers:478:21) {
+          code: 'UND_ERR_CONNECT_TIMEOUT'
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?sort=popular&page=1&limit=10',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTA0MjEyNzUsImlhdCI6MTcxMDQyMTIxNSwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTA0MjEyMDUsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.VRClxxSFyWgNhn26s9_jJlExglb1x41p5kEDPtmeh9fkZmm8ySJgn40U0HRIFpAPl2KRggUqkGW0j3IJBb3lLEAevTslxXSyK9lRlTFEdOn4a3kbxYSTlI_5V2XuMuVlhs4Ve7gVYK1grRwqPbUQVgoISzIVcUlYO0X1Z4MKC_EZZCJ7lUj05AJL7WABRP3RWSybbZ1B-0BS8PZvihsajq-nchF9QyM9hlyLKuce0vY1DrfcZ8Ig293yemIMsjFuXMDM9KQO69_IG8V-2gBBfLQwadg7Szzh3JtecHO2wmDD_-BsRaNCmBPlv7eGHQ17yPbB312oEXhyAMCB-zRxZQ',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { sort: 'popular', page: '1', limit: '10' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 21:01:30',
+    label: 'get-all-posts'
+  }
+}
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: TypeError: fetch failed
+          at node:internal/deps/undici/undici:12344:11
+          at processTicksAndRejections (node:internal/process/task_queues:95:5)
+          at runNextTicks (node:internal/process/task_queues:64:3)
+          at processImmediate (node:internal/timers:449:9)
+          at async De.request (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:2471)
+          at async X.exec (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:4469)
+          at async RedisService.getOrCacheData (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\redis.service.ts:9:23)
+          at async PostService.getAllPosts (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\post.service.ts:133:17) {
+        cause: ConnectTimeoutError: Connect Timeout Error
+            at onConnectTimeout (node:internal/deps/undici/undici:7492:28)
+            at node:internal/deps/undici/undici:7448:50
+            at Immediate._onImmediate (node:internal/deps/undici/undici:7478:37)
+            at processImmediate (node:internal/timers:478:21) {
+          code: 'UND_ERR_CONNECT_TIMEOUT'
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?sort=popular&page=1&limit=10',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTA0MjEyNzUsImlhdCI6MTcxMDQyMTIxNSwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTA0MjEyMDUsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.VRClxxSFyWgNhn26s9_jJlExglb1x41p5kEDPtmeh9fkZmm8ySJgn40U0HRIFpAPl2KRggUqkGW0j3IJBb3lLEAevTslxXSyK9lRlTFEdOn4a3kbxYSTlI_5V2XuMuVlhs4Ve7gVYK1grRwqPbUQVgoISzIVcUlYO0X1Z4MKC_EZZCJ7lUj05AJL7WABRP3RWSybbZ1B-0BS8PZvihsajq-nchF9QyM9hlyLKuce0vY1DrfcZ8Ig293yemIMsjFuXMDM9KQO69_IG8V-2gBBfLQwadg7Szzh3JtecHO2wmDD_-BsRaNCmBPlv7eGHQ17yPbB312oEXhyAMCB-zRxZQ',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { sort: 'popular', page: '1', limit: '10' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 21:01:30',
+    label: 'get-all-posts'
+  }
+}
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: TypeError: fetch failed
+          at node:internal/deps/undici/undici:12344:11
+          at processTicksAndRejections (node:internal/process/task_queues:95:5)
+          at async De.request (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:2471)
+          at async X.exec (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\@upstash\redis\chunk-TWQQTN74.js:1:4469)
+          at async RedisService.getOrCacheData (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\redis.service.ts:9:23)
+          at async PostService.getAllPosts (C:\Users\USER\Documents\my-projects\snaply\backend\src\services\post.service.ts:133:17) {
+        cause: ConnectTimeoutError: Connect Timeout Error
+            at onConnectTimeout (node:internal/deps/undici/undici:7492:28)
+            at node:internal/deps/undici/undici:7448:50
+            at Immediate._onImmediate (node:internal/deps/undici/undici:7478:37)
+            at processImmediate (node:internal/timers:478:21) {
+          code: 'UND_ERR_CONNECT_TIMEOUT'
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?sort=popular&page=1&limit=10',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTA0MjEyNzUsImlhdCI6MTcxMDQyMTIxNSwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTA0MjEyMDUsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.VRClxxSFyWgNhn26s9_jJlExglb1x41p5kEDPtmeh9fkZmm8ySJgn40U0HRIFpAPl2KRggUqkGW0j3IJBb3lLEAevTslxXSyK9lRlTFEdOn4a3kbxYSTlI_5V2XuMuVlhs4Ve7gVYK1grRwqPbUQVgoISzIVcUlYO0X1Z4MKC_EZZCJ7lUj05AJL7WABRP3RWSybbZ1B-0BS8PZvihsajq-nchF9QyM9hlyLKuce0vY1DrfcZ8Ig293yemIMsjFuXMDM9KQO69_IG8V-2gBBfLQwadg7Szzh3JtecHO2wmDD_-BsRaNCmBPlv7eGHQ17yPbB312oEXhyAMCB-zRxZQ',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { sort: 'popular', page: '1', limit: '10' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 21:01:30',
+    label: 'get-all-posts'
+  }
+}

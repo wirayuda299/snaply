@@ -67,3 +67,372 @@
     label: 'get-all-meetup'
   }
 }
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: MongoServerSelectionError: connection <monitor> to 3.1.161.181:27017 timed out
+          at EventTarget.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\sdam\topology.ts:568:28)
+          at EventTarget.[nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
+          at EventTarget.dispatchEvent (node:internal/event_target:761:26)
+          at abortSignal (node:internal/abort_controller:371:10)
+          at TimeoutController.abort (node:internal/abort_controller:393:5)
+          at Timeout.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\utils.ts:1273:61)
+          at listOnTimeout (node:internal/timers:573:17)
+          at processTimers (node:internal/timers:514:7) {
+        reason: TopologyDescription {
+          type: 'ReplicaSetNoPrimary',
+          servers: Map(3) {
+            'ac-bbzuctv-shard-00-00.vl7kxe8.mongodb.net:27017' => ServerDescription {
+              address: 'ac-bbzuctv-shard-00-00.vl7kxe8.mongodb.net:27017',
+              type: 'Unknown',
+              hosts: [],
+              passives: [],
+              arbiters: [],
+              tags: {},
+              minWireVersion: 0,
+              maxWireVersion: 0,
+              roundTripTime: -1,
+              lastUpdateTime: 20345569,
+              lastWriteDate: 0,
+              error: MongoNetworkTimeoutError: connection <monitor> to 3.1.161.181:27017 timed out
+                  at Timeout._onTimeout (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connection.ts:335:26)
+                  at listOnTimeout (node:internal/timers:573:17)
+                  at processTimers (node:internal/timers:514:7) {
+                [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+                [Symbol(beforeHandshake)]: false,
+                [cause]: undefined
+              },
+              topologyVersion: null,
+              setName: null,
+              setVersion: null,
+              electionId: null,
+              logicalSessionTimeoutMinutes: null,
+              primary: null,
+              me: null,
+              '$clusterTime': null
+            },
+            'ac-bbzuctv-shard-00-01.vl7kxe8.mongodb.net:27017' => ServerDescription {
+              address: 'ac-bbzuctv-shard-00-01.vl7kxe8.mongodb.net:27017',
+              type: 'Unknown',
+              hosts: [],
+              passives: [],
+              arbiters: [],
+              tags: {},
+              minWireVersion: 0,
+              maxWireVersion: 0,
+              roundTripTime: -1,
+              lastUpdateTime: 20332984,
+              lastWriteDate: 0,
+              error: MongoNetworkTimeoutError: connection <monitor> to 52.76.24.47:27017 timed out
+                  at Timeout._onTimeout (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connection.ts:335:26)
+                  at listOnTimeout (node:internal/timers:573:17)
+                  at processTimers (node:internal/timers:514:7) {
+                [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+                [Symbol(beforeHandshake)]: false,
+                [cause]: undefined
+              },
+              topologyVersion: null,
+              setName: null,
+              setVersion: null,
+              electionId: null,
+              logicalSessionTimeoutMinutes: null,
+              primary: null,
+              me: null,
+              '$clusterTime': null
+            },
+            'ac-bbzuctv-shard-00-02.vl7kxe8.mongodb.net:27017' => ServerDescription {
+              address: 'ac-bbzuctv-shard-00-02.vl7kxe8.mongodb.net:27017',
+              type: 'Unknown',
+              hosts: [],
+              passives: [],
+              arbiters: [],
+              tags: {},
+              minWireVersion: 0,
+              maxWireVersion: 0,
+              roundTripTime: -1,
+              lastUpdateTime: 20332984,
+              lastWriteDate: 0,
+              error: MongoNetworkTimeoutError: connection <monitor> to 3.1.152.154:27017 timed out
+                  at Timeout._onTimeout (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connection.ts:335:26)
+                  at listOnTimeout (node:internal/timers:573:17)
+                  at processTimers (node:internal/timers:514:7) {
+                [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+                [Symbol(beforeHandshake)]: false,
+                [cause]: undefined
+              },
+              topologyVersion: null,
+              setName: null,
+              setVersion: null,
+              electionId: null,
+              logicalSessionTimeoutMinutes: null,
+              primary: null,
+              me: null,
+              '$clusterTime': null
+            }
+          },
+          stale: false,
+          compatible: true,
+          heartbeatFrequencyMS: 10000,
+          localThresholdMS: 15,
+          setName: 'atlas-tdfs7d-shard-0',
+          maxElectionId: new ObjectId('7fffffff0000000000000344'),
+          maxSetVersion: 9,
+          commonWireVersion: 0,
+          logicalSessionTimeoutMinutes: null
+        },
+        code: undefined,
+        [Symbol(errorLabels)]: Set(0) {},
+        [cause]: MongoNetworkTimeoutError: connection <monitor> to 3.1.161.181:27017 timed out
+            at Timeout._onTimeout (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connection.ts:335:26)
+            at listOnTimeout (node:internal/timers:573:17)
+            at processTimers (node:internal/timers:514:7) {
+          [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+          [Symbol(beforeHandshake)]: false,
+          [cause]: undefined
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?page=1&limit=3',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTA0MjEyNzUsImlhdCI6MTcxMDQyMTIxNSwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTA0MjEyMDUsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.VRClxxSFyWgNhn26s9_jJlExglb1x41p5kEDPtmeh9fkZmm8ySJgn40U0HRIFpAPl2KRggUqkGW0j3IJBb3lLEAevTslxXSyK9lRlTFEdOn4a3kbxYSTlI_5V2XuMuVlhs4Ve7gVYK1grRwqPbUQVgoISzIVcUlYO0X1Z4MKC_EZZCJ7lUj05AJL7WABRP3RWSybbZ1B-0BS8PZvihsajq-nchF9QyM9hlyLKuce0vY1DrfcZ8Ig293yemIMsjFuXMDM9KQO69_IG8V-2gBBfLQwadg7Szzh3JtecHO2wmDD_-BsRaNCmBPlv7eGHQ17yPbB312oEXhyAMCB-zRxZQ',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { page: '1', limit: '3' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 21:01:21',
+    label: 'get-all-meetup'
+  }
+}
+{
+  level: 'error',
+  message: 'Error Message',
+  metadata: {
+    body: {
+      error: MongoServerSelectionError: connection timed out
+          at EventTarget.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\sdam\topology.ts:568:28)
+          at EventTarget.[nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
+          at EventTarget.dispatchEvent (node:internal/event_target:761:26)
+          at abortSignal (node:internal/abort_controller:371:10)
+          at TimeoutController.abort (node:internal/abort_controller:393:5)
+          at Timeout.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\utils.ts:1273:61)
+          at listOnTimeout (node:internal/timers:573:17)
+          at processTimers (node:internal/timers:514:7) {
+        reason: TopologyDescription {
+          type: 'ReplicaSetNoPrimary',
+          servers: Map(3) {
+            'ac-bbzuctv-shard-00-00.vl7kxe8.mongodb.net:27017' => ServerDescription {
+              address: 'ac-bbzuctv-shard-00-00.vl7kxe8.mongodb.net:27017',
+              type: 'RSSecondary',
+              hosts: [
+                'ac-bbzuctv-shard-00-00.vl7kxe8.mongodb.net:27017',
+                'ac-bbzuctv-shard-00-01.vl7kxe8.mongodb.net:27017',
+                'ac-bbzuctv-shard-00-02.vl7kxe8.mongodb.net:27017'
+              ],
+              passives: [],
+              arbiters: [],
+              tags: {
+                provider: 'AWS',
+                diskState: 'READY',
+                workloadType: 'OPERATIONAL',
+                availabilityZone: 'apse1-az2',
+                nodeType: 'ELECTABLE',
+                region: 'AP_SOUTHEAST_1'
+              },
+              minWireVersion: 0,
+              maxWireVersion: 21,
+              roundTripTime: 8180,
+              lastUpdateTime: 20387200,
+              lastWriteDate: 2024-03-14T13:01:44.000Z,
+              error: null,
+              topologyVersion: {
+                processId: new ObjectId('65ef3d0fb9155f204a4951f4'),
+                counter: 3
+              },
+              setName: 'atlas-tdfs7d-shard-0',
+              setVersion: 9,
+              electionId: null,
+              logicalSessionTimeoutMinutes: 30,
+              primary: 'ac-bbzuctv-shard-00-02.vl7kxe8.mongodb.net:27017',
+              me: 'ac-bbzuctv-shard-00-00.vl7kxe8.mongodb.net:27017',
+              '$clusterTime': {
+                clusterTime: new Timestamp({ t: 1710421304, i: 29 }),
+                signature: {
+                  hash: <Buffer 0c 16 15 6f 53 51 1d 4c 17 fe 1c e0 01 7b 11 c9 b5 d0 fa 52>,
+                  keyId: new Long('7299648183452303362')
+                }
+              }
+            },
+            'ac-bbzuctv-shard-00-01.vl7kxe8.mongodb.net:27017' => ServerDescription {
+              address: 'ac-bbzuctv-shard-00-01.vl7kxe8.mongodb.net:27017',
+              type: 'Unknown',
+              hosts: [],
+              passives: [],
+              arbiters: [],
+              tags: {},
+              minWireVersion: 0,
+              maxWireVersion: 0,
+              roundTripTime: -1,
+              lastUpdateTime: 20371940,
+              lastWriteDate: 0,
+              error: MongoNetworkTimeoutError: connection timed out
+                  at connectionFailureError (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connect.ts:507:14)
+                  at TLSSocket.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connect.ts:388:16)
+                  at Object.onceWrapper (node:events:632:28)
+                  at TLSSocket.emit (node:events:518:28)
+                  at TLSSocket.emit (node:domain:488:12)
+                  at TLSSocket.Socket._onTimeout (node:net:589:8)
+                  at listOnTimeout (node:internal/timers:573:17)
+                  at processTimers (node:internal/timers:514:7) {
+                [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+                [cause]: undefined
+              },
+              topologyVersion: null,
+              setName: null,
+              setVersion: null,
+              electionId: null,
+              logicalSessionTimeoutMinutes: null,
+              primary: null,
+              me: null,
+              '$clusterTime': null
+            },
+            'ac-bbzuctv-shard-00-02.vl7kxe8.mongodb.net:27017' => ServerDescription {
+              address: 'ac-bbzuctv-shard-00-02.vl7kxe8.mongodb.net:27017',
+              type: 'Unknown',
+              hosts: [],
+              passives: [],
+              arbiters: [],
+              tags: {},
+              minWireVersion: 0,
+              maxWireVersion: 0,
+              roundTripTime: -1,
+              lastUpdateTime: 20372222,
+              lastWriteDate: 0,
+              error: MongoNetworkTimeoutError: connection timed out
+                  at connectionFailureError (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connect.ts:507:14)
+                  at TLSSocket.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connect.ts:388:16)
+                  at Object.onceWrapper (node:events:632:28)
+                  at TLSSocket.emit (node:events:518:28)
+                  at TLSSocket.emit (node:domain:488:12)
+                  at TLSSocket.Socket._onTimeout (node:net:589:8)
+                  at listOnTimeout (node:internal/timers:573:17)
+                  at processTimers (node:internal/timers:514:7) {
+                [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+                [cause]: undefined
+              },
+              topologyVersion: null,
+              setName: null,
+              setVersion: null,
+              electionId: null,
+              logicalSessionTimeoutMinutes: null,
+              primary: null,
+              me: null,
+              '$clusterTime': null
+            }
+          },
+          stale: false,
+          compatible: true,
+          heartbeatFrequencyMS: 10000,
+          localThresholdMS: 15,
+          setName: 'atlas-tdfs7d-shard-0',
+          maxElectionId: new ObjectId('7fffffff0000000000000344'),
+          maxSetVersion: 9,
+          commonWireVersion: 0,
+          logicalSessionTimeoutMinutes: 30
+        },
+        code: undefined,
+        [Symbol(errorLabels)]: Set(0) {},
+        [cause]: MongoNetworkTimeoutError: connection timed out
+            at connectionFailureError (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connect.ts:507:14)
+            at TLSSocket.<anonymous> (C:\Users\USER\Documents\my-projects\snaply\backend\node_modules\mongodb\src\cmap\connect.ts:388:16)
+            at Object.onceWrapper (node:events:632:28)
+            at TLSSocket.emit (node:events:518:28)
+            at TLSSocket.emit (node:domain:488:12)
+            at TLSSocket.Socket._onTimeout (node:net:589:8)
+            at listOnTimeout (node:internal/timers:573:17)
+            at processTimers (node:internal/timers:514:7) {
+          [Symbol(errorLabels)]: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+          [cause]: undefined
+        }
+      }
+    },
+    request: {
+      method: 'GET',
+      url: '/all?page=1&limit=3',
+      headers: {
+        host: 'localhost:9000',
+        connection: 'keep-alive',
+        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yYWQ2ZWRrRDAxUkpwVUM3UUJkSmQwMnBQb3MiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE3MTA0MjEyNzUsImlhdCI6MTcxMDQyMTIxNSwiaXNzIjoiaHR0cHM6Ly9leGNpdGluZy1wbGF0eXB1cy05MS5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MTA0MjEyMDUsInNpZCI6InNlc3NfMmRiM09mbmpNNzY0M3FxQXdDVk1uclRtbTVhIiwic3ViIjoidXNlcl8yY3VuYk5oN1Y4U3dCVElyTVE4ODF0MUN3Mk4ifQ.VRClxxSFyWgNhn26s9_jJlExglb1x41p5kEDPtmeh9fkZmm8ySJgn40U0HRIFpAPl2KRggUqkGW0j3IJBb3lLEAevTslxXSyK9lRlTFEdOn4a3kbxYSTlI_5V2XuMuVlhs4Ve7gVYK1grRwqPbUQVgoISzIVcUlYO0X1Z4MKC_EZZCJ7lUj05AJL7WABRP3RWSybbZ1B-0BS8PZvihsajq-nchF9QyM9hlyLKuce0vY1DrfcZ8Ig293yemIMsjFuXMDM9KQO69_IG8V-2gBBfLQwadg7Szzh3JtecHO2wmDD_-BsRaNCmBPlv7eGHQ17yPbB312oEXhyAMCB-zRxZQ',
+        'content-type': 'application/json',
+        accept: '*/*',
+        'accept-language': '*',
+        'sec-fetch-mode': 'cors',
+        'user-agent': 'node',
+        'accept-encoding': 'gzip, deflate'
+      },
+      body: {},
+      params: {},
+      query: { page: '1', limit: '3' },
+      clientIp: '::1'
+    },
+    response: {
+      statusCode: 200,
+      headers: [Object: null prototype] {
+        'access-control-allow-origin': 'http://localhost:3000',
+        vary: 'Origin',
+        'access-control-allow-credentials': 'true',
+        'access-control-allow-methods': 'GET, POST, PATCH, PUT, DELETE',
+        'access-control-allow-headers': 'Content-Type',
+        'content-security-policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+        'cross-origin-opener-policy': 'same-origin',
+        'cross-origin-resource-policy': 'same-origin',
+        'origin-agent-cluster': '?1',
+        'referrer-policy': 'no-referrer',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains',
+        'x-content-type-options': 'nosniff',
+        'x-dns-prefetch-control': 'off',
+        'x-download-options': 'noopen',
+        'x-frame-options': 'SAMEORIGIN',
+        'x-permitted-cross-domain-policies': 'none',
+        'x-xss-protection': '0'
+      }
+    },
+    timestamp: 'Mar-14-2024 21:02:00',
+    label: 'get-all-meetup'
+  }
+}
