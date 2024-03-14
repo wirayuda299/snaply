@@ -30,7 +30,7 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 								href={`/profile/${post?.author?._id}`}
 								className='text-secondary dark:text-white-700 inline-flex items-center gap-3'
 							>
-								{post?.author.username}{' '}
+								{post?.author?.username}{' '}
 								<span
 									className={cn(
 										'w-2 h-2 rounded-full bg-slate-500 inline-block',
@@ -50,7 +50,7 @@ export default function CardFooter({ post, type }: PostCardTypes) {
 							{' '}
 							Created by
 							<span className='font-semibold capitalize'>
-								{post.author.username}
+								{post?.author?.username}
 							</span>
 						</p>
 					)}

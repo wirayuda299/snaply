@@ -35,10 +35,10 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 				>
 					<Image
 						className='aspect-square h-full min-h-full rounded-md object-cover object-center md:aspect-auto'
-						src={post.image}
+						src={post?.image}
 						fill
 						sizes='100%'
-						alt={post.title}
+						alt={post?.title}
 						priority
 						fetchPriority='high'
 					/>
@@ -50,14 +50,16 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 							<PostTitle
 								type={type}
 								path={
-									type === 'post' ? `/post/${post._id}` : `/meetups/${post._id}`
+									type === 'post'
+										? `/post/${post?._id}`
+										: `/meetups/${post?._id}`
 								}
-								id={post._id}
-								title={post.title}
+								id={post?._id}
+								title={post?.title}
 							/>
 							{type === 'meetup' && (
 								<p className='text-secondary dark:text-secondary-light truncate text-xs'>
-									{post.companyName} - {post.address}
+									{post?.companyName} - {post?.address}
 								</p>
 							)}
 							{type === 'post' && <Tag tags={post.tags} />}
@@ -70,21 +72,21 @@ export default async function PostCard({ post, type }: PostCardTypes) {
 							{type === 'post' ? (
 								<LikeButton
 									post={post}
-									userId={user.id}
+									userId={user?.id}
 									isLikedByCurrentUser={isLikedByCurrentUser}
 								/>
 							) : (
-								<p className='bg-white-800 text-secondary dark:bg-secondary-dark dark:text-secondary-light hidden h-20 w-12  flex-col items-center gap-1 truncate rounded-md p-1 text-lg font-semibold md:flex'>
+								<p className='bg-white-800 text-secondary dark:bg-secondary-dark-2 dark:text-secondary-light hidden h-20 w-12  flex-col items-center gap-1 truncate rounded-md p-1 text-lg font-semibold md:flex'>
 									<span className='inline-block text-lg font-semibold uppercase'>
-										{date.toLocaleString('en-US', { month: 'short' })}
+										{date?.toLocaleString('en-US', { month: 'short' })}
 									</span>
 									<span className='inline-block text-lg font-bold text-blue-600'>
 										{date && date.getDate()}
 									</span>
 								</p>
 							)}
-							{post.author._id === user.id && (
-								<Menu path='/' postId={post._id} type={type} />
+							{post?.author._id === user?.id && (
+								<Menu path='/' postId={post?._id} type={type} />
 							)}
 						</div>
 					</div>

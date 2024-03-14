@@ -40,7 +40,7 @@ export default function PodcastCard({ podcasts }: { podcasts: Podcast[] }) {
 								</h3>
 							</div>
 							<Image
-								className='aspect-auto w-5 object-contain invert dark:invert-0'
+								className='aspect-auto w-5 object-contain invert dark:grayscale dark:invert-0'
 								src='/assets/general/icons/arrow.svg'
 								width={40}
 								height={10}

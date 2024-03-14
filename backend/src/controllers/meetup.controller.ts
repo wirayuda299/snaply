@@ -66,4 +66,8 @@ export default class Meetup {
 		}
 		return this.meetup.updateMeetup(req, res);
 	}
+
+	getRelatedMeetups(req: Request, res: Response) {
+		return this.meetup.getRelatedMeetups(req, res);
+	}
 }

@@ -22,8 +22,8 @@ export const dynamic = 'force-dynamic';
 export default async function PostDetail({ params }: Props) {
 	const { post } = await getPostById(params.id);
 
-	const user = await getUserById(post.author._id);
 	const relatedPosts = await getRelatedPosts(params.id, post.author._id);
+	const user = await getUserById(post.author._id);
 	const postStats = getPostStats(
 		post.likes.length,
 		post.comments.length,

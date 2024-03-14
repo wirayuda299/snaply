@@ -107,7 +107,7 @@ export default class MeetupService {
 				async () => {
 					return await this.meetupModel
 						.findById(req.query.id)
-						.populate('author')
+						.populate('author', '_id username profileImage createdAt')
 						.populate('tags');
 				},
 				res
@@ -224,6 +224,18 @@ export default class MeetupService {
 			res.status(201).end();
 		} catch (error) {
 			createError(error, req, res, 'update-meetup');
+		}
+	}
+
+	async getRelatedMeetups(req: Request, res: Response) {
+		try {
+			const { author, id } = req.query;
+			const meetups = await this.meetupModel
+				.find({ author, _id: { $ne: id } })
+				.populate('tags');
+			return res.status(200).json({ data: meetups, error: false });
+		} catch (error) {
+			createError(error, req, res, 'related-meetup');
 		}
 	}
 }

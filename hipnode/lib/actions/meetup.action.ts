@@ -28,6 +28,15 @@ export async function getAllMeetups(page: number = 1, limit: number = 10) {
 		throw error;
 	}
 }
+export async function getRelatedMeetups(author: string, id: string) {
+	try {
+		return await apiRequest.get<Meetup[]>(
+			`/meetup/related-meetups?author=${author}&id=${id}`
+		);
+	} catch (error) {
+		throw error;
+	}
+}
 
 export async function createMeetup(props: z.infer<typeof schema>) {
 	try {
